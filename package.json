@@ -32,16 +32,16 @@
     "node": "^20.20.0 || >=22.22.0"
   },
   "bin": {
-    "promptfoo": "dist/src/entrypoint.js",
-    "pf": "dist/src/entrypoint.js"
+    "aisecurity": "dist/src/entrypoint.js",
+    "ai": "dist/src/entrypoint.js"
   },
   "scripts": {
     "audit:fix": "npm audit fix && npm audit fix --prefix src/app && npm audit fix --prefix site",
     "bin": "dist/src/entrypoint.js",
     "build:app": "npm run build --prefix src/app",
     "build:clean": "shx rm -rf dist",
-    "build:watch": "NODE_OPTIONS='--max-old-space-size=8192' tsdown --watch",
-    "build": "concurrently -g --kill-others-on-fail \"tsc --noEmit\" \"NODE_OPTIONS='--max-old-space-size=8192' tsdown\" \"npm run build:app\"",
+    "build:watch": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsdown --watch",
+    "build": "concurrently -g --kill-others-on-fail \"tsc --noEmit\" \"cross-env NODE_OPTIONS=--max-old-space-size=8192 tsdown\" \"npm run build:app\"",
     "postbuild": "tsx scripts/postbuild.ts",
     "citation:generate": "tsx scripts/generateCitation.ts",
     "db:generate": "npx drizzle-kit generate",
@@ -151,6 +151,7 @@
     "@types/supertest": "^7.0.0",
     "@vitest/coverage-v8": "^4.1.0",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "depcheck": "^1.4.7",
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
