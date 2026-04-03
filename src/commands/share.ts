@@ -29,7 +29,7 @@ export function notCloudEnabledShareInstructions(): void {
 
     1. Please go to ${chalk.greenBright.bold(cloudUrl)} to sign up or log in.
     2. Follow the instructions at ${chalk.greenBright.bold(welcomeUrl)} to login to the command line.
-    3. Run ${chalk.greenBright.bold('promptfoo share')}
+    3. Run ${chalk.greenBright.bold('aisecurity share')}
   `);
 }
 
@@ -74,7 +74,7 @@ export function shareCommand(program: Command) {
       'Show username/password authentication information in the URL if exists',
       false,
     )
-    // NOTE: Added in 0.109.1 after migrating sharing to promptfoo.app in 0.108.0
+    // NOTE: Added in 0.109.1 after migrating sharing to AI-Security.app in 0.108.0
     .option(
       '-y, --yes',
       'Flag does nothing (maintained for backwards compatibility only - shares are now private by default)',
@@ -118,7 +118,7 @@ export function shareCommand(program: Command) {
 
           if (!latestEval && !latestAudit) {
             logger.error(
-              'Could not load results. Do you need to run `promptfoo eval` or `promptfoo scan-model` first?',
+              'Could not load results. Do you need to run `AI Security eval` or `AI Security scan-model` first?',
             );
             process.exitCode = 1;
             return;
@@ -150,7 +150,7 @@ export function shareCommand(program: Command) {
             if (currentConfig && currentConfig.sharing) {
               eval_.config.sharing = currentConfig.sharing;
               logger.debug(
-                `Applied sharing config from promptfooconfig.yaml: ${JSON.stringify(currentConfig.sharing)}`,
+                `Applied sharing config from AI Securityconfig.yaml: ${JSON.stringify(currentConfig.sharing)}`,
               );
             }
           } catch (err) {

@@ -486,7 +486,7 @@ const AuthorizationTab: React.FC<AuthorizationTabProps> = ({
                 <p className="text-sm text-muted-foreground">
                   Load a token from a JavaScript, TypeScript, or Python auth file. See{' '}
                   <a
-                    href="https://www.promptfoo.dev/docs/providers/http/#file-based-authentication"
+                    href="https://www.AI-Security.dev/docs/providers/http/#file-based-authentication"
                     target="_blank"
                     rel="noreferrer"
                     className="text-primary hover:underline"
@@ -505,9 +505,9 @@ const AuthorizationTab: React.FC<AuthorizationTabProps> = ({
         <div className="mt-6 space-y-6">
           <p className="text-sm">
             Configure signature-based authentication for secure API calls. Your private key is never
-            sent to Promptfoo and will always be stored locally on your system. See{' '}
+            sent to AI Security and will always be stored locally on your system. See{' '}
             <a
-              href="https://www.promptfoo.dev/docs/providers/http/#digital-signature-authentication"
+              href="https://www.AI-Security.dev/docs/providers/http/#digital-signature-authentication"
               target="_blank"
               rel="noreferrer"
               className="text-primary hover:underline"

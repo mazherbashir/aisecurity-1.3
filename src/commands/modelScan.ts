@@ -77,7 +77,7 @@ interface ScanOptions {
 export function createTempOutputPath(): string {
   const tempDir = os.tmpdir();
   const uuid = crypto.randomUUID();
-  return path.join(tempDir, `promptfoo-modelscan-${uuid}.json`);
+  return path.join(tempDir, `AI Security-modelscan-${uuid}.json`);
 }
 
 /**
@@ -305,7 +305,7 @@ async function checkExistingScan(
     logger.info(`  Previous scan: ${new Date(existing.createdAt).toISOString()}`);
     logger.info(`  Scan ID: ${existing.id}`);
     logger.info(`\n${chalk.gray('Use --force to scan anyway, or view existing results with:')}`);
-    logger.info(chalk.green(`  promptfoo view ${existing.id}`));
+    logger.info(chalk.green(`  aisecurity view ${existing.id}`));
 
     return { shouldSkip: true, existingAudit: null };
   } catch (error) {
@@ -761,7 +761,7 @@ export function modelScanCommand(program: Command): void {
       if (!installed) {
         logger.error('ModelAudit is not installed.');
         logger.info(`Please install it using: ${chalk.green('pip install modelaudit')}`);
-        logger.info('For more information, visit: https://www.promptfoo.dev/docs/model-audit/');
+        logger.info('For more information, visit: https://www.AI-Security.dev/docs/model-audit/');
         process.exitCode = 1;
         return;
       }

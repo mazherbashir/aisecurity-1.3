@@ -270,7 +270,7 @@ export default function Review({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'promptfooconfig.yaml';
+    link.download = 'AI Securityconfig.yaml';
     link.click();
     URL.revokeObjectURL(url);
     recordEvent('feature_used', {
@@ -361,11 +361,11 @@ export default function Review({
 
     switch (apiHealthStatus) {
       case 'blocked':
-        return 'Cannot connect to Promptfoo Cloud. Please check your network connection or API settings.';
+        return 'Cannot connect to AI Security Cloud. Please check your network connection or API settings.';
       case 'disabled':
-        return 'Remote generation is disabled. Running red team evaluations requires connection to Promptfoo Cloud.';
+        return 'Remote generation is disabled. Running red team evaluations requires connection to AI Security Cloud.';
       case 'unknown':
-        return 'Checking connection to Promptfoo Cloud...';
+        return 'Checking connection to AI Security Cloud...';
       default:
         return undefined;
     }
@@ -492,7 +492,7 @@ export default function Review({
       targetType: config.target.id,
     });
 
-    if (config.target.id === 'http' && config.target.config.url?.includes('promptfoo.app')) {
+    if (config.target.id === 'http' && config.target.config.url?.includes('AI-Security.app')) {
       // Track report export
       recordEvent('webui_action', {
         action: 'redteam_run_with_example',
@@ -912,7 +912,7 @@ export default function Review({
                             className="underline"
                             target="_blank"
                             rel="noopener noreferrer"
-                            to="https://www.promptfoo.dev/docs/red-team/troubleshooting/best-practices/#1-provide-comprehensive-application-details"
+                            to="https://www.AI-Security.dev/docs/red-team/troubleshooting/best-practices/#1-provide-comprehensive-application-details"
                           >
                             Learn more about red team best practices.
                           </Link>
@@ -1095,7 +1095,7 @@ export default function Review({
               Save your configuration and run it from the command line. Full control over the
               evaluation process, good for larger scans:
             </p>
-            <Code>promptfoo redteam run</Code>
+            <Code>aisecurity redteam run</Code>
             <div className="mt-4 flex gap-3">
               <Button onClick={handleSaveYaml} className="gap-2">
                 <Save className="size-4" />
@@ -1121,7 +1121,7 @@ export default function Review({
                 <AlertContent>
                   <AlertDescription>
                     {apiHealthStatus === 'blocked'
-                      ? 'Cannot connect to Promptfoo Cloud. The "Run Now" option requires a connection to Promptfoo Cloud.'
+                      ? 'Cannot connect to AI Security Cloud. The "Run Now" option requires a connection to AI Security Cloud.'
                       : apiHealthStatus === 'disabled'
                         ? 'Remote generation is disabled. The "Run Now" option is not available.'
                         : 'Checking connection status...'}

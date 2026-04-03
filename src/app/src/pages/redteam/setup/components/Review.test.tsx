@@ -529,7 +529,7 @@ Application Details:
       await waitFor(() => {
         const tooltip = screen.getByRole('tooltip');
         expect(tooltip).toHaveTextContent(
-          /Cannot connect to Promptfoo Cloud\. Please check your network/i,
+          /Cannot connect to AI Security Cloud\. Please check your network/i,
         );
       });
     });
@@ -552,7 +552,7 @@ Application Details:
       // Check for the specific alert text
       expect(
         screen.getByText(
-          /Cannot connect to Promptfoo Cloud. The "Run Now" option requires a connection to Promptfoo Cloud./i,
+          /Cannot connect to AI Security Cloud. The "Run Now" option requires a connection to AI Security Cloud./i,
         ),
       ).toBeInTheDocument();
     });
@@ -613,7 +613,7 @@ Application Details:
       );
 
       // Check that no API health warning alert exists (but other alerts may exist)
-      expect(screen.queryByText(/Cannot connect to Promptfoo Cloud/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Cannot connect to AI Security Cloud/)).not.toBeInTheDocument();
       expect(screen.queryByText(/Remote generation is disabled/)).not.toBeInTheDocument();
       expect(screen.queryByText(/Checking connection status/)).not.toBeInTheDocument();
     });
@@ -634,7 +634,7 @@ Application Details:
       );
 
       // Check that no API health warning alert exists (but other alerts may exist)
-      expect(screen.queryByText(/Cannot connect to Promptfoo Cloud/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Cannot connect to AI Security Cloud/)).not.toBeInTheDocument();
       expect(screen.queryByText(/Remote generation is disabled/)).not.toBeInTheDocument();
       expect(screen.queryByText(/Checking connection status/)).not.toBeInTheDocument();
     });
@@ -693,7 +693,7 @@ Application Details:
 
       await waitFor(() => {
         const tooltip = screen.getByRole('tooltip');
-        expect(tooltip).toHaveTextContent(/checking connection to promptfoo cloud/i);
+        expect(tooltip).toHaveTextContent(/checking connection to AI Security cloud/i);
       });
     });
 
@@ -722,7 +722,7 @@ Application Details:
         await vi.advanceTimersByTimeAsync(100);
 
         // Check that no tooltip is shown (check for various tooltip text patterns)
-        expect(screen.queryByText(/cannot connect to promptfoo cloud/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/cannot connect to AI Security cloud/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/remote generation is disabled/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/checking connection/i)).not.toBeInTheDocument();
       }
@@ -753,7 +753,7 @@ Application Details:
         await vi.advanceTimersByTimeAsync(100);
 
         // Check that no tooltip is shown
-        expect(screen.queryByText(/cannot connect to promptfoo cloud/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/cannot connect to AI Security cloud/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/remote generation is disabled/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/checking connection/i)).not.toBeInTheDocument();
       }
@@ -939,7 +939,7 @@ Application Details:
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Check that no tooltip is shown
-        expect(screen.queryByText(/cannot connect to promptfoo cloud/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/cannot connect to AI Security cloud/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/remote generation is disabled/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/checking connection/i)).not.toBeInTheDocument();
       }
@@ -1072,7 +1072,7 @@ Application Details:
       );
 
       // Initially no API health alert should be shown
-      expect(screen.queryByText(/Cannot connect to Promptfoo Cloud/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Cannot connect to AI Security Cloud/)).not.toBeInTheDocument();
       expect(screen.queryByText(/Remote generation is disabled/)).not.toBeInTheDocument();
 
       // Change API status to blocked
@@ -1093,7 +1093,7 @@ Application Details:
       // Alert should now be visible
       expect(
         screen.getByText(
-          /Cannot connect to Promptfoo Cloud. The "Run Now" option requires a connection to Promptfoo Cloud./i,
+          /Cannot connect to AI Security Cloud. The "Run Now" option requires a connection to AI Security Cloud./i,
         ),
       ).toBeInTheDocument();
 
@@ -1117,7 +1117,7 @@ Application Details:
         screen.getByText(/Remote generation is disabled. The "Run Now" option is not available./),
       ).toBeInTheDocument();
       // Previous message should be gone
-      expect(screen.queryByText(/Cannot connect to Promptfoo Cloud/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Cannot connect to AI Security Cloud/)).not.toBeInTheDocument();
 
       // Change API status back to connected
       vi.mocked(useApiHealth).mockReturnValue({
@@ -1136,7 +1136,7 @@ Application Details:
 
       // Alert should disappear
       expect(screen.queryByText(/Remote generation is disabled/)).not.toBeInTheDocument();
-      expect(screen.queryByText(/Cannot connect to Promptfoo Cloud/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Cannot connect to AI Security Cloud/)).not.toBeInTheDocument();
     });
 
     it('should update tooltip message when API health status changes', async () => {
@@ -1162,7 +1162,7 @@ Application Details:
       await user.hover(button);
       await waitFor(() => {
         const tooltip = screen.getByRole('tooltip');
-        expect(tooltip).toHaveTextContent(/cannot connect to promptfoo cloud/i);
+        expect(tooltip).toHaveTextContent(/cannot connect to AI Security cloud/i);
       });
 
       // Change to disabled state and rerender
@@ -1204,7 +1204,7 @@ Application Details:
       // Tooltip should update with new message (still hovering)
       await waitFor(() => {
         const tooltip = screen.getByRole('tooltip');
-        expect(tooltip).toHaveTextContent(/checking connection to promptfoo cloud/i);
+        expect(tooltip).toHaveTextContent(/checking connection to AI Security cloud/i);
       });
     });
   });

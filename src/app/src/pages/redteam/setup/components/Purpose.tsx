@@ -323,7 +323,7 @@ export default function Purpose({ onNext, onBack }: PromptsProps) {
                       Automatically analyze your target to discover its purpose, tools, and
                       limitations.{' '}
                       <a
-                        href="https://promptfoo.dev/docs/red-team/discovery"
+                        href="https://aisecurity.dev/docs/red-team/discovery"
                         target="_blank"
                         className="text-primary/80 underline underline-offset-2 hover:text-primary"
                       >
@@ -371,7 +371,7 @@ export default function Purpose({ onNext, onBack }: PromptsProps) {
                         <AlertTriangle className="size-4" />
                         <AlertContent>
                           <AlertDescription>
-                            Cannot connect to Promptfoo API. Auto-discovery requires a healthy API
+                            Cannot connect to AI Security API. Auto-discovery requires a healthy API
                             connection.
                           </AlertDescription>
                         </AlertContent>
@@ -400,7 +400,7 @@ export default function Purpose({ onNext, onBack }: PromptsProps) {
                             </p>
                           </div>
                           <Code className="mt-2">
-                            promptfoo redteam discover -c redteam-config.yaml
+                            aisecurity redteam discover -c redteam-config.yaml
                           </Code>
                         </div>
                       </>

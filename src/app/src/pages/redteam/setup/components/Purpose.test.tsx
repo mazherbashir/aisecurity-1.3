@@ -282,7 +282,7 @@ describe('Purpose Component', () => {
       await waitFor(() => {
         expect(
           screen.getByText(
-            /Cannot connect to Promptfoo API. Auto-discovery requires a healthy API connection./i,
+            /Cannot connect to AI Security API. Auto-discovery requires a healthy API connection./i,
           ),
         ).toBeInTheDocument();
       });

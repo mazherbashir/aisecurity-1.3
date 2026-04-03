@@ -297,7 +297,7 @@ export const TestCaseGenerateButton: React.FC<{
       </TooltipTrigger>
       <TooltipContent>
         {isRemoteDisabled
-          ? 'Requires Promptfoo Cloud connection'
+          ? 'Requires AI Security Cloud connection'
           : tooltipTitle || 'Generate test case'}
       </TooltipContent>
     </Tooltip>

@@ -141,13 +141,13 @@ export default function Targets({ onNext, onBack }: TargetsProps) {
         <>
           <p className="mb-4">
             A target is the specific LLM or endpoint you want to evaluate in your red teaming
-            process. In Promptfoo targets are also known as providers. You can configure additional
-            targets later.
+            process. In AI Security targets are also known as providers. You can configure
+            additional targets later.
           </p>
           <p>
             For more information on available providers and how to configure them, please visit our{' '}
             <a
-              href="https://www.promptfoo.dev/docs/providers/"
+              href="https://www.AI-Security.dev/docs/providers/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

@@ -751,11 +751,11 @@ ${exampleRequest}`;
         <p className="mb-2 mt-6 font-medium">Response Parser</p>
         <div className="mb-4 text-sm text-muted-foreground">
           <p>
-            This tells promptfoo how to extract the AI's response from your API. Most APIs return
+            This tells AI Security how to extract the AI's response from your API. Most APIs return
             JSON with the actual response nested inside - this parser helps find the right part.
             Leave empty if your API returns plain text. See{' '}
             <a
-              href="https://www.promptfoo.dev/docs/providers/http/#response-transform"
+              href="https://www.AI-Security.dev/docs/providers/http/#response-transform"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
@@ -833,7 +833,7 @@ ${exampleRequest}`;
             <DialogTitle>Generate HTTP Configuration</DialogTitle>
           </DialogHeader>
           <p className="mb-2 text-sm text-muted-foreground">
-            Paste an example HTTP request and optionally a response. Promptfoo will automatically
+            Paste an example HTTP request and optionally a response. AI Security will automatically
             generate the configuration for you.
           </p>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

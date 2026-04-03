@@ -514,7 +514,7 @@ describe('StrategyConfigDialog', () => {
     expect(customMaxTurnsInput).toHaveValue(8);
 
     const customStatefulSwitch = screen.getByRole('switch', {
-      name: /When enabled, Promptfoo should only send/,
+      name: /When enabled, AI Security should only send/,
     });
     expect(customStatefulSwitch).toBeChecked();
 
@@ -533,7 +533,7 @@ describe('StrategyConfigDialog', () => {
     expect(goatMaxTurnsInput).toHaveValue(3);
 
     const goatStatefulSwitch = screen.getByRole('switch', {
-      name: /When enabled, Promptfoo should only send/,
+      name: /When enabled, AI Security should only send/,
     });
     expect(goatStatefulSwitch).not.toBeChecked();
   });
@@ -656,7 +656,7 @@ describe('StrategyConfigDialog', () => {
     expect(maxTurnsInput).toBeNull();
 
     const statefulSwitch = screen.queryByRole('switch', {
-      name: /When enabled, Promptfoo should only send/,
+      name: /When enabled, AI Security should only send/,
     });
     expect(statefulSwitch).toBeNull();
 

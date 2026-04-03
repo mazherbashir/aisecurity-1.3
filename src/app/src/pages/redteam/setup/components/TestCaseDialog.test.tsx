@@ -124,7 +124,7 @@ describe('TestCaseGenerateButton', () => {
       });
     });
 
-    it('should display "Requires Promptfoo Cloud connection" tooltip when API is not connected', async () => {
+    it('should display "Requires AI Security Cloud connection" tooltip when API is not connected', async () => {
       const user = userEvent.setup();
       mockUseApiHealth.mockReturnValue({
         data: { status: 'disconnected', message: null },
@@ -144,7 +144,7 @@ describe('TestCaseGenerateButton', () => {
 
       await waitFor(() => {
         const tooltip = screen.getByRole('tooltip');
-        expect(tooltip).toHaveTextContent('Requires Promptfoo Cloud connection');
+        expect(tooltip).toHaveTextContent('Requires AI Security Cloud connection');
       });
     });
 

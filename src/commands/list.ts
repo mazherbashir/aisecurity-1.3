@@ -188,9 +188,9 @@ export function listCommand(program: Command) {
 
           logger.info('');
           logger.info(chalk.white.bold('Actions:'));
-          logger.info(`  ${chalk.green('promptfoo show eval ' + item.id)}`);
+          logger.info(`  ${chalk.green('AI Security show eval ' + item.id)}`);
           logger.info(`    └─ View detailed results in terminal`);
-          logger.info(`  ${chalk.green('promptfoo view --eval ' + item.id)}`);
+          logger.info(`  ${chalk.green('aisecurity view --eval ' + item.id)}`);
           logger.info(`    └─ Open in browser`);
           logger.info('');
         }
@@ -225,10 +225,10 @@ export function listCommand(program: Command) {
       printBorder();
 
       logger.info(
-        `Run ${chalk.green('promptfoo show eval <id>')} to see details of a specific evaluation.`,
+        `Run ${chalk.green('AI Security show eval <id>')} to see details of a specific evaluation.`,
       );
       logger.info(
-        `Run ${chalk.green('promptfoo show prompt <id>')} to see details of a specific prompt.`,
+        `Run ${chalk.green('AI Security show prompt <id>')} to see details of a specific prompt.`,
       );
     });
 
@@ -277,7 +277,7 @@ export function listCommand(program: Command) {
             item.raw.length > 100 ? item.raw.slice(0, 100).replace(/\n/g, ' ') + '...' : item.raw;
           logger.info(`Preview: ${chalk.gray(preview)}`);
           logger.info('');
-          logger.info(`View details: ${chalk.green(`promptfoo show prompt ${item.id}`)}`);
+          logger.info(`View details: ${chalk.green(`AI Security show prompt ${item.id}`)}`);
         }
         return;
       }
@@ -299,10 +299,10 @@ export function listCommand(program: Command) {
       logger.info(wrapTable(tableData, columnWidths) as string);
       printBorder();
       logger.info(
-        `Run ${chalk.green('promptfoo show prompt <id>')} to see details of a specific prompt.`,
+        `Run ${chalk.green('AI Security show prompt <id>')} to see details of a specific prompt.`,
       );
       logger.info(
-        `Run ${chalk.green('promptfoo show eval <id>')} to see details of a specific evaluation.`,
+        `Run ${chalk.green('AI Security show eval <id>')} to see details of a specific evaluation.`,
       );
     });
 
@@ -357,7 +357,7 @@ export function listCommand(program: Command) {
             logger.info(`Most recent eval: ${item.recentEvalId}`);
           }
           logger.info('');
-          logger.info(`View details: ${chalk.green(`promptfoo show dataset ${item.id}`)}`);
+          logger.info(`View details: ${chalk.green(`AI Security show dataset ${item.id}`)}`);
         }
         return;
       }
@@ -386,13 +386,13 @@ export function listCommand(program: Command) {
       logger.info(wrapTable(tableData, columnWidths) as string);
       printBorder();
       logger.info(
-        `Run ${chalk.green('promptfoo show dataset <id>')} to see details of a specific dataset.`,
+        `Run ${chalk.green('AI Security show dataset <id>')} to see details of a specific dataset.`,
       );
       logger.info(
-        `Run ${chalk.green('promptfoo show prompt <id>')} to see details of a specific prompt.`,
+        `Run ${chalk.green('AI Security show prompt <id>')} to see details of a specific prompt.`,
       );
       logger.info(
-        `Run ${chalk.green('promptfoo show eval <id>')} to see details of a specific evaluation.`,
+        `Run ${chalk.green('AI Security show eval <id>')} to see details of a specific evaluation.`,
       );
     });
 }

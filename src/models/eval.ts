@@ -1630,30 +1630,17 @@ export async function getEvalSummaries(
    * that's written to the evals table.
    */
   return results.map((result) => {
-    const passCount =
-      result.prompts?.reduce((memo, prompt) => {
-        return memo + (prompt.metrics?.testPassCount ?? 0);
-      }, 0) ?? 0;
+    // We only aggregate metrics for the Primary Target (the first prompt/provider)
+    // to prevent secondary scoring systems or additional targets from inflating the Failure/Pass rates.
+    const primaryPrompt = result.prompts?.[0];
 
-    const failCount =
-      result.prompts?.reduce((memo, prompt) => {
-        return memo + (prompt.metrics?.testFailCount ?? 0);
-      }, 0) ?? 0;
+    const passCount = primaryPrompt?.metrics?.testPassCount ?? 0;
+    const failCount = primaryPrompt?.metrics?.testFailCount ?? 0;
+    const errorCount = primaryPrompt?.metrics?.testErrorCount ?? 0;
 
-    // All prompts should have the same number of test cases:
-    const testCounts = result.prompts?.map((p) => {
-      return (
-        (p.metrics?.testPassCount ?? 0) +
-        (p.metrics?.testFailCount ?? 0) +
-        (p.metrics?.testErrorCount ?? 0)
-      );
-    }) ?? [0];
-
-    // Derive the number of tests from the first prompt.
-    const testCount = testCounts.length > 0 ? testCounts[0] : 0;
-
-    // Test count * prompt count
-    const testRunCount = testCount * (result.prompts?.length ?? 0);
+    const testCount = passCount + failCount + errorCount;
+    // For calculating the main Attack Success Rate, we only care about this primary target's execution
+    const testRunCount = testCount;
 
     // Construct an array of providers
     const deserializedProviders = [];

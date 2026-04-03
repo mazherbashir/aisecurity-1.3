@@ -165,7 +165,7 @@ export default function Strategies({ onNext, onBack }: StrategiesProps) {
       // Allow deselection even when disabled, but block selection
       if (isStrategyDisabled(strategyId) && !isSelected) {
         if (STRATEGIES_ENTERPRISE_ONLY.has(strategyId)) {
-          toast.showToast('This strategy is available in Promptfoo Enterprise.', 'error');
+          toast.showToast('This strategy is available in AI Security Enterprise.', 'error');
         } else {
           toast.showToast(
             'This strategy requires remote generation to be enabled. Unset PROMPTFOO_DISABLE_REMOTE_GENERATION or PROMPTFOO_DISABLE_REDTEAM_REMOTE_GENERATION.',
@@ -424,7 +424,7 @@ export default function Strategies({ onNext, onBack }: StrategiesProps) {
             these inputs are delivered to maximize attack success rates.{' '}
             <RouterLink
               className="underline"
-              to="https://www.promptfoo.dev/docs/red-team/strategies/"
+              to="https://www.AI-Security.dev/docs/red-team/strategies/"
               target="_blank"
             >
               Learn More

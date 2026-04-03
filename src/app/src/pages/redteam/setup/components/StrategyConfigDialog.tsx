@@ -689,7 +689,7 @@ export default function StrategyConfigDialog({
               className="mt-0.5"
             />
             <Label htmlFor="custom-stateful" className="text-sm font-normal">
-              When enabled, Promptfoo should only send the current request and assume your system
+              When enabled, AI Security should only send the current request and assume your system
               remembers interaction history
             </Label>
           </div>
@@ -743,7 +743,7 @@ export default function StrategyConfigDialog({
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Hydra requires Promptfoo Cloud remote generation.
+            Hydra requires AI Security Cloud remote generation.
           </p>
         </div>
       );
@@ -793,7 +793,7 @@ export default function StrategyConfigDialog({
               className="mt-0.5"
             />
             <Label htmlFor="multi-turn-stateful" className="text-sm font-normal">
-              When enabled, Promptfoo should only send the current request and assume your system
+              When enabled, AI Security should only send the current request and assume your system
               remembers interaction history
             </Label>
           </div>
