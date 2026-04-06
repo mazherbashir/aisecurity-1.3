@@ -217,7 +217,8 @@ export default function ExecutiveReport() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 animate-in fade-in duration-500">
+    <div className="mx-auto max-w-6xl px-4 py-8 animate-in fade-in duration-500 print:max-w-full print:px-6 print:py-4">
+      <style>{`@page { size: A4 landscape; margin: 1cm; }`}</style>
       <div className="mb-8 flex flex-col justify-between md:flex-row md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Executive Risk Dashboard</h1>
@@ -239,7 +240,7 @@ export default function ExecutiveReport() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-4 mb-8">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4 mb-8 print:grid-cols-4">
         <Card className="bg-primary/5 border-primary/20 hover:bg-primary/10 transition-colors flex flex-col">
           <CardContent className="p-6 pb-4">
             <div className="flex items-center space-x-2">
@@ -328,7 +329,7 @@ export default function ExecutiveReport() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 print:grid-cols-2">
         {/* Radar Chart */}
         <Card className="p-2 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
           <CardHeader>
@@ -388,7 +389,7 @@ export default function ExecutiveReport() {
 
       {/* Top Risks Action Plan */}
       <h2 className="text-2xl font-bold mb-4 mt-12">Immediate Action Plan</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print:grid-cols-3">
         {pluginChartData.slice(0, 3).map((risk, idx) => (
           <Card
             key={idx}
