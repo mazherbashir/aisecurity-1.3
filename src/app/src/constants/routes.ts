@@ -28,6 +28,7 @@ export const REDTEAM_ROUTES = {
   ROOT: '/redteam',
   SETUP: '/redteam/setup',
   REPORTS: '/reports',
+  EXECUTIVE_REPORT: '/executive-report',
   REPORT_DETAIL: (evalId: string) => `/reports?evalId=${evalId}`,
 } as const;
 

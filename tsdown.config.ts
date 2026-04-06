@@ -47,7 +47,7 @@ export default defineConfig([
     entry: { 'server/index': 'src/server/index.ts' },
     format: ['esm'],
     target: 'node20',
-    outDir: 'dist/src',
+    outDir: 'dist',
     splitting: false,
     shims: true,
     sourcemap: true,
@@ -69,19 +69,17 @@ export default defineConfig([
     entry: ['src/entrypoint.ts', 'src/main.ts'],
     format: ['esm'],
     target: 'node20',
-    outDir: 'dist/src',
+    outDir: 'dist',
     clean: false,
     shims: true, // Provides __dirname, __filename shims automatically
     sourcemap: true,
     fixedExtension: false, // Use .js extension for ESM since package.json has type: module
     inlineOnly: false, // Disable warning about bundling dependencies
+    banner: '#!/usr/bin/env node',
     define: {
       ...versionDefines,
       BUILD_FORMAT: '"esm"',
       'process.env.BUILD_FORMAT': '"esm"',
-    },
-    outputOptions: {
-      banner: '#!/usr/bin/env node',
     },
     external: [
       // Externalize all bare module imports so Node resolves CJS deps natively
@@ -101,7 +99,7 @@ export default defineConfig([
     entry: ['src/index.ts'],
     format: ['esm'],
     target: 'node20',
-    outDir: 'dist/src',
+    outDir: 'dist',
     splitting: false,
     treeshake: true,
     sourcemap: true,
@@ -124,7 +122,7 @@ export default defineConfig([
     entry: ['src/index.ts'],
     format: ['cjs'],
     target: 'node20',
-    outDir: 'dist/src',
+    outDir: 'dist',
     sourcemap: true,
     clean: false,
     fixedExtension: true, // Use .cjs extension for CJS output

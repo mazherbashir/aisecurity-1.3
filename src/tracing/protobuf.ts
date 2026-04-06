@@ -20,8 +20,8 @@ let ExportTraceServiceRequest: protobuf.Type | null = null;
  * This works correctly in both development (tsx) and production (bundled) environments.
  */
 function getProtoDir(): string {
-  // getDirectory() returns the src/ or dist/src/ directory
-  // Proto files are in src/tracing/proto/ or dist/src/tracing/proto/
+  // getDirectory() returns the src/ or dist/ directory
+  // Proto files are in src/tracing/proto/ or dist/tracing/proto/
   return path.join(getDirectory(), 'tracing', 'proto');
 }
 

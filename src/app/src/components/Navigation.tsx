@@ -147,6 +147,11 @@ const resultsMenuItems: MenuItem[] = [
     description: 'View findings from red teams',
   },
   {
+    href: '/executive-report',
+    label: 'Executive Risk Dashboard',
+    description: 'A focused, interactive, and concise view of your red team posture',
+  },
+  {
     href: '/media',
     label: 'Media Library',
     description: 'Browse generated images, videos, and audio',

@@ -4,7 +4,7 @@ import * as path from 'path';
 
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-const CLI_PATH = path.resolve(__dirname, '../../dist/src/main.js');
+const CLI_PATH = path.resolve(__dirname, '../../dist/main.js');
 
 describe('MCP Stdio Server', () => {
   let child: ChildProcess | undefined;

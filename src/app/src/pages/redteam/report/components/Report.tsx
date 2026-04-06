@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import EnterpriseBanner from '@app/components/EnterpriseBanner';
 import { Badge } from '@app/components/ui/badge';
 import { Button } from '@app/components/ui/button';
 import { Card, CardContent } from '@app/components/ui/card';
@@ -22,6 +21,7 @@ import {
   SelectValue,
 } from '@app/components/ui/select';
 import { Spinner } from '@app/components/ui/spinner';
+import { Switch } from '@app/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
 import { EVAL_ROUTES } from '@app/constants/routes';
 import { usePageMeta } from '@app/hooks/usePageMeta';
@@ -63,6 +63,7 @@ interface ReportProps {
   onActionsReady?: (actions: React.ReactNode) => void;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: intentional
 const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {}) => {
   const navigate = useNavigate();
   const [evalId, setEvalId] = useState<string | null>(evalIdProp ?? null);
@@ -71,10 +72,19 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
   const [isToolsDialogOpen, setIsToolsDialogOpen] = useState(false);
   const { recordEvent } = useTelemetry();
 
-  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const [isFiltersVisible, setIsFiltersVisible] = useState(!!searchParams.get('category'));
   const [reportSettingsOpen, setReportSettingsOpen] = useState(false);
-  const { pluginPassRateThreshold, setPluginPassRateThreshold } = useReportStore();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const {
+    pluginPassRateThreshold,
+    setPluginPassRateThreshold,
+    showFrameworkCompliance,
+    setShowFrameworkCompliance,
+  } = useReportStore();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    searchParams.get('category') ? [searchParams.get('category') as string] : [],
+  );
   const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState<'all' | 'pass' | 'fail'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,8 +93,6 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
 
   // Vulnerabilities table reference for scroll navigation
   const vulnerabilitiesDataGridRef = useRef<HTMLDivElement>(null);
-
-  const searchParams = new URLSearchParams(window.location.search);
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
   useEffect(() => {
     const fetchEvalById = async (id: string) => {
@@ -717,8 +725,6 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
 
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 print:max-w-none print:px-0 print:pt-0 print:pb-0">
         <div className="flex flex-col gap-6">
-          {!embedded && evalData.config.redteam && <EnterpriseBanner evalId={evalId || ''} />}
-
           {!embedded && (
             <>
               {/* Report Header Card */}
@@ -919,11 +925,13 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
             passesByPlugin={hasActiveFilters ? filteredPassesByPlugin : passesByPlugin}
             vulnerabilitiesDataGridRef={vulnerabilitiesDataGridRef}
           />
-          <FrameworkCompliance
-            evalId={evalId}
-            categoryStats={categoryStatsForFrameworkCompliance}
-            config={evalData.config}
-          />
+          {showFrameworkCompliance && (
+            <FrameworkCompliance
+              evalId={evalId}
+              categoryStats={categoryStatsForFrameworkCompliance}
+              config={evalData.config}
+            />
+          )}
         </div>
         <ToolsDialog
           open={isToolsDialogOpen}
@@ -972,6 +980,19 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
                   <span>50%</span>
                   <span>100%</span>
                 </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="show-framework-compliance">Show Framework Compliance</Label>
+                  <Switch
+                    id="show-framework-compliance"
+                    checked={showFrameworkCompliance}
+                    onCheckedChange={setShowFrameworkCompliance}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Toggles the visibility of the Framework Compliance section in the report.
+                </p>
               </div>
             </div>
             <DialogFooter>

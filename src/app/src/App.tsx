@@ -20,6 +20,7 @@ import DatasetsPage from './pages/datasets/page';
 import EvalPage from './pages/eval/page';
 import EvalCreatorPage from './pages/eval-creator/page';
 import EvalsIndexPage from './pages/evals/page';
+import ExecutiveReportPage from './pages/executive-report/page';
 import HistoryPage from './pages/history/page';
 import LauncherPage from './pages/launcher/page';
 import LoginPage from './pages/login';
@@ -118,6 +119,7 @@ const router = createBrowserRouter(
           {/* Redirect legacy /report route to /reports (since v0.118.2) */}
           <Route path="/report" element={<Navigate to="/reports" replace />} />
           <Route path="/reports" element={<ReportPage />} />
+          <Route path="/executive-report" element={<ExecutiveReportPage />} />
           <Route path="/setup" element={<EvalCreatorPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />

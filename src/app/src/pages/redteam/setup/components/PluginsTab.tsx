@@ -578,7 +578,7 @@ export default function PluginsTab({
                       feature: 'redteam_config_enterprise_upgrade_clicked',
                       source: 'vertical_suite_card',
                     });
-                    window.open('https://www.promptfoo.dev/pricing/', '_blank');
+                    window.open('https://www.AI-Security.dev/pricing/', '_blank');
                   }}
                 />
               ))}
@@ -670,7 +670,7 @@ export default function PluginsTab({
                             ? 'This plugin requires remote generation'
                             : apiHealthStatus === 'connected'
                               ? `Generate a test case for ${displayNameOverrides[plugin] || categoryAliases[plugin] || plugin}`
-                              : 'Promptfoo Cloud connection is required for test generation'
+                              : 'AI Security Cloud connection is required for test generation'
                         }
                       />
                       {isSelected && (

@@ -76,14 +76,14 @@ describe('LauncherPage', () => {
   it('renders welcome message', async () => {
     renderLauncher();
     await waitFor(() => {
-      expect(screen.getByText('Welcome to Promptfoo')).toBeInTheDocument();
+      expect(screen.getByText('Welcome to AI Security')).toBeInTheDocument();
     });
   });
 
   it('shows connecting status initially', async () => {
     renderLauncher();
     await waitFor(() => {
-      expect(screen.getByText(/Connecting to Promptfoo on localhost:15500/)).toBeInTheDocument();
+      expect(screen.getByText(/Connecting to AI Security on localhost:15500/)).toBeInTheDocument();
       expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
   });
@@ -123,8 +123,8 @@ describe('LauncherPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Getting Started')).toBeInTheDocument();
-      expect(screen.getByText(/promptfoo view -n/)).toBeInTheDocument();
-      expect(screen.getByText(/npx promptfoo@latest view -n/)).toBeInTheDocument();
+      expect(screen.getByText(/aisecurity view -n/)).toBeInTheDocument();
+      expect(screen.getByText(/npx aisecurity@latest view -n/)).toBeInTheDocument();
     });
   });
 
@@ -144,7 +144,7 @@ describe('LauncherPage', () => {
     await waitFor(() => {
       expect(screen.getByRole('link', { name: /installation guide/i })).toHaveAttribute(
         'href',
-        'https://promptfoo.dev/docs/installation',
+        'https://aisecurity.dev/docs/installation',
       );
       expect(screen.getByRole('link', { name: /mkcert installation steps/i })).toHaveAttribute(
         'href',

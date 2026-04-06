@@ -162,10 +162,10 @@ jobs:
           else
             # PostHog key is injected at build time via tsup's define option
             # Check that it's present in the built output (it will be inlined as a string)
-            if ! grep -rq '"phc_' dist/src/*.js; then
+            if ! grep -rq '"phc_' dist/*.js; then
               echo "Error: PostHog key not found in built output"
               echo "Checking for POSTHOG_KEY patterns in built files:"
-              grep -r "POSTHOG_KEY" dist/src/*.js | head -10 || echo "No POSTHOG_KEY found"
+              grep -r "POSTHOG_KEY" dist/*.js | head -10 || echo "No POSTHOG_KEY found"
               exit 1
             fi
             echo "PostHog key replacement verified successfully"
@@ -518,7 +518,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/promptfoo-share-test"
           npm run build
           server_log="$RUNNER_TEMP/promptfoo-share-test/server.log"
-          PROMPTFOO_CONFIG_DIR="$HOME/tmp" LOG_LEVEL=DEBUG API_PORT=8500 node dist/src/server/index.js >"$server_log" 2>&1 &
+          PROMPTFOO_CONFIG_DIR="$HOME/tmp" LOG_LEVEL=DEBUG API_PORT=8500 node dist/server/index.js >"$server_log" 2>&1 &
           echo "SERVER_PID=$!" >> "$GITHUB_ENV"
           echo "SERVER_LOG=$server_log" >> "$GITHUB_ENV"
 
@@ -545,7 +545,7 @@ jobs:
       - name: run promptfoo eval
         id: eval
         run: |
-          PROMPTFOO_REMOTE_API_BASE_URL=http://localhost:8500 PROMPTFOO_SHARING_APP_BASE_URL=http://localhost:8500  node dist/src/main.js eval -c .github/assets/promptfooconfig.yaml --share
+          PROMPTFOO_REMOTE_API_BASE_URL=http://localhost:8500 PROMPTFOO_SHARING_APP_BASE_URL=http://localhost:8500  node dist/main.js eval -c .github/assets/promptfooconfig.yaml --share
         env:
           PROMPTFOO_DISABLE_TELEMETRY: 1
 
@@ -576,8 +576,8 @@ jobs:
         env:
           PROMPTFOO_STAGING_API_KEY: ${{ secrets.PROMPTFOO_STAGING_API_KEY }}
         run: |
-          node dist/src/main.js auth login -k ${{ secrets.PROMPTFOO_STAGING_API_KEY }} -h https://api.promptfoo-staging.app
-          node dist/src/main.js eval -c .github/assets/promptfooconfig.yaml --share
+          node dist/main.js auth login -k ${{ secrets.PROMPTFOO_STAGING_API_KEY }} -h https://api.promptfoo-staging.app
+          node dist/main.js eval -c .github/assets/promptfooconfig.yaml --share
 
       - name: Stop local server
         if: always()

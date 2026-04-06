@@ -30,7 +30,7 @@
       ]
     }
   },
-  "ignoreBinaries": ["dist/src/main.js", "gh"],
+  "ignoreBinaries": ["dist/main.js", "gh"],
   "paths": {
     "@promptfoo/*": ["./src/*"]
   },

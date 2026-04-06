@@ -53,14 +53,14 @@ describe('EvalsIndexPage', () => {
     expect(navigate).toHaveBeenCalledWith('/eval/test-eval-id');
   });
 
-  it("should set the page title to 'Evals | promptfoo' and description to 'Browse evaluation runs' when rendered", () => {
+  it("should set the page title to 'Evals | AI Security' and description to 'Browse evaluation runs' when rendered", () => {
     render(
       <MemoryRouter>
         <EvalsIndexPage />
       </MemoryRouter>,
     );
 
-    expect(document.title).toBe('Evals | promptfoo');
+    expect(document.title).toBe('Evals | AI Security');
 
     const updatedDescriptionMeta = document.querySelector('meta[name="description"]');
     expect(updatedDescriptionMeta?.getAttribute('content')).toBe('Browse evaluation runs');

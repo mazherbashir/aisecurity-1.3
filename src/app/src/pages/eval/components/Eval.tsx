@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import EnterpriseBanner from '@app/components/EnterpriseBanner';
 import { Spinner } from '@app/components/ui/spinner';
 import { IS_RUNNING_LOCALLY } from '@app/constants';
 import { EVAL_ROUTES } from '@app/constants/routes';
@@ -171,6 +170,7 @@ export default function Eval({ fetchId }: EvalOptions) {
   }, [setSearchParams]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: intentional
   useEffect(() => {
     const _searchParams = new URLSearchParams(window.location.search);
 
@@ -367,12 +367,8 @@ export default function Eval({ fetchId }: EvalOptions) {
     return <EmptyState />;
   }
 
-  // Check if this is a redteam eval
-  const isRedteam = config?.redteam !== undefined;
-
   return (
     <ShiftKeyProvider>
-      {isRedteam && evalId && <EnterpriseBanner evalId={evalId} className="mb-4 mt-4 mx-4" />}
       <ResultsView
         defaultEvalId={defaultEvalId}
         recentEvals={recentEvals}

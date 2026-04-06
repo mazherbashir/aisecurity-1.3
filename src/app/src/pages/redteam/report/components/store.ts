@@ -23,6 +23,8 @@ interface ReportState {
   setPluginPassRateThreshold: (threshold: number) => void;
   severityFilter: Severity | null;
   setSeverityFilter: (severity: Severity | null) => void;
+  showFrameworkCompliance: boolean;
+  setShowFrameworkCompliance: (show: boolean) => void;
 }
 
 export const useReportStore = create<ReportState>()(
@@ -35,6 +37,8 @@ export const useReportStore = create<ReportState>()(
         set(() => ({ pluginPassRateThreshold: threshold })),
       severityFilter: null,
       setSeverityFilter: (severity: Severity | null) => set(() => ({ severityFilter: severity })),
+      showFrameworkCompliance: true,
+      setShowFrameworkCompliance: (show: boolean) => set(() => ({ showFrameworkCompliance: show })),
     }),
     {
       name: 'ReportViewStorage',

@@ -14,7 +14,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { getOpenAiMissingApiKeyMessage } from '../providers/openai/shared';
 
 // Path to the built CLI binary
-const CLI_PATH = path.resolve(__dirname, '../../dist/src/main.js');
+const CLI_PATH = path.resolve(__dirname, '../../dist/main.js');
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const FIXTURES_DIR = path.resolve(__dirname, 'fixtures');
 const OUTPUT_DIR = path.resolve(__dirname, '.temp-output-configs');

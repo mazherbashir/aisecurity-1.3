@@ -66,7 +66,7 @@ describe('HistoryPage', () => {
     renderWithProviders(<HistoryPage />);
 
     await waitFor(() => {
-      expect(document.title).toBe('History | promptfoo');
+      expect(document.title).toBe('History | AI Security');
     });
 
     const descriptionMetaTag = document.querySelector('meta[name="description"]');

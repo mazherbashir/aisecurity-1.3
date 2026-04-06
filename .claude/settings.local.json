@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx biome:*)",
+      "Bash(npm run:*)",
+      "Bash(grep -E '\\\\.\\(js|ts|tsx\\)$')",
+      "Bash(npx:*)",
+      "Bash(where aisecurity:*)",
+      "Bash(npm ls:*)",
+      "Bash(ls dist/src/cliState*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('tsdown', d.get\\('tsup', d.get\\('build', {}\\)\\)\\), indent=2\\)\\)\")",
+      "Bash(node -e \"const m = require\\('./node_modules/tsdown/dist/index.cjs'\\); console.log\\(Object.keys\\(m\\)\\)\")",
+      "Bash(node -e \"import\\('./node_modules/tsdown/dist/index.js'\\).then\\(m => console.log\\(Object.keys\\(m\\)\\)\\)\")",
+      "Bash(node:*)",
+      "Bash(grep -rn \"banner\" node_modules/tsdown/dist/*.mts)",
+      "Bash(grep -rn \"banner\" node_modules/tsdown/dist/*.mjs)",
+      "Bash(grep:*)"
+    ]
+  }
+}

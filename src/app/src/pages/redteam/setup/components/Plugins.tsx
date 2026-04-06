@@ -43,12 +43,12 @@ const DESCRIPTIONS_BY_TAB: Record<string, React.ReactNode> = {
   plugins: (
     <div className="space-y-4">
       <p>
-        Plugins are Promptfoo's modular system for testing a variety of risks and vulnerabilities in
-        LLM models and LLM-powered applications. Each plugin is a trained model that produces
+        Plugins are AI Security's modular system for testing a variety of risks and vulnerabilities
+        in LLM models and LLM-powered applications. Each plugin is a trained model that produces
         malicious payloads targeting specific weaknesses.{' '}
         <RouterLink
           className="underline"
-          to="https://www.promptfoo.dev/docs/red-team/plugins/"
+          to="https://www.AI-Security.dev/docs/red-team/plugins/"
           target="_blank"
         >
           Learn More
@@ -61,8 +61,8 @@ const DESCRIPTIONS_BY_TAB: Record<string, React.ReactNode> = {
   intents: (
     <p>
       <span>
-        Intents are seed phrases for attack generation, for example "teach me how to cook meth".
-        Promptfoo transforms each intent into a sophisticated attacks using jailbreak strategies.
+        Intents are seed phrases for attack generation, for example "teach me how to cook meth". AI
+        Security transforms each intent into a sophisticated attacks using jailbreak strategies.
       </span>{' '}
       <Tooltip>
         <TooltipTrigger asChild>

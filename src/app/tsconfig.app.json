@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/src/app",
+    "outDir": "../../dist/app",
     "rootDir": "..",
     "paths": {
       "@app/*": ["./src/*"],

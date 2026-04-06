@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@app/components/ui/dialog';
 import { Label } from '@app/components/ui/label';
+import { Switch } from '@app/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
 import { Settings } from 'lucide-react';
 import { useReportStore } from './store';
@@ -20,6 +21,8 @@ const ReportSettingsDialogButton = () => {
     setShowUntestedPlugins,
     pluginPassRateThreshold,
     setPluginPassRateThreshold,
+    showFrameworkCompliance,
+    setShowFrameworkCompliance,
   } = useReportStore();
   const [open, setOpen] = React.useState(false);
 
@@ -103,6 +106,19 @@ const ReportSettingsDialogButton = () => {
                 <span>50%</span>
                 <span>100%</span>
               </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="show-framework-compliance">Show Framework Compliance</Label>
+                <Switch
+                  id="show-framework-compliance"
+                  checked={showFrameworkCompliance}
+                  onCheckedChange={setShowFrameworkCompliance}
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Toggles the visibility of the Framework Compliance section in the report.
+              </p>
             </div>
           </div>
 

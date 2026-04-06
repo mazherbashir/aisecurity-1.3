@@ -518,7 +518,7 @@ describe('Python Utils', () => {
       await pythonUtils.runPython(scriptPath, 'test_method', ['arg1', 'arg2']);
 
       // Verify PythonShell was called with scriptPath ending in 'python'
-      // This works for both development (src/python/) and production (dist/src/python/)
+      // This works for both development (src/python/) and production (dist/python/)
       expect(PythonShell).toHaveBeenCalledWith(
         'wrapper.py',
         expect.objectContaining({

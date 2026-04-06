@@ -54,10 +54,10 @@ export async function runDbMigrations(): Promise<void> {
         // Use getCurrentDir() which handles both ESM and CJS contexts
         const dir = getCurrentDir();
         let migrationsFolder: string;
-        if (dir.includes('dist/src')) {
-          // When running from bundled dist (e.g., npx promptfoo or dist/src/main.js)
-          // Navigate to project root and find drizzle folder in dist
-          const projectRoot = dir.split('dist/src')[0];
+        const distMatch = dir.match(/^(.*)[/\\]dist[/\\]/);
+        if (distMatch) {
+          // When running from bundled dist (e.g., npx promptfoo or dist/main.js)
+          const projectRoot = distMatch[1];
           migrationsFolder = path.join(projectRoot, 'dist', 'drizzle');
         }
         // PF Cloud runtime scans:

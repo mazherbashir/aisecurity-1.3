@@ -80,16 +80,16 @@ describe('findStaticDir', () => {
   });
 
   it('returns parent path when bundled (standard path missing, parent exists)', () => {
-    // Simulate bundled: getDirectory returns 'dist/src/server/', app is at 'dist/src/app/'
-    vi.mocked(getDirectory).mockReturnValue('/project/dist/src/server');
+    // Simulate bundled: getDirectory returns 'dist/server/', app is at 'dist/app/'
+    vi.mocked(getDirectory).mockReturnValue('/project/dist/server');
     vi.mocked(fs.existsSync).mockImplementation((filePath: PathLike) => {
       const pathStr = String(filePath);
       // Standard path doesn't exist
-      if (pathStr === path.join('/project/dist/src/server', 'app', 'index.html')) {
+      if (pathStr === path.join('/project/dist/server', 'app', 'index.html')) {
         return false;
       }
-      // Parent path exists: /project/dist/src/app/index.html
-      if (pathStr === path.resolve('/project/dist/src/server', '..', 'app', 'index.html')) {
+      // Parent path exists: /project/dist/app/index.html
+      if (pathStr === path.resolve('/project/dist/server', '..', 'app', 'index.html')) {
         return true;
       }
       return false;
@@ -97,7 +97,7 @@ describe('findStaticDir', () => {
 
     const result = findStaticDir();
 
-    expect(result).toBe(path.resolve('/project/dist/src/server', '..', 'app'));
+    expect(result).toBe(path.resolve('/project/dist/server', '..', 'app'));
     expect(logger.debug).toHaveBeenCalledWith(
       expect.stringContaining('Static directory resolved to parent'),
     );
@@ -105,13 +105,13 @@ describe('findStaticDir', () => {
   });
 
   it('falls back to standard path with warning when neither path exists', () => {
-    vi.mocked(getDirectory).mockReturnValue('/project/dist/src/server');
+    vi.mocked(getDirectory).mockReturnValue('/project/dist/server');
     vi.mocked(fs.existsSync).mockReturnValue(false);
 
     const result = findStaticDir();
 
     // Should return standard path as fallback
-    expect(result).toBe(path.join('/project/dist/src/server', 'app'));
+    expect(result).toBe(path.join('/project/dist/server', 'app'));
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Static directory not found'));
   });
 

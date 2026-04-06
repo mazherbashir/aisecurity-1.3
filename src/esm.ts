@@ -16,7 +16,7 @@ export type WrapperType = 'python' | 'ruby' | 'golang';
 
 /**
  * Mapping of wrapper types to their subdirectory names.
- * These correspond to the directory structure under src/ and dist/src/.
+ * These correspond to the directory structure under src/ and dist/.
  */
 const WRAPPER_SUBDIRS: Record<WrapperType, string> = {
   python: 'python',
@@ -38,7 +38,7 @@ const wrapperDirCache: Partial<Record<WrapperType, string>> = {};
  *
  * Directory resolution:
  * - Development (tsx): src/{python|ruby|golang}/
- * - Production (bundled): dist/src/{python|ruby|golang}/
+ * - Production (bundled): dist/{python|ruby|golang}/
  *
  * Results are cached for performance.
  *

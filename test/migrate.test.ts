@@ -62,8 +62,8 @@ describe('migrate', () => {
       expect(mockLogger.debug).toHaveBeenCalledWith('Database migrations completed');
     });
 
-    it('should run migrations from bundled dist/src directory', async () => {
-      const bundledDir = '/project/dist/src/server';
+    it('should run migrations from bundled dist directory', async () => {
+      const bundledDir = '/project/dist/server';
       mockGetDirectory.mockReturnValue(bundledDir);
 
       const { runDbMigrations } = await import('../src/migrate');
@@ -71,7 +71,7 @@ describe('migrate', () => {
 
       expect(mockMigrate).toHaveBeenCalledTimes(1);
       expect(mockMigrate).toHaveBeenCalledWith(mockDb, {
-        migrationsFolder: path.join('/project/', 'dist', 'drizzle'),
+        migrationsFolder: path.join('/project', 'dist', 'drizzle'),
       });
     });
 

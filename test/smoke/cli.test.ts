@@ -2,7 +2,7 @@
  * Smoke tests for CLI binary operations.
  *
  * These tests verify the built CLI binary works correctly.
- * They run against dist/src/main.js (the built package).
+ * They run against dist/main.js (the built package).
  *
  * @see docs/plans/smoke-tests.md for the full checklist
  */
@@ -13,8 +13,8 @@ import * as path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 // Path to the built CLI binaries
-const CLI_PATH = path.resolve(__dirname, '../../dist/src/main.js');
-const ENTRYPOINT_PATH = path.resolve(__dirname, '../../dist/src/entrypoint.js');
+const CLI_PATH = path.resolve(__dirname, '../../dist/main.js');
+const ENTRYPOINT_PATH = path.resolve(__dirname, '../../dist/entrypoint.js');
 const ROOT_DIR = path.resolve(__dirname, '../..');
 
 /**

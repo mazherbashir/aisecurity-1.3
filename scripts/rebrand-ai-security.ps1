@@ -26,6 +26,7 @@ $OldTitle = (Culture).TextInfo.ToTitleCase($OldLower)
 $NewTitle = $NewValue
 $NewFlat  = $NewValue.ToLower() -replace '\s', ''
 $NewKebab = $NewValue.ToLower() -replace '\s', '-'
+$NewHyphen = $NewValue -replace '\s', '-'
 
 function Replace-InFile([string]$Path, [string]$Old, [string]$New) {
   if (-not (Test-Path $Path)) { return }
@@ -92,10 +93,12 @@ foreach ($f in $TargetFiles) {
   Replace-InFile $f "$OldLower-eval-history" "$NewKebab-eval-history"
 
   # 2. URLs
-  Replace-InFile $f "https://$OldLower.app" "https://$NewFlat.app"
-  Replace-InFile $f "https://$OldLower.dev" "https://$NewFlat.dev"
-  
-  # 3. CLI commands and lowercases
+  Replace-InFile $f "https://$OldLower.app" "https://$NewHyphen.app"
+  Replace-InFile $f "https://$OldLower.dev" "https://$NewHyphen.dev"
+  Replace-InFile $f "https://www.$OldLower.app" "https://www.$NewHyphen.app"
+  Replace-InFile $f "https://www.$OldLower.dev" "https://www.$NewHyphen.dev"
+  Replace-InFile $f "https://local.$OldLower.app" "https://local.$NewHyphen.app"
+  Replace-InFile $f "local.$OldLower.app" "local.$NewHyphen.app"
   Replace-InFile $f "$OldLower view" "$NewFlat view"
   Replace-InFile $f "$OldLower share" "$NewFlat share"
   Replace-InFile $f "$OldLower redteam" "$NewFlat redteam"
@@ -105,7 +108,16 @@ foreach ($f in $TargetFiles) {
   Replace-InFile $f $OldTitle $NewTitle
   
   # Blanket catch-all lowercases inside strings like '<title>promptfoo</title>'
-  Replace-InFile $f $OldLower $NewTitle
+  # Uses a negative lookbehind (?<!@) to avoid breaking TypeScript alias imports like @promptfoo/
+  # Uses case-sensitive operators (-cmatch, -creplace) to prevent breaking uppercase PROMPTFOO_ env vars
+  if (Test-Path $f) {
+    $content = Get-Content $f -Raw
+    $pattern = "(?<!@)$([regex]::Escape($OldLower))"
+    if ($content -cmatch $pattern) {
+      $content -creplace $pattern, $NewTitle | Set-Content $f -NoNewline
+      Write-Host "  patched: $f ($OldLower -> $NewTitle) [Skipped @$OldLower & Uppercase]"
+    }
+  }
 }
 
 Write-Host "`n=== Remove EnterpriseBanner ===" -ForegroundColor Cyan

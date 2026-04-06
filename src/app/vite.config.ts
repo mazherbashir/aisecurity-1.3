@@ -56,7 +56,7 @@ export default {
   },
   build: {
     emptyOutDir: true,
-    outDir: '../../dist/src/app',
+    outDir: '../../dist/app',
     // Enable source maps for production debugging
     sourcemap: process.env.NODE_ENV === 'production' ? 'hidden' : true,
     rolldownOptions: {

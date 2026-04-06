@@ -90,8 +90,8 @@ export function handleServerError(error: NodeJS.ErrnoException, port: number): v
  * Finds the static directory containing the web app.
  *
  * When running in development (tsx), getDirectory() returns src/ and the app is at src/app/.
- * When bundled into dist/src/server/index.js, getDirectory() returns dist/src/server/
- * but the app is at dist/src/app/, so we need to check the parent directory.
+ * When bundled into dist/server/index.js, getDirectory() returns dist/server/
+ * but the app is at dist/app/, so we need to check the parent directory.
  */
 export function findStaticDir(): string {
   const baseDir = getDirectory();
@@ -102,7 +102,7 @@ export function findStaticDir(): string {
     return standardPath;
   }
 
-  // When bundled, the server is at dist/src/server/ but app is at dist/src/app/
+  // When bundled, the server is at dist/server/ but app is at dist/app/
   const parentPath = path.resolve(baseDir, '..', 'app');
   if (fs.existsSync(path.join(parentPath, 'index.html'))) {
     logger.debug(`Static directory resolved to parent: ${parentPath}`);

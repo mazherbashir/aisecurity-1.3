@@ -9,35 +9,35 @@
     "type": "git",
     "url": "git+https://github.com/promptfoo/promptfoo.git"
   },
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/src/index.js",
-      "require": "./dist/src/index.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "workspaces": [
     "src/app",
     "site"
   ],
-  "types": "dist/src/index.d.ts",
-  "typings": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "!dist/test",
-    "!dist/src/__mocks__",
+    "!dist/__mocks__",
     "!dist/**/*.map"
   ],
   "engines": {
     "node": "^20.20.0 || >=22.22.0"
   },
   "bin": {
-    "aisecurity": "dist/src/entrypoint.js",
-    "ai": "dist/src/entrypoint.js"
+    "aisecurity": "dist/entrypoint.js",
+    "ai": "dist/entrypoint.js"
   },
   "scripts": {
     "audit:fix": "npm audit fix && npm audit fix --prefix src/app && npm audit fix --prefix site",
-    "bin": "dist/src/entrypoint.js",
+    "bin": "dist/entrypoint.js",
     "build:app": "npm run build --prefix src/app",
     "build:clean": "shx rm -rf dist",
     "build:watch": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsdown --watch",
@@ -80,7 +80,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage && npm run test:coverage --prefix src/app",
     "tsc": "tsc",
-    "mcp": "node dist/src/entrypoint.js mcp",
+    "mcp": "node dist/entrypoint.js mcp",
     "depcheck": "depcheck --ignores=\"@types/*,@biomejs/biome,prettier,shx,concurrently,madge,knip,vite,typescript,tshy,gcp-metadata,@opencode-ai/sdk,@actions/core,@actions/exec,@actions/github,@octokit/rest,nock,ink-testing-library,@vitest/coverage-v8\" --ignore-dirs=\"dist,site,examples\"",
     "prepare": "husky || exit 0"
   },
@@ -126,7 +126,7 @@
     "@aws-sdk/types": "^3.973.5",
     "@azure/identity": "^4.13.0",
     "@azure/openai-assistants": "^1.0.0-beta.6",
-    "@biomejs/biome": "2.4.9",
+    "@biomejs/biome": "^2.4.9",
     "@fal-ai/client": "~1.9.5",
     "@ibm-cloud/watsonx-ai": "^1.7.10",
     "@ibm-generative-ai/node-sdk": "^3.2.4",

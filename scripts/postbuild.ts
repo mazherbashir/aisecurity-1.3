@@ -49,11 +49,11 @@ const DRIZZLE_EXCLUDE_PATTERNS = ['.md', 'CLAUDE', 'AGENTS'];
  * Critical build outputs that must exist for the build to be valid.
  */
 const REQUIRED_BUILD_OUTPUTS = [
-  'dist/src/entrypoint.js', // CLI entry (Node version check wrapper)
-  'dist/src/main.js', // CLI main module
-  'dist/src/index.js', // ESM library entry
-  'dist/src/index.cjs', // CJS library entry
-  'dist/src/server/index.js', // Server entry
+  'dist/entrypoint.js', // CLI entry (Node version check wrapper)
+  'dist/main.js', // CLI main module
+  'dist/index.js', // ESM library entry
+  'dist/index.cjs', // CJS library entry
+  'dist/server/index.js', // Server entry
 ];
 
 interface CopyTask {
@@ -93,7 +93,7 @@ function getHtmlFiles(): CopyTask[] {
       .filter((file) => file.endsWith('.html'))
       .map((file) => ({
         src: path.join(SRC, file),
-        dest: path.join(DIST, 'src', file),
+        dest: path.join(DIST, file),
       }));
   } catch (error) {
     logError(`Failed to read src/ directory: ${error}`);
@@ -106,20 +106,20 @@ function getHtmlFiles(): CopyTask[] {
  * Uses WRAPPER_TYPES and WRAPPER_FILES to ensure consistency with src/esm.ts
  *
  * Wrapper files are copied to two locations:
- * 1. dist/src/{python,ruby,golang}/ - for CLI builds (entrypoint.js, main.js)
- * 2. dist/src/server/{python,ruby,golang}/ - for bundled server build (server/index.js)
+ * 1. dist/{python,ruby,golang}/ - for CLI builds (entrypoint.js, main.js)
+ * 2. dist/server/{python,ruby,golang}/ - for bundled server build (server/index.js)
  *
  * This is necessary because getWrapperDir() uses import.meta.url to determine
  * the base directory. In the bundled server, import.meta.url points to
- * dist/src/server/index.js, so wrapper files need to be at dist/src/server/{type}/.
+ * dist/server/index.js, so wrapper files need to be at dist/server/{type}/.
  */
 function getWrapperTasks(): CopyTask[] {
   const tasks: CopyTask[] = [];
 
   // Destinations for wrapper files:
-  // - dist/src/ for CLI (entrypoint.js, main.js use import.meta.url → dist/src/)
-  // - dist/src/server/ for bundled server (server/index.js uses import.meta.url → dist/src/server/)
-  const destBases = [path.join(DIST, 'src'), path.join(DIST, 'src', 'server')];
+  // - dist/ for CLI (entrypoint.js, main.js use import.meta.url → dist/)
+  // - dist/server/ for bundled server (server/index.js uses import.meta.url → dist/server/)
+  const destBases = [path.join(DIST), path.join(DIST, 'server')];
 
   for (const wrapperType of WRAPPER_TYPES) {
     const files = WRAPPER_FILES[wrapperType];
@@ -159,7 +159,7 @@ function getDrizzleTask(): CopyTask {
 function getProtoTask(): CopyTask {
   return {
     src: path.join(SRC, 'tracing', 'proto'),
-    dest: path.join(DIST, 'src', 'tracing', 'proto'),
+    dest: path.join(DIST, 'tracing', 'proto'),
     recursive: true,
   };
 }
@@ -185,8 +185,8 @@ function verifyBuildOutputs(): string[] {
  * Only cleans specific subdirectories, not all of dist/.
  */
 function cleanDestinations(_tasks: CopyTask[]): void {
-  // Clean wrapper directories (both at dist/src/ and dist/src/server/)
-  const wrapperBases = [path.join(DIST, 'src'), path.join(DIST, 'src', 'server')];
+  // Clean wrapper directories (both at dist/ and dist/server/)
+  const wrapperBases = [path.join(DIST), path.join(DIST, 'server')];
   for (const base of wrapperBases) {
     for (const wrapperType of WRAPPER_TYPES) {
       const wrapperDest = path.join(base, wrapperType);
@@ -271,11 +271,11 @@ export function postbuild(): PostbuildResult {
     }
   }
 
-  // Create ESM package.json marker for dist/src
-  const distSrcPackageJson = path.join(DIST, 'src', 'package.json');
+  // Create ESM package.json marker for dist/
+  const distSrcPackageJson = path.join(DIST, 'package.json');
   try {
     fs.writeFileSync(distSrcPackageJson, JSON.stringify({ type: 'module' }, null, 2) + '\n');
-    log('Created: ./dist/src/package.json');
+    log('Created: ./dist/package.json');
   } catch (error) {
     result.errors.push(`Failed to create ESM marker: ${error}`);
     logError(`Failed to create ESM marker: ${error}`);
@@ -285,10 +285,10 @@ export function postbuild(): PostbuildResult {
   // Make CLI executables (no-op on Windows, but doesn't hurt)
   const cliExecutables = ['entrypoint.js', 'main.js'];
   for (const executable of cliExecutables) {
-    const execPath = path.join(DIST, 'src', executable);
+    const execPath = path.join(DIST, executable);
     try {
       fs.chmodSync(execPath, 0o755);
-      log(`Made executable: ./dist/src/${executable}`);
+      log(`Made executable: ./dist/${executable}`);
     } catch (error) {
       // chmod may fail on Windows - this is acceptable
       log(`Note: chmod failed (expected on Windows): ${error}`);

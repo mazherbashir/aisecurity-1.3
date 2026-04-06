@@ -1,0 +1,29 @@
+import { PageContainer } from '@app/components/layout/PageContainer';
+import { PageHeader } from '@app/components/layout/PageHeader';
+import { Card } from '@app/components/ui/card';
+import { useNavigate } from 'react-router-dom';
+import ReportsTable from '../../redteam/report/components/ReportsTable';
+
+export default function ExecutiveReportIndex() {
+  const navigate = useNavigate();
+
+  return (
+    <PageContainer className="fixed top-14 left-0 right-0 bottom-0 overflow-y-auto">
+      <PageHeader>
+        <div className="container max-w-7xl mx-auto p-6">
+          <h1 className="text-2xl font-semibold">Executive Risk Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Focus on your most critical red team vulnerability scans
+          </p>
+        </div>
+      </PageHeader>
+      <div className="container max-w-7xl mx-auto px-6 pt-6 pb-12">
+        <Card className="bg-white dark:bg-zinc-900 p-4">
+          <ReportsTable
+            onReportSelected={(evalId) => navigate(`/executive-report?evalId=${evalId}`)}
+          />
+        </Card>
+      </div>
+    </PageContainer>
+  );
+}

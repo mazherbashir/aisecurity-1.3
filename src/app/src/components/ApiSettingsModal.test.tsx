@@ -83,7 +83,7 @@ describe('ApiSettingsModal', () => {
     } as unknown as DefinedUseQueryResult<ApiHealthResult, Error>);
 
     renderWithProviders(<ApiSettingsModal open={true} onClose={mockOnClose} />);
-    expect(screen.getByText('Connected to promptfoo API')).toBeInTheDocument();
+    expect(screen.getByText('Connected to AI Security API')).toBeInTheDocument();
     expect(screen.getByText('Cloud API is healthy')).toBeInTheDocument();
   });
 
@@ -95,7 +95,7 @@ describe('ApiSettingsModal', () => {
     } as unknown as DefinedUseQueryResult<ApiHealthResult, Error>);
 
     renderWithProviders(<ApiSettingsModal open={true} onClose={mockOnClose} />);
-    expect(screen.getByText('Cannot connect to promptfoo API')).toBeInTheDocument();
+    expect(screen.getByText('Cannot connect to AI Security API')).toBeInTheDocument();
     expect(screen.getByText('Failed to connect')).toBeInTheDocument();
   });
 

@@ -184,7 +184,7 @@ describe('postbuild integration', () => {
 
   it('should copy wrapper files to both CLI and server directories after build', () => {
     const projectRoot = path.resolve(__dirname, '../../');
-    const distDir = path.join(projectRoot, 'dist', 'src');
+    const distDir = path.join(projectRoot, 'dist');
     const serverDir = path.join(distDir, 'server');
 
     // Skip if dist doesn't exist or wrapper files haven't been copied yet (postbuild incomplete)
@@ -193,8 +193,8 @@ describe('postbuild integration', () => {
       return;
     }
 
-    // Wrapper files should exist at dist/src/{type}/ for CLI builds
-    // These paths are used when import.meta.url points to dist/src/main.js or entrypoint.js
+    // Wrapper files should exist at dist/{type}/ for CLI builds
+    // These paths are used when import.meta.url points to dist/main.js or entrypoint.js
     const cliWrapperPaths = [
       path.join(distDir, 'python', 'wrapper.py'),
       path.join(distDir, 'python', 'persistent_wrapper.py'),
@@ -206,8 +206,8 @@ describe('postbuild integration', () => {
       expect(fs.existsSync(wrapperPath)).toBe(true);
     }
 
-    // Wrapper files should also exist at dist/src/server/{type}/ for bundled server builds
-    // These paths are used when import.meta.url points to dist/src/server/index.js (Docker)
+    // Wrapper files should also exist at dist/server/{type}/ for bundled server builds
+    // These paths are used when import.meta.url points to dist/server/index.js (Docker)
     // See: https://github.com/promptfoo/promptfoo/issues/7139
     const serverWrapperPaths = [
       path.join(serverDir, 'python', 'wrapper.py'),

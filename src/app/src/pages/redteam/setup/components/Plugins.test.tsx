@@ -101,7 +101,7 @@ describe('Plugins', () => {
 
     expect(screen.getByRole('heading', { name: /Plugins/i, level: 1 })).toBeInTheDocument();
     expect(
-      screen.getByText(/Plugins are Promptfoo's modular system for testing/i),
+      screen.getByText(/Plugins are AI Security's modular system for testing/i),
     ).toBeInTheDocument();
 
     const nextButton = screen.getByRole('button', { name: /Next/i });

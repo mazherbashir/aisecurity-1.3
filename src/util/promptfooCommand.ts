@@ -44,7 +44,7 @@ export function detectInstaller(): InstallerType {
   }
 
   // User agent fallback for npx (useful for testing)
-  // npm_config_user_agent='npx/...' node dist/src/main.js init
+  // npm_config_user_agent='npx/...' node dist/main.js init
   if (/\bnpx\/\d+/i.test(ua)) {
     return 'npx';
   }

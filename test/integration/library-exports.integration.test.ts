@@ -16,7 +16,7 @@ import path from 'path';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
-const distDir = path.resolve(__dirname, '../../dist/src');
+const distDir = path.resolve(__dirname, '../../dist');
 const buildExists = fs.existsSync(distDir);
 
 // Skip all tests if build doesn't exist (e.g., in CI Jest run before build)

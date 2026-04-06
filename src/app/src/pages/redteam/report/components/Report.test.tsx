@@ -54,7 +54,7 @@ vi.mock('./Overview', () => ({
     );
   },
 }));
-vi.mock('@app/components/EnterpriseBanner', () => ({ default: () => null }));
+
 vi.mock('./StrategyStats', () => ({ default: () => null }));
 vi.mock('./RiskCategories', () => ({ default: () => null }));
 vi.mock('./TestSuites', () => ({ default: () => null }));
