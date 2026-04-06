@@ -144,7 +144,8 @@ export default function ExecutiveReport() {
         return;
       }
 
-      const pluginId = r.testCase?.metadata?.pluginId || r.gradingResult?.componentId || 'Unknown';
+      const pluginId =
+        r.testCase?.metadata?.pluginId || r.gradingResult?.metadata?.pluginId || 'Unknown';
       if (!counts[pluginId]) {
         counts[pluginId] = { pass: 0, fail: 0 };
       }
@@ -241,7 +242,7 @@ export default function ExecutiveReport() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-4 mb-8 print:grid-cols-4">
-        <Card className="bg-primary/5 border-primary/20 hover:bg-primary/10 transition-colors flex flex-col">
+        <Card className="bg-primary/5 border-primary/20 hover:bg-primary/10 transition-colors flex flex-col print:break-inside-avoid">
           <CardContent className="p-6 pb-4">
             <div className="flex items-center space-x-2">
               <ShieldAlert className="text-primary size-5" />
@@ -268,7 +269,7 @@ export default function ExecutiveReport() {
           </CardContent>
         </Card>
 
-        <Card className="border-red-500/20 hover:border-red-500/40 transition-colors flex flex-col">
+        <Card className="border-red-500/20 hover:border-red-500/40 transition-colors flex flex-col print:break-inside-avoid">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
               <AlertTriangle className="text-red-500 size-5" />
@@ -304,7 +305,7 @@ export default function ExecutiveReport() {
           </CardContent>
         </Card>
 
-        <Card className="border-green-500/20 hover:border-green-500/40 transition-colors">
+        <Card className="border-green-500/20 hover:border-green-500/40 transition-colors print:break-inside-avoid">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="text-green-500 size-5" />
@@ -316,7 +317,7 @@ export default function ExecutiveReport() {
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800 text-white">
+        <Card className="bg-zinc-900 border-zinc-800 text-white print:break-inside-avoid">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
               <TrendingUp className="text-amber-400 size-5" />
@@ -331,12 +332,12 @@ export default function ExecutiveReport() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 print:grid-cols-2">
         {/* Radar Chart */}
-        <Card className="p-2 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-2 overflow-hidden shadow-sm hover:shadow-md transition-shadow print:break-inside-avoid">
           <CardHeader>
             <CardTitle className="text-lg">Risk Exposure Profile</CardTitle>
           </CardHeader>
-          <CardContent className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+          <CardContent className="h-[350px] w-full print:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%" minWidth={300}>
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
                 <PolarGrid strokeOpacity={0.3} />
                 <PolarAngleAxis dataKey="subject" tick={{ fill: 'currentColor', fontSize: 12 }} />
@@ -348,7 +349,10 @@ export default function ExecutiveReport() {
                   fill="#ef4444"
                   fillOpacity={0.4}
                   activeDot={{
-                    onClick: (_e, payload) => handleDrillDown(payload.payload.fullId),
+                    onClick: (_e, payload) =>
+                      handleDrillDown(
+                        (payload as unknown as { payload: { fullId: string } }).payload.fullId,
+                      ),
                     cursor: 'pointer',
                   }}
                 />
@@ -359,12 +363,12 @@ export default function ExecutiveReport() {
         </Card>
 
         {/* Bar Chart */}
-        <Card className="p-2 shadow-sm hover:shadow-md transition-shadow">
+        <Card className="p-2 shadow-sm hover:shadow-md transition-shadow print:break-inside-avoid">
           <CardHeader>
             <CardTitle className="text-lg">Top Deficiencies by Plugin</CardTitle>
           </CardHeader>
-          <CardContent className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+          <CardContent className="h-[350px] w-full print:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%" minWidth={300}>
               <BarChart data={pluginChartData} layout="vertical" margin={{ left: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" />
@@ -374,7 +378,9 @@ export default function ExecutiveReport() {
                   dataKey="fail"
                   radius={[0, 4, 4, 0]}
                   name="Failures"
-                  onClick={(data) => handleDrillDown(data.fullId)}
+                  onClick={(data) =>
+                    handleDrillDown((data as unknown as { fullId: string }).fullId)
+                  }
                   cursor="pointer"
                 >
                   {pluginChartData.map((entry, index) => (
@@ -393,7 +399,7 @@ export default function ExecutiveReport() {
         {pluginChartData.slice(0, 3).map((risk, idx) => (
           <Card
             key={idx}
-            className="relative overflow-hidden border-destructive/30 hover:border-destructive/60 cursor-pointer transition-colors"
+            className="relative overflow-hidden border-destructive/30 hover:border-destructive/60 cursor-pointer transition-colors print:break-inside-avoid"
             onClick={() => handleDrillDown(risk.fullId)}
           >
             <div className="absolute top-0 left-0 w-1 h-full bg-destructive" />
