@@ -1,0 +1,440 @@
+diff --git a/src/app/src/App.tsx b/src/app/src/App.tsx
+index 49d9416ae..6d9b568ef 100644
+--- a/src/app/src/App.tsx
++++ b/src/app/src/App.tsx
+@@ -20,6 +20,7 @@ import DatasetsPage from './pages/datasets/page';
+ import EvalPage from './pages/eval/page';
+ import EvalCreatorPage from './pages/eval-creator/page';
+ import EvalsIndexPage from './pages/evals/page';
++import ExecutiveReportPage from './pages/executive-report/page';
+ import HistoryPage from './pages/history/page';
+ import LauncherPage from './pages/launcher/page';
+ import LoginPage from './pages/login';
+@@ -118,6 +119,7 @@ const router = createBrowserRouter(
+           {/* Redirect legacy /report route to /reports (since v0.118.2) */}
+           <Route path="/report" element={<Navigate to="/reports" replace />} />
+           <Route path="/reports" element={<ReportPage />} />
++          <Route path="/executive-report" element={<ExecutiveReportPage />} />
+           <Route path="/setup" element={<EvalCreatorPage />} />
+           <Route path="/login" element={<LoginPage />} />
+           <Route path="*" element={<NotFoundPage />} />
+diff --git a/src/app/src/components/Logo.tsx b/src/app/src/components/Logo.tsx
+index caad1556f..2ad219e10 100644
+--- a/src/app/src/components/Logo.tsx
++++ b/src/app/src/components/Logo.tsx
+@@ -8,11 +8,11 @@ export default function Logo() {
+     <Link to="/" className="inline-flex items-center px-2 py-1 no-underline perspective-[2000px]">
+       <img
+         src={logoPanda}
+-        alt="Promptfoo Logo"
++        alt="AI Security Logo"
+         className="logo-icon w-[25px] h-auto transition-all duration-1000 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
+       />
+       <span className="logo-text font-['Inter',sans-serif] font-semibold text-base text-foreground tracking-[0.02em] ml-2 transition-all duration-300">
+-        promptfoo
++        AI Security
+       </span>
+     </Link>
+   );
+diff --git a/src/app/src/components/Navigation.tsx b/src/app/src/components/Navigation.tsx
+index 2f89ed9b9..31d1ff0c6 100644
+--- a/src/app/src/components/Navigation.tsx
++++ b/src/app/src/components/Navigation.tsx
+@@ -146,6 +146,11 @@ const resultsMenuItems: MenuItem[] = [
+     label: 'Red Team Vulnerability Reports',
+     description: 'View findings from red teams',
+   },
++  {
++    href: '/executive-report',
++    label: 'Executive Risk Dashboard',
++    description: 'A focused, interactive, and concise view of your red team posture',
++  },
+   {
+     href: '/media',
+     label: 'Media Library',
+diff --git a/src/app/src/constants/routes.ts b/src/app/src/constants/routes.ts
+index c946569d8..47a129dcb 100644
+--- a/src/app/src/constants/routes.ts
++++ b/src/app/src/constants/routes.ts
+@@ -28,6 +28,7 @@ export const REDTEAM_ROUTES = {
+   ROOT: '/redteam',
+   SETUP: '/redteam/setup',
+   REPORTS: '/reports',
++  EXECUTIVE_REPORT: '/executive-report',
+   REPORT_DETAIL: (evalId: string) => `/reports?evalId=${evalId}`,
+ } as const;
+ 
+diff --git a/src/app/src/pages/eval/components/Eval.tsx b/src/app/src/pages/eval/components/Eval.tsx
+index 50ec9d0bf..f3349f26d 100644
+--- a/src/app/src/pages/eval/components/Eval.tsx
++++ b/src/app/src/pages/eval/components/Eval.tsx
+@@ -1,6 +1,5 @@
+ import { useCallback, useEffect, useState } from 'react';
+ 
+-import EnterpriseBanner from '@app/components/EnterpriseBanner';
+ import { Spinner } from '@app/components/ui/spinner';
+ import { IS_RUNNING_LOCALLY } from '@app/constants';
+ import { EVAL_ROUTES } from '@app/constants/routes';
+@@ -171,6 +170,7 @@ export default function Eval({ fetchId }: EvalOptions) {
+   }, [setSearchParams]);
+ 
+   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
++  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: intentional
+   useEffect(() => {
+     const _searchParams = new URLSearchParams(window.location.search);
+ 
+@@ -367,12 +367,8 @@ export default function Eval({ fetchId }: EvalOptions) {
+     return <EmptyState />;
+   }
+ 
+-  // Check if this is a redteam eval
+-  const isRedteam = config?.redteam !== undefined;
+-
+   return (
+     <ShiftKeyProvider>
+-      {isRedteam && evalId && <EnterpriseBanner evalId={evalId} className="mb-4 mt-4 mx-4" />}
+       <ResultsView
+         defaultEvalId={defaultEvalId}
+         recentEvals={recentEvals}
+diff --git a/src/app/src/pages/history/History.tsx b/src/app/src/pages/history/History.tsx
+index 50a11890f..119ed2e23 100644
+--- a/src/app/src/pages/history/History.tsx
++++ b/src/app/src/pages/history/History.tsx
+@@ -62,7 +62,7 @@ export default function History({
+     const url = URL.createObjectURL(blob);
+     const a = document.createElement('a');
+     a.href = url;
+-    a.download = 'promptfoo-eval-history.json';
++    a.download = 'ai-security-eval-history.json';
+     a.click();
+ 
+     setTimeout(() => {
+@@ -109,7 +109,7 @@ export default function History({
+     const url = URL.createObjectURL(blob);
+     const a = document.createElement('a');
+     a.href = url;
+-    a.download = 'promptfoo-eval-history.csv';
++    a.download = 'ai-security-eval-history.csv';
+     a.click();
+ 
+     setTimeout(() => {
+diff --git a/src/app/src/pages/launcher/page.tsx b/src/app/src/pages/launcher/page.tsx
+index a74578f3a..8dd08a842 100644
+--- a/src/app/src/pages/launcher/page.tsx
++++ b/src/app/src/pages/launcher/page.tsx
+@@ -121,12 +121,12 @@ export default function LauncherPage() {
+             <AlertDescription>
+               Connection lost. Try visiting{' '}
+               <a
+-                href="https://local.promptfoo.app"
++                href="https://local.AI-Security.app"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="font-medium underline hover:no-underline"
+               >
+-                local.promptfoo.app
++                local.AI-Security.app
+               </a>{' '}
+               instead
+             </AlertDescription>
+@@ -141,9 +141,9 @@ export default function LauncherPage() {
+ 
+       {/* Header section */}
+       <div className="mb-8 flex w-full max-w-[600px] flex-col items-center sm:mb-10">
+-        <img src={logoPanda} alt="Promptfoo Logo" className="mb-6 size-16 lg:size-20" />
++        <img src={logoPanda} alt="AI Security Logo" className="mb-6 size-16 lg:size-20" />
+         <h1 className="mb-6 text-center text-2xl font-light sm:text-3xl md:text-4xl">
+-          Welcome to Promptfoo
++          Welcome to AI Security
+         </h1>
+ 
+         <div
+@@ -154,13 +154,13 @@ export default function LauncherPage() {
+         >
+           {isConnecting ? (
+             <>
+-              Connecting to Promptfoo on localhost:15500
++              Connecting to AI Security on localhost:15500
+               <Spinner size="sm" />
+             </>
+           ) : (
+             <>
+               <CheckCircle className="size-4" />
+-              Connected to Promptfoo successfully!
++              Connected to AI Security successfully!
+             </>
+           )}
+         </div>
+@@ -191,7 +191,7 @@ export default function LauncherPage() {
+             <li className="leading-relaxed">
+               Check our{' '}
+               <a
+-                href="https://promptfoo.dev/docs/installation"
++                href="https://aisecurity.dev/docs/installation"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="text-primary hover:underline"
+@@ -203,12 +203,12 @@ export default function LauncherPage() {
+               <span className="mb-3 block text-muted-foreground">Run one of these commands:</span>
+               <div className="rounded-md bg-muted/50 p-4 font-mono text-sm leading-relaxed dark:bg-muted/20">
+                 <div className="mb-1 text-muted-foreground">
+-                  # If you have promptfoo installed globally:
++                  # If you have AI Security installed globally:
+                 </div>
+-                <div>promptfoo view -n</div>
++                <div>aisecurity view -n</div>
+                 <div className="my-2">&nbsp;</div>
+                 <div className="mb-1 text-muted-foreground"># Or using npx:</div>
+-                <div>npx promptfoo@latest view -n</div>
++                <div>npx aisecurity@latest view -n</div>
+               </div>
+             </li>
+           </ol>
+@@ -252,7 +252,7 @@ export default function LauncherPage() {
+         <p className="text-muted-foreground/70">
+           Still experiencing issues? Feel free to{' '}
+           <a
+-            href="https://github.com/promptfoo/promptfoo/issues"
++            href="https://github.com/AI Security/AI Security/issues"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="text-primary hover:underline"
+@@ -261,7 +261,7 @@ export default function LauncherPage() {
+           </a>{' '}
+           or join our{' '}
+           <a
+-            href="https://discord.gg/promptfoo"
++            href="https://discord.gg/AI Security"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="text-primary hover:underline"
+diff --git a/src/app/src/pages/login.tsx b/src/app/src/pages/login.tsx
+index 5e73815ec..65858f73f 100644
+--- a/src/app/src/pages/login.tsx
++++ b/src/app/src/pages/login.tsx
+@@ -69,8 +69,8 @@ export default function LoginPage() {
+   const { email, isLoading, setEmail, fetchEmail } = useUserStore();
+ 
+   usePageMeta({
+-    title: 'Login to Promptfoo',
+-    description: 'Sign in to access your Promptfoo workspace',
++    title: 'Login to AI Security',
++    description: 'Sign in to access your AI Security workspace',
+   });
+ 
+   useEffect(() => {
+@@ -128,14 +128,14 @@ export default function LoginPage() {
+           {/* Logo and Header */}
+           <div className="mb-8 flex flex-col items-center space-y-4 text-center">
+             <div className="flex items-center gap-2">
+-              <img src={logoPanda} alt="Promptfoo" className="size-10" />
+-              <h1 className="text-2xl font-semibold tracking-tight">promptfoo</h1>
++              <img src={logoPanda} alt="AI Security" className="size-10" />
++              <h1 className="text-2xl font-semibold tracking-tight">AI Security</h1>
+             </div>
+ 
+             <h2 className="text-xl text-foreground">
+               {new URLSearchParams(location.search).get('type') === 'report'
+                 ? 'View Report'
+-                : 'Welcome to Promptfoo'}
++                : 'Welcome to AI Security'}
+             </h2>
+ 
+             <p className="max-w-sm text-sm text-muted-foreground">
+@@ -145,7 +145,7 @@ export default function LoginPage() {
+                   {' '}
+                   Don't have one?{' '}
+                   <a
+-                    href="https://promptfoo.app/welcome"
++                    href="https://aisecurity.app/welcome"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="text-primary hover:underline"
+@@ -203,7 +203,7 @@ export default function LoginPage() {
+                   id="customUrl"
+                   name="customUrl"
+                   type="url"
+-                  defaultValue="https://www.promptfoo.app"
++                  defaultValue="https://www.AI-Security.app"
+                   disabled={isPending}
+                 />
+                 <p className="text-xs text-muted-foreground">
+@@ -231,7 +231,7 @@ export default function LoginPage() {
+               <p className="text-sm text-muted-foreground">Don't have an API key?</p>
+ 
+               <a
+-                href="https://promptfoo.app/welcome"
++                href="https://aisecurity.app/welcome"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+diff --git a/src/app/src/pages/redteam/report/components/Report.tsx b/src/app/src/pages/redteam/report/components/Report.tsx
+index 62010d814..8917d7d4b 100644
+--- a/src/app/src/pages/redteam/report/components/Report.tsx
++++ b/src/app/src/pages/redteam/report/components/Report.tsx
+@@ -1,6 +1,5 @@
+ import { useEffect, useMemo, useRef, useState } from 'react';
+ 
+-import EnterpriseBanner from '@app/components/EnterpriseBanner';
+ import { Badge } from '@app/components/ui/badge';
+ import { Button } from '@app/components/ui/button';
+ import { Card, CardContent } from '@app/components/ui/card';
+@@ -22,6 +21,7 @@ import {
+   SelectValue,
+ } from '@app/components/ui/select';
+ import { Spinner } from '@app/components/ui/spinner';
++import { Switch } from '@app/components/ui/switch';
+ import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
+ import { EVAL_ROUTES } from '@app/constants/routes';
+ import { usePageMeta } from '@app/hooks/usePageMeta';
+@@ -63,6 +63,7 @@ interface ReportProps {
+   onActionsReady?: (actions: React.ReactNode) => void;
+ }
+ 
++// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: intentional
+ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {}) => {
+   const navigate = useNavigate();
+   const [evalId, setEvalId] = useState<string | null>(evalIdProp ?? null);
+@@ -71,10 +72,19 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
+   const [isToolsDialogOpen, setIsToolsDialogOpen] = useState(false);
+   const { recordEvent } = useTelemetry();
+ 
+-  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
++  const searchParams = new URLSearchParams(window.location.search);
++
++  const [isFiltersVisible, setIsFiltersVisible] = useState(!!searchParams.get('category'));
+   const [reportSettingsOpen, setReportSettingsOpen] = useState(false);
+-  const { pluginPassRateThreshold, setPluginPassRateThreshold } = useReportStore();
+-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
++  const {
++    pluginPassRateThreshold,
++    setPluginPassRateThreshold,
++    showFrameworkCompliance,
++    setShowFrameworkCompliance,
++  } = useReportStore();
++  const [selectedCategories, setSelectedCategories] = useState<string[]>(
++    searchParams.get('category') ? [searchParams.get('category') as string] : [],
++  );
+   const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
+   const [statusFilter, setStatusFilter] = useState<'all' | 'pass' | 'fail'>('all');
+   const [searchQuery, setSearchQuery] = useState('');
+@@ -83,8 +93,6 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
+ 
+   // Vulnerabilities table reference for scroll navigation
+   const vulnerabilitiesDataGridRef = useRef<HTMLDivElement>(null);
+-
+-  const searchParams = new URLSearchParams(window.location.search);
+   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
+   useEffect(() => {
+     const fetchEvalById = async (id: string) => {
+@@ -717,8 +725,6 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
+ 
+       <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 print:max-w-none print:px-0 print:pt-0 print:pb-0">
+         <div className="flex flex-col gap-6">
+-          {!embedded && evalData.config.redteam && <EnterpriseBanner evalId={evalId || ''} />}
+-
+           {!embedded && (
+             <>
+               {/* Report Header Card */}
+@@ -919,11 +925,13 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
+             passesByPlugin={hasActiveFilters ? filteredPassesByPlugin : passesByPlugin}
+             vulnerabilitiesDataGridRef={vulnerabilitiesDataGridRef}
+           />
+-          <FrameworkCompliance
+-            evalId={evalId}
+-            categoryStats={categoryStatsForFrameworkCompliance}
+-            config={evalData.config}
+-          />
++          {showFrameworkCompliance && (
++            <FrameworkCompliance
++              evalId={evalId}
++              categoryStats={categoryStatsForFrameworkCompliance}
++              config={evalData.config}
++            />
++          )}
+         </div>
+         <ToolsDialog
+           open={isToolsDialogOpen}
+@@ -973,6 +981,19 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
+                   <span>100%</span>
+                 </div>
+               </div>
++              <div className="space-y-3">
++                <div className="flex items-center justify-between">
++                  <Label htmlFor="show-framework-compliance">Show Framework Compliance</Label>
++                  <Switch
++                    id="show-framework-compliance"
++                    checked={showFrameworkCompliance}
++                    onCheckedChange={setShowFrameworkCompliance}
++                  />
++                </div>
++                <p className="text-sm text-muted-foreground">
++                  Toggles the visibility of the Framework Compliance section in the report.
++                </p>
++              </div>
+             </div>
+             <DialogFooter>
+               <Button onClick={() => setReportSettingsOpen(false)}>Close</Button>
+diff --git a/src/app/src/pages/redteam/report/components/ReportSettingsDialogButton.tsx b/src/app/src/pages/redteam/report/components/ReportSettingsDialogButton.tsx
+index 9ca26ffce..190165d11 100644
+--- a/src/app/src/pages/redteam/report/components/ReportSettingsDialogButton.tsx
++++ b/src/app/src/pages/redteam/report/components/ReportSettingsDialogButton.tsx
+@@ -10,6 +10,7 @@ import {
+   DialogTitle,
+ } from '@app/components/ui/dialog';
+ import { Label } from '@app/components/ui/label';
++import { Switch } from '@app/components/ui/switch';
+ import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
+ import { Settings } from 'lucide-react';
+ import { useReportStore } from './store';
+@@ -20,6 +21,8 @@ const ReportSettingsDialogButton = () => {
+     setShowUntestedPlugins,
+     pluginPassRateThreshold,
+     setPluginPassRateThreshold,
++    showFrameworkCompliance,
++    setShowFrameworkCompliance,
+   } = useReportStore();
+   const [open, setOpen] = React.useState(false);
+ 
+@@ -104,6 +107,19 @@ const ReportSettingsDialogButton = () => {
+                 <span>100%</span>
+               </div>
+             </div>
++            <div className="space-y-3">
++              <div className="flex items-center justify-between">
++                <Label htmlFor="show-framework-compliance">Show Framework Compliance</Label>
++                <Switch
++                  id="show-framework-compliance"
++                  checked={showFrameworkCompliance}
++                  onCheckedChange={setShowFrameworkCompliance}
++                />
++              </div>
++              <p className="text-sm text-muted-foreground">
++                Toggles the visibility of the Framework Compliance section in the report.
++              </p>
++            </div>
+           </div>
+ 
+           <DialogFooter>
+diff --git a/src/app/src/pages/redteam/report/components/store.ts b/src/app/src/pages/redteam/report/components/store.ts
+index 78f13f30d..c419e2384 100644
+--- a/src/app/src/pages/redteam/report/components/store.ts
++++ b/src/app/src/pages/redteam/report/components/store.ts
+@@ -23,6 +23,8 @@ interface ReportState {
+   setPluginPassRateThreshold: (threshold: number) => void;
+   severityFilter: Severity | null;
+   setSeverityFilter: (severity: Severity | null) => void;
++  showFrameworkCompliance: boolean;
++  setShowFrameworkCompliance: (show: boolean) => void;
+ }
+ 
+ export const useReportStore = create<ReportState>()(
+@@ -35,6 +37,8 @@ export const useReportStore = create<ReportState>()(
+         set(() => ({ pluginPassRateThreshold: threshold })),
+       severityFilter: null,
+       setSeverityFilter: (severity: Severity | null) => set(() => ({ severityFilter: severity })),
++      showFrameworkCompliance: true,
++      setShowFrameworkCompliance: (show: boolean) => set(() => ({ showFrameworkCompliance: show })),
+     }),
+     {
+       name: 'ReportViewStorage',
