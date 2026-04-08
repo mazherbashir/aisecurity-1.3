@@ -25,6 +25,10 @@ interface ReportState {
   setSeverityFilter: (severity: Severity | null) => void;
   showFrameworkCompliance: boolean;
   setShowFrameworkCompliance: (show: boolean) => void;
+  /** When true, Vulnerabilities & Mitigations section respects active category/strategy filters.
+   *  Default false — section always shows all findings ordered by severity. */
+  vumsRespectFilters: boolean;
+  setVumsRespectFilters: (value: boolean) => void;
 }
 
 export const useReportStore = create<ReportState>()(
@@ -39,6 +43,8 @@ export const useReportStore = create<ReportState>()(
       setSeverityFilter: (severity: Severity | null) => set(() => ({ severityFilter: severity })),
       showFrameworkCompliance: true,
       setShowFrameworkCompliance: (show: boolean) => set(() => ({ showFrameworkCompliance: show })),
+      vumsRespectFilters: false,
+      setVumsRespectFilters: (value: boolean) => set(() => ({ vumsRespectFilters: value })),
     }),
     {
       name: 'ReportViewStorage',

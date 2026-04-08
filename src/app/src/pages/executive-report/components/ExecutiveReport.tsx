@@ -4,6 +4,7 @@ import { Button } from '@app/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@app/components/ui/card';
 import { Spinner } from '@app/components/ui/spinner';
 import { usePageMeta } from '@app/hooks/usePageMeta';
+import { cn } from '@app/lib/utils';
 import { callApi } from '@app/utils/api';
 import { getRiskCategorySeverityMap } from '@promptfoo/redteam/sharedFrontend';
 import { ResultFailureReason } from '@promptfoo/types';
@@ -190,6 +191,107 @@ export default function ExecutiveReport() {
     return pluginChartData.filter((d) => d.fail > 0);
   }, [pluginChartData]);
 
+  const riskScore = useMemo(() => {
+    if (!evalData) {
+      return { score: 0, grade: 'F' as const };
+    }
+
+    const severityWeights: Record<string, number> = {
+      critical: 4,
+      high: 3,
+      medium: 2,
+      low: 1,
+      informational: 0.5,
+    };
+
+    const severityMap = getRiskCategorySeverityMap(evalData.config?.redteam?.plugins);
+    const counts: Record<string, { pass: number; fail: number; weight: number }> = {};
+
+    evalData.results.results.forEach((r) => {
+      if (r.error && r.failureReason === ResultFailureReason.ERROR) {
+        return;
+      }
+      if (
+        evalData.version >= 4 &&
+        evalData.prompts &&
+        evalData.prompts.length > 1 &&
+        r.promptIdx !== 0
+      ) {
+        return;
+      }
+
+      const pluginId =
+        r.testCase?.metadata?.pluginId || r.gradingResult?.metadata?.pluginId || 'Unknown';
+      if (!counts[pluginId]) {
+        const severity = severityMap[pluginId as PluginType] || 'informational';
+        counts[pluginId] = { pass: 0, fail: 0, weight: severityWeights[severity] ?? 0.5 };
+      }
+      if (r.success && r.gradingResult?.pass !== false) {
+        counts[pluginId].pass++;
+      } else {
+        counts[pluginId].fail++;
+      }
+    });
+
+    const plugins = Object.values(counts);
+    if (plugins.length === 0) {
+      return { score: 100, grade: 'A' as const };
+    }
+
+    let weightedFailSum = 0;
+    let totalWeight = 0;
+    plugins.forEach(({ pass, fail, weight }) => {
+      const total = pass + fail;
+      if (total === 0) {
+        return;
+      }
+      weightedFailSum += (fail / total) * weight;
+      totalWeight += weight;
+    });
+
+    const score = Math.round(100 * (1 - (totalWeight > 0 ? weightedFailSum / totalWeight : 0)));
+    const grade =
+      score >= 85
+        ? ('A' as const)
+        : score >= 70
+          ? ('B' as const)
+          : score >= 55
+            ? ('C' as const)
+            : score >= 40
+              ? ('D' as const)
+              : ('F' as const);
+
+    return { score, grade };
+  }, [evalData]);
+
+  const gradeConfig = {
+    A: {
+      circle: 'border-emerald-500 text-emerald-500 bg-emerald-500/10',
+      bar: 'bg-emerald-500',
+      label: 'Excellent',
+    },
+    B: {
+      circle: 'border-blue-500 text-blue-500 bg-blue-500/10',
+      bar: 'bg-blue-500',
+      label: 'Good',
+    },
+    C: {
+      circle: 'border-amber-500 text-amber-500 bg-amber-500/10',
+      bar: 'bg-amber-500',
+      label: 'Moderate Risk',
+    },
+    D: {
+      circle: 'border-orange-500 text-orange-500 bg-orange-500/10',
+      bar: 'bg-orange-500',
+      label: 'High Risk',
+    },
+    F: {
+      circle: 'border-red-500 text-red-500 bg-red-500/10',
+      bar: 'bg-red-500',
+      label: 'Critical Risk',
+    },
+  } as const;
+
   const handleDrillDown = (categoryId: string) => {
     navigate(`/reports?evalId=${evalId}&category=${encodeURIComponent(categoryId)}`);
   };
@@ -239,6 +341,47 @@ export default function ExecutiveReport() {
           </Button>
         </div>
       </div>
+
+      {/* Security Posture Score */}
+      <Card className="mb-8 print:break-inside-avoid">
+        <CardContent className="p-6">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+            <div
+              className={cn(
+                'flex size-24 flex-shrink-0 items-center justify-center self-center rounded-full border-4 text-5xl font-black',
+                gradeConfig[riskScore.grade].circle,
+              )}
+            >
+              {riskScore.grade}
+            </div>
+            <div className="flex-1">
+              <div className="mb-1 flex items-baseline gap-2">
+                <span className="text-5xl font-bold">{riskScore.score}</span>
+                <span className="text-lg text-muted-foreground">/100</span>
+                <span className="ml-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Security Posture Score
+                </span>
+              </div>
+              <div className="mb-2 text-sm font-semibold" style={{ color: 'inherit' }}>
+                {gradeConfig[riskScore.grade].label}
+              </div>
+              <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className={cn(
+                    'h-full rounded-full transition-all duration-700',
+                    gradeConfig[riskScore.grade].bar,
+                  )}
+                  style={{ width: `${riskScore.score}%` }}
+                />
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Severity-weighted resistance across all tested attack categories. Higher is better —
+                100 means no successful attacks.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-4 mb-8 print:grid-cols-4">

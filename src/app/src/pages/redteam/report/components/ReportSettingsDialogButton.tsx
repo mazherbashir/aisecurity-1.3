@@ -23,6 +23,8 @@ const ReportSettingsDialogButton = () => {
     setPluginPassRateThreshold,
     showFrameworkCompliance,
     setShowFrameworkCompliance,
+    vumsRespectFilters,
+    setVumsRespectFilters,
   } = useReportStore();
   const [open, setOpen] = React.useState(false);
 
@@ -118,6 +120,23 @@ const ReportSettingsDialogButton = () => {
               </div>
               <p className="text-sm text-muted-foreground">
                 Toggles the visibility of the Framework Compliance section in the report.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="vums-respect-filters">
+                  Vulnerabilities &amp; Mitigations: respect active filters
+                </Label>
+                <Switch
+                  id="vums-respect-filters"
+                  checked={vumsRespectFilters}
+                  onCheckedChange={setVumsRespectFilters}
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                When off (default), Vulnerabilities &amp; Mitigations always shows all findings
+                ordered by severity — ideal for printing. When on, it follows the active category
+                and strategy filters.
               </p>
             </div>
           </div>

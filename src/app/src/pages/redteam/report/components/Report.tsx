@@ -53,6 +53,7 @@ import { getPluginIdFromResult, getStrategyIdFromTest } from './shared';
 import { useReportStore } from './store';
 import TestSuites from './TestSuites';
 import ToolsDialog, { Tool } from './ToolsDialog';
+import VulnerabilitiesAndMitigations from './VulnerabilitiesAndMitigations';
 
 interface ReportProps {
   /** When provided, uses this evalId instead of reading from URL search params. */
@@ -81,6 +82,8 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
     setPluginPassRateThreshold,
     showFrameworkCompliance,
     setShowFrameworkCompliance,
+    vumsRespectFilters,
+    setVumsRespectFilters,
   } = useReportStore();
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     searchParams.get('category') ? [searchParams.get('category') as string] : [],
@@ -917,6 +920,12 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
             failuresByPlugin={hasActiveFilters ? filteredFailuresByPlugin : failuresByPlugin}
             passesByPlugin={hasActiveFilters ? filteredPassesByPlugin : passesByPlugin}
           />
+          <VulnerabilitiesAndMitigations
+            failuresByPlugin={
+              vumsRespectFilters && hasActiveFilters ? filteredFailuresByPlugin : failuresByPlugin
+            }
+            plugins={evalData.config.redteam.plugins || []}
+          />
           <TestSuites
             evalId={evalId}
             categoryStats={hasActiveFilters ? filteredCategoryStats : categoryStats}
@@ -992,6 +1001,22 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Toggles the visibility of the Framework Compliance section in the report.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="vums-respect-filters-embedded">
+                    Vulnerabilities &amp; Mitigations: respect active filters
+                  </Label>
+                  <Switch
+                    id="vums-respect-filters-embedded"
+                    checked={vumsRespectFilters}
+                    onCheckedChange={setVumsRespectFilters}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  When off (default), Vulnerabilities &amp; Mitigations always shows all findings
+                  ordered by severity. When on, it follows the active category and strategy filters.
                 </p>
               </div>
             </div>
