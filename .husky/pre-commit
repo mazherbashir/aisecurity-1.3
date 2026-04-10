@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Pre-commit hook for linting changed files
 # Runs by default. Set DISABLE_PRECOMMIT_LINT=1 in environment or .env file to skip.
 #
