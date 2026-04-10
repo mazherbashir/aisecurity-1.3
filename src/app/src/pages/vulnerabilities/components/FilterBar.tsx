@@ -1,131 +1,148 @@
-import React from 'react';
-import { Download, X } from 'lucide-react';
+import { Download, Search, X } from 'lucide-react';
+import { Button } from '@app/components/ui/button';
+import { Input } from '@app/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@app/components/ui/select';
 
 interface FilterBarProps {
-  filters: {
-    target: string;
-    severity: string;
-    status: string;
-    riskCategory: string;
-    search: string;
-  };
-  targets: string[];
-  onFilterChange: (key: keyof FilterBarProps['filters'], value: string) => void;
-  onClear: () => void;
-  onExport: () => void;
+  onFilterChange?: (filters: FilterState) => void;
 }
 
-export default function FilterBar({
-  filters,
-  targets,
-  onFilterChange,
-  onClear,
-  onExport,
-}: FilterBarProps) {
+interface FilterState {
+  target: string;
+  severity: string;
+  status: string;
+  riskCategory: string;
+  search: string;
+}
+
+const defaultFilters: FilterState = {
+  target: 'noahbot',
+  severity: '',
+  status: 'Open',
+  riskCategory: '',
+  search: '',
+};
+
+export default function FilterBar({ onFilterChange }: FilterBarProps) {
+  const handleClear = () => {
+    if (onFilterChange) {
+      onFilterChange(defaultFilters);
+    }
+  };
+
+  const handleExport = () => {
+    // TODO: Implement export functionality
+    console.log('Export vulnerabilities');
+  };
+
   return (
-    <div className="bg-white border-b border-gray-200 p-4">
-      <div className="flex flex-col space-y-4">
-        {/* Title Row */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">
-            Vulnerabilities ({targets.length > 0 ? '10' : '0'})
-          </h1>
+    <div className="mb-6 space-y-4">
+      {/* Title and count */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-foreground">Vulnerabilities (10)</h1>
+      </div>
+
+      {/* Filter controls */}
+      <div className="flex flex-wrap items-end gap-3">
+        {/* Target Dropdown */}
+        <div className="min-w-[140px]">
+          <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
+            Target
+          </label>
+          <Select defaultValue={defaultFilters.target}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select target" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="noahbot">noahbot</SelectItem>
+              <SelectItem value="chatbot-v1">chatbot-v1</SelectItem>
+              <SelectItem value="assistant-pro">assistant-pro</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Filters Row */}
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Target Dropdown */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Target</label>
-            <select
-              value={filters.target}
-              onChange={(e) => onFilterChange('target', e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Targets</option>
-              {targets.map((target) => (
-                <option key={target} value={target}>
-                  {target}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* Severity Dropdown */}
+        <div className="min-w-[140px]">
+          <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
+            Severity
+          </label>
+          <Select defaultValue={defaultFilters.severity || 'all'}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="All severities" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All severities</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          {/* Severity Dropdown */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Severity</label>
-            <select
-              value={filters.severity}
-              onChange={(e) => onFilterChange('severity', e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Severities</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-          </div>
+        {/* Status Dropdown */}
+        <div className="min-w-[140px]">
+          <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
+            Status
+          </label>
+          <Select defaultValue={defaultFilters.status}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="Open">Open</SelectItem>
+              <SelectItem value="Fixed">Fixed</SelectItem>
+              <SelectItem value="Ignored">Ignored</SelectItem>
+              <SelectItem value="False Positive">False Positive</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          {/* Status Dropdown */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Status</label>
-            <select
-              value={filters.status}
-              onChange={(e) => onFilterChange('status', e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Statuses</option>
-              <option value="open">Open</option>
-              <option value="fixed">Fixed</option>
-              <option value="ignored">Ignored</option>
-              <option value="false-positive">False Positive</option>
-            </select>
-          </div>
+        {/* Risk Category Dropdown */}
+        <div className="min-w-[140px]">
+          <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
+            Risk Category
+          </label>
+          <Select defaultValue={defaultFilters.riskCategory || 'all'}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="All categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All categories</SelectItem>
+              <SelectItem value="content">Content Safety</SelectItem>
+              <SelectItem value="privacy">Privacy</SelectItem>
+              <SelectItem value="security">Security</SelectItem>
+              <SelectItem value="compliance">Compliance</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          {/* Risk Category Dropdown */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Risk Category</label>
-            <select
-              value={filters.riskCategory}
-              onChange={(e) => onFilterChange('riskCategory', e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Categories</option>
-              <option value="content">Content Safety</option>
-              <option value="privacy">Privacy</option>
-              <option value="security">Security</option>
-              <option value="compliance">Compliance</option>
-            </select>
-          </div>
-
-          {/* Search Input */}
-          <div className="flex-1 min-w-[200px]">
-            <input
+        {/* Search Input */}
+        <div className="flex-1 min-w-[200px]">
+          <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
+            Search
+          </label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
               type="text"
               placeholder="Vulnerability"
-              value={filters.search}
-              onChange={(e) => onFilterChange('search', e.target.value)}
-              className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-9"
+              defaultValue={defaultFilters.search}
             />
           </div>
-
-          {/* Clear Button */}
-          <button
-            onClick={onClear}
-            className="px-4 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Clear
-          </button>
-
-          {/* Export Icon */}
-          <button
-            onClick={onExport}
-            className="p-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md"
-            title="Export"
-          >
-            <Download className="w-5 h-5" />
-          </button>
         </div>
+
+        {/* Clear Button */}
+        <Button variant="default" onClick={handleClear} className="bg-blue-600 hover:bg-blue-700">
+          <X className="mr-2 size-4" />
+          Clear
+        </Button>
+
+        {/* Export Icon */}
+        <Button variant="outline" size="icon" onClick={handleExport} className="ml-auto">
+          <Download className="size-4" />
+        </Button>
       </div>
     </div>
   );
