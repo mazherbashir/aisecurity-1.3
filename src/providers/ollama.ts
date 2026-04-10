@@ -14,6 +14,10 @@ import type {
 } from '../types/index';
 
 interface OllamaCompletionOptions {
+  /** Base URL for the Ollama server. Takes precedence over OLLAMA_HOST / OLLAMA_BASE_URL env vars. */
+  host?: string;
+  /** Alias for host — accepted for backward compatibility. Resolved to host in the constructor. */
+  baseUrl?: string;
   // From https://github.com/jmorganca/ollama/blob/v0.1.0/api/types.go#L161
   num_predict?: number;
   top_k?: number;
@@ -51,6 +55,23 @@ interface OllamaCompletionOptions {
   tools?: any[]; // Support for function calling/tools
   think?: boolean; // Top-level parameter for thinking/reasoning
   passthrough?: Record<string, any>; // Pass arbitrary fields to the API
+}
+
+/**
+ * Resolves the Ollama server base URL from (in priority order):
+ * 1. config.host (explicit provider config)
+ * 2. config.baseUrl (backward-compat alias for host)
+ * 3. OLLAMA_HOST environment variable
+ * 4. OLLAMA_BASE_URL environment variable (backward compat)
+ * 5. http://localhost:11434 (default)
+ */
+function getOllamaHost(config: OllamaCompletionOptions): string {
+  return (
+    config.host ||
+    getEnvString('OLLAMA_HOST') ||
+    getEnvString('OLLAMA_BASE_URL') ||
+    'http://localhost:11434'
+  );
 }
 
 const OllamaCompletionOptionKeys = new Set<keyof OllamaCompletionOptions>([
@@ -144,6 +165,9 @@ export class OllamaCompletionProvider implements ApiProvider {
     this.modelName = modelName;
     this.id = id ? () => id : this.id;
     this.config = config || {};
+    if (this.config.baseUrl && !this.config.host) {
+      this.config.host = this.config.baseUrl;
+    }
   }
 
   id(): string {
@@ -220,7 +244,7 @@ export class OllamaCompletionProvider implements ApiProvider {
     let response: FetchWithCacheResult<string> | undefined;
     try {
       response = await fetchWithCache<string>(
-        `${getEnvString('OLLAMA_BASE_URL') || 'http://localhost:11434'}/api/generate`,
+        `${getOllamaHost(this.config)}/api/generate`,
         {
           method: 'POST',
           headers: {
@@ -300,6 +324,9 @@ export class OllamaChatProvider implements ApiProvider {
     this.modelName = modelName;
     this.id = id ? () => id : this.id;
     this.config = config || {};
+    if (this.config.baseUrl && !this.config.host) {
+      this.config.host = this.config.baseUrl;
+    }
   }
 
   id(): string {
@@ -380,7 +407,7 @@ export class OllamaChatProvider implements ApiProvider {
     let response: FetchWithCacheResult<string> | undefined;
     try {
       response = await fetchWithCache<string>(
-        `${getEnvString('OLLAMA_BASE_URL') || 'http://localhost:11434'}/api/chat`,
+        `${getOllamaHost(this.config)}/api/chat`,
         {
           method: 'POST',
           headers: {
@@ -516,7 +543,7 @@ export class OllamaEmbeddingProvider extends OllamaCompletionProvider {
     let response: FetchWithCacheResult<OllamaEmbeddingResponse>;
     try {
       response = await fetchWithCache<OllamaEmbeddingResponse>(
-        `${getEnvString('OLLAMA_BASE_URL') || 'http://localhost:11434'}/api/embeddings`,
+        `${getOllamaHost(this.config)}/api/embeddings`,
         {
           method: 'POST',
           headers: {
