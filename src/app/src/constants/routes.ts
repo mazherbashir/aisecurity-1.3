@@ -45,4 +45,5 @@ export const ROUTES = {
   MEDIA: '/media',
   MEDIA_DETAIL: (hash: string) => `/media?hash=${encodeURIComponent(hash)}`,
   LOGIN: '/login',
+  VULNERABILITIES: '/vulnerabilities',
 } as const;
