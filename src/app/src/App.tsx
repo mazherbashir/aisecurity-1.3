@@ -33,6 +33,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import PromptsPage from './pages/prompts/page';
 import ReportPage from './pages/redteam/report/page';
 import RedteamSetupPage from './pages/redteam/setup/page';
+import VulnerabilitiesPage from './pages/vulnerabilities/page';
 
 const basename = import.meta.env.VITE_PUBLIC_BASENAME || '';
 
@@ -120,6 +121,7 @@ const router = createBrowserRouter(
           <Route path="/report" element={<Navigate to="/reports" replace />} />
           <Route path="/reports" element={<ReportPage />} />
           <Route path="/executive-report" element={<ExecutiveReportPage />} />
+          <Route path="/vulnerabilities" element={<VulnerabilitiesPage />} />
           <Route path="/setup" element={<EvalCreatorPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />

@@ -187,7 +187,7 @@ export default function Navigation({ onToggleDarkMode }: { onToggleDarkMode: () 
                   label="View Results"
                   items={resultsMenuItems}
                   isActiveCheck={(pathname) =>
-                    ['/eval', '/evals', '/reports', '/media'].some((route) =>
+                    ['/eval', '/evals', '/reports', '/media', '/vulnerabilities'].some((route) =>
                       pathname.startsWith(route),
                     )
                   }
@@ -199,6 +199,7 @@ export default function Navigation({ onToggleDarkMode }: { onToggleDarkMode: () 
               <NavLink href="/prompts" label="Prompts" />
               <NavLink href="/datasets" label="Datasets" />
               <NavLink href="/history" label="History" />
+              <NavLink href="/vulnerabilities" label="Vulnerabilities" />
             </nav>
           </div>
 
