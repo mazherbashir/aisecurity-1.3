@@ -30,6 +30,7 @@ export const REDTEAM_ROUTES = {
   REPORTS: '/reports',
   EXECUTIVE_REPORT: '/executive-report',
   REPORT_DETAIL: (evalId: string) => `/reports?evalId=${evalId}`,
+  EXECUTIVE_REPORT_DETAIL: (evalId: string) => `/executive-report?evalId=${evalId}`,
 } as const;
 
 // Other routes

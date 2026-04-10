@@ -31,7 +31,7 @@ import EvalSelectorKeyboardShortcut from './EvalSelectorKeyboardShortcut';
 import { useTableStore } from './store';
 import type { ResultLightweightWithLabel } from '@promptfoo/types';
 
-export type ActiveView = 'results' | 'report';
+export type ActiveView = 'results' | 'report' | 'executive-summary';
 
 interface EvalHeaderProps {
   recentEvals: ResultLightweightWithLabel[];
@@ -181,6 +181,7 @@ export default function EvalHeader({
                   <TabsList>
                     <TabsTrigger value="results">Results</TabsTrigger>
                     <TabsTrigger value="report">Vulnerability Report</TabsTrigger>
+                    <TabsTrigger value="executive-summary">Executive Summary</TabsTrigger>
                   </TabsList>
                 </Tabs>
               )}

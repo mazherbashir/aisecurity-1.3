@@ -36,9 +36,13 @@ import { getSeverityColor } from '../../redteam/report/utils/color';
 import type { Plugin as PluginType } from '@promptfoo/redteam/constants';
 import type { ResultLightweightWithLabel, ResultsFile, SharedResults } from '@promptfoo/types';
 
-export default function ExecutiveReport() {
+interface ExecutiveReportProps {
+  evalId?: string | null;
+}
+
+export default function ExecutiveReport({ evalId: propEvalId }: ExecutiveReportProps) {
   const navigate = useNavigate();
-  const [evalId, setEvalId] = useState<string | null>(null);
+  const [evalId, setEvalId] = useState<string | null>(propEvalId || null);
   const [evalData, setEvalData] = useState<ResultsFile | null>(null);
 
   usePageMeta({

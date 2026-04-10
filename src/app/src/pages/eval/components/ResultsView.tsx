@@ -53,6 +53,9 @@ import type { ActiveView } from './EvalHeader';
 import type { ResultsFilter } from './store';
 
 const Report = React.lazy(() => import('@app/pages/redteam/report/components/Report'));
+const ExecutiveReport = React.lazy(
+  () => import('@app/pages/executive-report/components/ExecutiveReport'),
+);
 
 interface ResultsViewProps {
   recentEvals: ResultLightweightWithLabel[];
@@ -311,7 +314,8 @@ export default function ResultsView({
   );
 
   const viewParam = searchParams.get('view');
-  const activeView: ActiveView = viewParam === 'report' ? 'report' : 'results';
+  const activeView: ActiveView =
+    viewParam === 'report' ? 'report' : viewParam === 'executive-summary' ? 'executive-summary' : 'results';
   const setActiveView = React.useCallback(
     (view: ActiveView) => {
       setSearchParams(
@@ -975,6 +979,18 @@ export default function ResultsView({
             }
           >
             <Report evalId={validEvalId} embedded onActionsReady={setReportActions} />
+          </React.Suspense>
+        )}
+        {activeView === 'executive-summary' && validEvalId && (
+          <React.Suspense
+            fallback={
+              <div className="flex flex-col gap-3 justify-center items-center h-36">
+                <Spinner className="size-5" />
+                <span className="text-sm text-muted-foreground">Loading executive summary...</span>
+              </div>
+            }
+          >
+            <ExecutiveReport evalId={validEvalId} />
           </React.Suspense>
         )}
       </div>
