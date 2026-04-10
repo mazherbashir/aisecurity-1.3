@@ -51,14 +51,21 @@ export default function ExecutiveReport({ evalId: propEvalId }: ExecutiveReportP
   });
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-
     const fetchEvalById = async (id: string) => {
       const resp = await callApi(`/results/${id}`, { cache: 'no-store' });
       const body = (await resp.json()) as SharedResults;
       setEvalData(body.data);
     };
 
+    // If evalId is provided as a prop, use it directly
+    if (propEvalId) {
+      setEvalId(propEvalId);
+      fetchEvalById(propEvalId);
+      return;
+    }
+
+    // Otherwise, check URL search params
+    const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get('evalId');
     if (id) {
       setEvalId(id);
@@ -81,7 +88,7 @@ export default function ExecutiveReport({ evalId: propEvalId }: ExecutiveReportP
       };
       fetchLatestEvalId();
     }
-  }, []);
+  }, [propEvalId]);
 
   const stats = useMemo(() => {
     if (!evalData) {
