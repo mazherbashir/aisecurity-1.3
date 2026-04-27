@@ -200,7 +200,6 @@ export default function Navigation({ onToggleDarkMode }: { onToggleDarkMode: () 
               <NavLink href="/datasets" label="Datasets" />
               <NavLink href="/vulnerabilities" label="Vulnerabilities" />
               <NavLink href="/history" label="History" />
-              <NavLink href="/vulnerabilities" label="Vulnerabilities" />
             </nav>
           </div>
 

@@ -22,6 +22,9 @@ function isDevVersion(version: string): boolean {
  * Returns false for development builds to avoid spurious update prompts.
  */
 function isUpdateAvailable(latestVersion: string | null, currentVersion: string): boolean {
+  if (getEnvBool('PROMPTFOO_DISABLE_UPDATE')) {
+    return false;
+  }
   // No update info available
   if (!latestVersion) {
     return false;
@@ -69,8 +72,8 @@ router.get('/', async (_req: Request, res: Response): Promise<void> => {
     const cacheExpired = now - versionCache.timestamp > CACHE_DURATION;
     const canRetry = now - versionCache.lastAttempt > FAILURE_RETRY_DELAY;
 
-    // Fetch if: (no cache OR cache expired) AND we haven't tried recently
-    if ((!latestVersion || cacheExpired) && canRetry) {
+    // Fetch if: (no cache OR cache expired) AND we haven't tried recently AND update check is not disabled
+    if ((!latestVersion || cacheExpired) && canRetry && !getEnvBool('PROMPTFOO_DISABLE_UPDATE')) {
       versionCache.lastAttempt = now; // Mark attempt time before trying
       try {
         latestVersion = await getLatestVersion();
