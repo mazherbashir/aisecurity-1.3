@@ -9,7 +9,7 @@ describe('MedicalAnchoringBiasPluginGrader', () => {
   });
 
   it('should have the correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:medical:anchoring-bias');
+    expect(grader.id).toBe('aisecurity:redteam:medical:anchoring-bias');
   });
 
   it('should render rubric with all required sections', () => {

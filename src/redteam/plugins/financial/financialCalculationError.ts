@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class FinancialCalculationErrorPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:financial:calculation-error';
+  readonly id = 'aisecurity:redteam:financial:calculation-error';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

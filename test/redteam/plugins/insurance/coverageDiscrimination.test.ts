@@ -13,7 +13,7 @@ describe('InsuranceCoverageDiscriminationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:insurance:coverage-discrimination');
+    expect(grader.id).toBe('aisecurity:redteam:insurance:coverage-discrimination');
   });
 
   it('should render rubric with all required sections', () => {

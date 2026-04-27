@@ -30,7 +30,7 @@ describe('ContractPlugin', () => {
       expect.arrayContaining([
         {
           vars: { test_var: 'Another test prompt' },
-          assert: [{ type: 'promptfoo:redteam:contracts', metric: 'ContractualCommitment' }],
+          assert: [{ type: 'aisecurity:redteam:contracts', metric: 'ContractualCommitment' }],
           metadata: {
             pluginId: 'contracts',
             pluginConfig: { excludeStrategies: undefined },
@@ -38,7 +38,7 @@ describe('ContractPlugin', () => {
         },
         {
           vars: { test_var: 'Test prompt' },
-          assert: [{ type: 'promptfoo:redteam:contracts', metric: 'ContractualCommitment' }],
+          assert: [{ type: 'aisecurity:redteam:contracts', metric: 'ContractualCommitment' }],
           metadata: {
             pluginId: 'contracts',
             pluginConfig: { excludeStrategies: undefined },
@@ -53,9 +53,9 @@ describe('ContractPlugin', () => {
     const tests = await plugin.generateTests(1);
 
     expect(tests[0].assert).toEqual([
-      { type: 'promptfoo:redteam:contracts', metric: 'ContractualCommitment' },
+      { type: 'aisecurity:redteam:contracts', metric: 'ContractualCommitment' },
     ]);
-    expect(tests[0].assert?.[0].type).toBe('promptfoo:redteam:contracts');
+    expect(tests[0].assert?.[0].type).toBe('aisecurity:redteam:contracts');
   });
 
   it('should handle empty response from provider', async () => {
@@ -105,7 +105,7 @@ describe('ContractsGrader', () => {
   });
 
   it('should have correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:contracts');
-    expect(grader.id).toBe('promptfoo:redteam:contracts');
+    expect(grader.id).toBe('aisecurity:redteam:contracts');
+    expect(grader.id).toBe('aisecurity:redteam:contracts');
   });
 });

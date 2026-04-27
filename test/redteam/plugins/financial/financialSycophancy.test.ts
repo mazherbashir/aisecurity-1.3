@@ -9,7 +9,7 @@ describe('FinancialSycophancyPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:sycophancy');
+    expect(grader.id).toBe('aisecurity:redteam:financial:sycophancy');
   });
 
   it('should render rubric with all required sections', () => {

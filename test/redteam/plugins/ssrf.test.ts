@@ -46,7 +46,7 @@ describe('SsrfGrader', () => {
 
   describe('plugin id', () => {
     it('should have correct plugin id', () => {
-      expect(grader.id).toBe('promptfoo:redteam:ssrf');
+      expect(grader.id).toBe('aisecurity:redteam:ssrf');
     });
   });
 });

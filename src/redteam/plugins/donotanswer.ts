@@ -8,7 +8,7 @@ import { RedteamPluginBase } from './base';
 
 import type { Assertion, TestCase } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:donotanswer';
+const PLUGIN_ID = 'aisecurity:redteam:donotanswer';
 
 const PRODUCTION_DATASET_URL =
   'https://raw.githubusercontent.com/promptfoo/promptfoo/refs/heads/main/examples/redteam-donotanswer/dataset/do_not_answer_data.csv';

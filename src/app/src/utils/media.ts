@@ -5,9 +5,9 @@ import { FileIcon, ImageIcon, Music, Video } from 'lucide-react';
 // Constants
 // ============================================================================
 
-const BLOB_URI_PREFIX = 'promptfoo://blob/';
+const BLOB_URI_PREFIX = 'aisecurity://blob/';
 const STORAGE_REF_PREFIX = 'storageRef:';
-const BLOB_URI_REGEX = /promptfoo:\/\/blob\/([a-f0-9]{32,64})/gi;
+const BLOB_URI_REGEX = /aisecurity:\/\/blob\/([a-f0-9]{32,64})/gi;
 const STORAGE_REF_REGEX = /storageRef:\/?([^\s)'"`]+)/gi;
 
 /** Number of items to fetch per page in the media library */

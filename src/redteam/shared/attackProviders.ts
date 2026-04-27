@@ -20,6 +20,7 @@
  * - mischievous-user: Different implementation pattern
  */
 
+import { REDTEAM_PROVIDER_PREFIX } from '../constants/plugins';
 import { MULTI_TURN_STRATEGIES } from '../constants/strategies';
 
 /**
@@ -51,7 +52,7 @@ export type AttackProviderId = (typeof ATTACK_PROVIDER_IDS)[number];
  *
  * Handles various ID formats:
  * - Short: 'hydra', 'crescendo', 'goat', 'custom', 'meta', 'tree'
- * - Full: 'promptfoo:redteam:hydra', 'promptfoo:redteam:iterative:meta'
+ * - Full: 'aisecurity:redteam:hydra', 'aisecurity:redteam:iterative:meta'
  * - Prefixed: 'jailbreak:hydra', 'jailbreak:meta', 'jailbreak:tree'
  *
  * @param id - The strategy ID to check
@@ -59,7 +60,7 @@ export type AttackProviderId = (typeof ATTACK_PROVIDER_IDS)[number];
  */
 export function isAttackProvider(id: string): boolean {
   // Normalize the ID by removing common prefixes
-  let baseId = id.replace('promptfoo:redteam:', '');
+  let baseId = id.replace(REDTEAM_PROVIDER_PREFIX, '').replace('aisecurity:redteam:', '');
 
   // Handle jailbreak and jailbreak: prefix for iterative strategies
   if (baseId === 'jailbreak') {
@@ -90,38 +91,38 @@ export function isAttackProvider(id: string): boolean {
  * Get the full provider ID for an attack provider.
  *
  * @param id - The strategy ID (e.g., 'hydra', 'jailbreak', 'jailbreak:hydra', 'jailbreak:meta')
- * @returns The full provider ID (e.g., 'promptfoo:redteam:hydra', 'promptfoo:redteam:iterative')
+ * @returns The full provider ID (e.g., 'aisecurity:redteam:hydra', 'aisecurity:redteam:iterative')
  */
 export function getAttackProviderFullId(id: string): string {
-  if (id.startsWith('promptfoo:redteam:')) {
-    return id;
+  if (id.startsWith(REDTEAM_PROVIDER_PREFIX) || id.startsWith('aisecurity:redteam:')) {
+    return id.replace('aisecurity:redteam:', REDTEAM_PROVIDER_PREFIX);
   }
 
-  // Handle jailbreak (base) -> promptfoo:redteam:iterative
+  // Handle jailbreak (base) -> aisecurity:redteam:iterative
   if (id === 'jailbreak') {
-    return 'promptfoo:redteam:iterative';
+    return `${REDTEAM_PROVIDER_PREFIX}iterative`;
   }
 
   // Handle jailbreak: prefix
   if (id.startsWith('jailbreak:')) {
     const jailbreakType = id.replace('jailbreak:', '');
-    // jailbreak:meta -> promptfoo:redteam:iterative:meta
-    // jailbreak:tree -> promptfoo:redteam:iterative:tree
-    // jailbreak:hydra -> promptfoo:redteam:hydra
+    // jailbreak:meta -> aisecurity:redteam:iterative:meta
+    // jailbreak:tree -> aisecurity:redteam:iterative:tree
+    // jailbreak:hydra -> aisecurity:redteam:hydra
     if (jailbreakType === 'meta') {
-      return 'promptfoo:redteam:iterative:meta';
+      return `${REDTEAM_PROVIDER_PREFIX}iterative:meta`;
     } else if (jailbreakType === 'tree') {
-      return 'promptfoo:redteam:iterative:tree';
+      return `${REDTEAM_PROVIDER_PREFIX}iterative:tree`;
     }
-    return `promptfoo:redteam:${jailbreakType}`;
+    return `${REDTEAM_PROVIDER_PREFIX}${jailbreakType}`;
   }
 
-  // Handle custom:foo -> promptfoo:redteam:custom
+  // Handle custom:foo -> aisecurity:redteam:custom
   if (id.startsWith('custom:') || id === 'custom') {
-    return 'promptfoo:redteam:custom';
+    return `${REDTEAM_PROVIDER_PREFIX}custom`;
   }
 
-  return `promptfoo:redteam:${id}`;
+  return `${REDTEAM_PROVIDER_PREFIX}${id}`;
 }
 
 /**
@@ -132,7 +133,10 @@ export function getAttackProviderFullId(id: string): string {
  * Use isAttackProvider() to check for that capability.
  */
 export function isMultiTurnStrategy(id: string): boolean {
-  const normalizedId = id.replace('promptfoo:redteam:', '').replace('jailbreak:', '');
+  const normalizedId = id
+    .replace(REDTEAM_PROVIDER_PREFIX, '')
+    .replace('aisecurity:redteam:', '')
+    .replace('jailbreak:', '');
 
   return MULTI_TURN_STRATEGIES.some((strategy) => {
     const normalizedStrategy = strategy.replace('jailbreak:', '');

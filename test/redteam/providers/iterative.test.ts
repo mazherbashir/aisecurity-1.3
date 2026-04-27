@@ -116,7 +116,7 @@ describe('RedteamIterativeProvider', () => {
     it('should create instance with valid config', () => {
       const provider = new RedteamIterativeProvider({ injectVar: 'test' });
       expect(provider).toBeInstanceOf(RedteamIterativeProvider);
-      expect(provider.id()).toBe('promptfoo:redteam:iterative');
+      expect(provider.id()).toBe('aisecurity:redteam:iterative');
     });
 
     it('should use default numIterations if not provided', () => {
@@ -215,7 +215,7 @@ describe('RedteamIterativeProvider', () => {
 
       const test: AtomicTestCase = {
         vars: {},
-        assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+        assert: [{ type: 'aisecurity:redteam:test-plugin' }],
         metadata: { pluginId: 'test-plugin', goal: 'test goal' },
       };
 
@@ -245,14 +245,14 @@ describe('RedteamIterativeProvider', () => {
         score: 0,
         reason: 'Jailbreak detected by grader',
         tokensUsed: { total: 100, prompt: 50, completion: 50 },
-        assertion: { type: 'promptfoo:redteam:test-plugin', value: 'test rubric' },
+        assertion: { type: 'aisecurity:redteam:test-plugin', value: 'test rubric' },
       });
       expect(mockGrader.getResult).toHaveBeenCalledWith(
         'test',
         'mock target response',
         expect.objectContaining({
           vars: { test: 'goal' },
-          assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+          assert: [{ type: 'aisecurity:redteam:test-plugin' }],
           metadata: { pluginId: 'test-plugin', goal: 'test goal' },
         }),
         mockRedteamProvider,
@@ -523,7 +523,7 @@ describe('RedteamIterativeProvider', () => {
 
       const test: AtomicTestCase = {
         vars: {},
-        assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+        assert: [{ type: 'aisecurity:redteam:test-plugin' }],
         metadata: {
           pluginId: 'test-plugin',
           goal: 'Create harmful content about specific groups',
@@ -554,7 +554,7 @@ describe('RedteamIterativeProvider', () => {
         'mock target response',
         expect.objectContaining({
           vars: { test: 'goal' },
-          assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+          assert: [{ type: 'aisecurity:redteam:test-plugin' }],
           metadata: {
             pluginId: 'test-plugin',
             goal: 'Create harmful content about specific groups',
@@ -680,7 +680,7 @@ describe('RedteamIterativeProvider', () => {
 
       const test: AtomicTestCase = {
         vars: {},
-        assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+        assert: [{ type: 'aisecurity:redteam:test-plugin' }],
         metadata: { pluginId: 'test-plugin' }, // No goal
       };
 
@@ -708,7 +708,7 @@ describe('RedteamIterativeProvider', () => {
         'mock target response',
         expect.objectContaining({
           vars: { someOtherVar: 'just a test value' },
-          assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+          assert: [{ type: 'aisecurity:redteam:test-plugin' }],
           metadata: { pluginId: 'test-plugin' },
         }),
         mockRedteamProvider,
@@ -753,7 +753,7 @@ describe('RedteamIterativeProvider', () => {
 
       const test: AtomicTestCase = {
         vars: {},
-        assert: [{ type: 'promptfoo:redteam:test-plugin' }],
+        assert: [{ type: 'aisecurity:redteam:test-plugin' }],
         metadata: { pluginId: 'test-plugin', goal: 'test goal' },
       };
 
@@ -782,7 +782,7 @@ describe('RedteamIterativeProvider', () => {
         pass: false,
         score: 0,
         reason: 'Grader detected jailbreak',
-        assertion: { type: 'promptfoo:redteam:test-plugin', value: 'test rubric' },
+        assertion: { type: 'aisecurity:redteam:test-plugin', value: 'test rubric' },
       });
     });
 

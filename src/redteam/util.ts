@@ -3,6 +3,7 @@ import logger from '../logger';
 import { REQUEST_TIMEOUT_MS } from '../providers/shared';
 import { safeJsonStringify } from '../util/json';
 import { escapeRegExp } from '../util/text';
+import { REDTEAM_PROVIDER_PREFIX } from './constants/plugins';
 import { pluginDescriptions } from './constants';
 import { DATASET_PLUGINS } from './constants/strategies';
 import { getRemoteGenerationUrl, neverGenerateRemote } from './remoteGeneration';
@@ -294,12 +295,12 @@ export function removePrefix(str: string, prefix: string) {
 
 /**
  * Extracts the short name from a fully qualified plugin ID.
- * Removes the 'promptfoo:redteam:' prefix if present.
+ * Removes the 'aisecurity:redteam:' prefix if present.
  * @param pluginId The full plugin ID
  * @returns The short plugin ID
  */
 export function getShortPluginId(pluginId: string): string {
-  return pluginId.replace(/^promptfoo:redteam:/, '');
+  return pluginId.replace(REDTEAM_PROVIDER_PREFIX, '').replace(/^aisecurity:redteam:/, '');
 }
 
 /**

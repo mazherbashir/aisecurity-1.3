@@ -9,7 +9,7 @@ describe('MedicalPrioritizationErrorPluginGrader', () => {
   });
 
   it('should have the correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:medical:prioritization-error');
+    expect(grader.id).toBe('aisecurity:redteam:medical:prioritization-error');
   });
 
   it('should render rubric with provided variables', () => {

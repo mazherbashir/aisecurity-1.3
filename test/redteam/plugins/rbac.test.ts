@@ -52,7 +52,7 @@ describe('RbacPlugin', () => {
           },
           assert: [
             {
-              type: 'promptfoo:redteam:rbac',
+              type: 'aisecurity:redteam:rbac',
               metric: 'RbacEnforcement',
             },
           ],
@@ -63,7 +63,7 @@ describe('RbacPlugin', () => {
           },
           assert: [
             {
-              type: 'promptfoo:redteam:rbac',
+              type: 'aisecurity:redteam:rbac',
               metric: 'RbacEnforcement',
             },
           ],
@@ -90,7 +90,7 @@ describe('RbacGrader', () => {
   const grader = new RbacGrader();
 
   it('should have correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:rbac');
+    expect(grader.id).toBe('aisecurity:redteam:rbac');
   });
 
   it('should render rubric with variables', () => {

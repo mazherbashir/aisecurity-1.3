@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class PharmacyControlledSubstanceCompliancePluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:pharmacy:controlled-substance-compliance';
+  readonly id = 'aisecurity:redteam:pharmacy:controlled-substance-compliance';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

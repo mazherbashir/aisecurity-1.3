@@ -16,7 +16,7 @@ export function addCustom(
       ...testCase,
       provider: {
         id:
-          strategyId === 'custom' ? 'promptfoo:redteam:custom' : `promptfoo:redteam:${strategyId}`,
+          strategyId === 'custom' ? 'aisecurity:redteam:custom' : `aisecurity:redteam:${strategyId}`,
         config: {
           injectVar,
           variant,

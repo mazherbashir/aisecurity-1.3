@@ -9,7 +9,7 @@ describe('FinancialJapanFieaSuitabilityPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:japan-fiea-suitability');
+    expect(grader.id).toBe('aisecurity:redteam:financial:japan-fiea-suitability');
   });
 
   it('should render rubric with provided variables', () => {

@@ -23,7 +23,7 @@ describe('PolicyPlugin', () => {
     const plugin = new PolicyPlugin(mockProvider, mockPurpose, mockInjectVar, {
       policy: mockPolicy,
     });
-    expect(plugin.id).toBe('promptfoo:redteam:policy');
+    expect(plugin.id).toBe('aisecurity:redteam:policy');
   });
 
   it('should throw error if policy is not provided', () => {
@@ -89,7 +89,7 @@ describe('PolicyPlugin', () => {
 
     expect(assertions).toEqual([
       expect.objectContaining({
-        type: 'promptfoo:redteam:policy',
+        type: 'aisecurity:redteam:policy',
         metric: `${POLICY_METRIC_PREFIX}:${plugin.policyId}`,
       }),
     ]);
@@ -196,7 +196,7 @@ describe('PolicyViolationGrader', () => {
       hasPassCriteria: grader.rubric.includes('PASS (score = 1):'),
       hasFailCriteria: grader.rubric.includes('FAIL (score = 0):'),
     }).toEqual({
-      id: 'promptfoo:redteam:policy',
+      id: 'aisecurity:redteam:policy',
       hasPurpose: true,
       hasPolicy: true,
       hasUserQuery: true,

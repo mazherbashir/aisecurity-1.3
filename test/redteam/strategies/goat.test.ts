@@ -24,7 +24,7 @@ describe('GOAT Strategy', () => {
     const result = await addGoatTestCases(testCases, 'goal', {});
 
     expect(result[0].provider).toEqual({
-      id: 'promptfoo:redteam:goat',
+      id: 'aisecurity:redteam:goat',
       config: {
         injectVar: 'goal',
       },

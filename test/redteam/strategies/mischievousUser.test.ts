@@ -16,7 +16,7 @@ describe('Mischievous User Strategy', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].provider).toEqual({
-      id: 'promptfoo:redteam:mischievous-user',
+      id: 'aisecurity:redteam:mischievous-user',
       config: { injectVar: 'instructions', maxTurns: 3 },
     });
     expect(result[0].assert?.[0].metric).toBe('exactMatch/MischievousUser');

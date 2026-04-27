@@ -114,7 +114,7 @@ export default class GoatProvider implements ApiProvider {
   }> = [];
 
   id() {
-    return 'promptfoo:redteam:goat';
+    return 'aisecurity:redteam:goat';
   }
 
   constructor(

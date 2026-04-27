@@ -201,7 +201,7 @@ describe('RedteamIterativeMetaProvider', () => {
         targetProvider: mockTargetProvider,
         test: {
           vars: { query: 'test' },
-          assert: [{ type: 'promptfoo:redteam:harmful', metric: 'Harmful' }],
+          assert: [{ type: 'aisecurity:redteam:harmful', metric: 'Harmful' }],
         } as AtomicTestCase,
         vars: { query: 'test' },
       });
@@ -421,7 +421,7 @@ describe('RedteamIterativeMetaProvider', () => {
       };
 
       const testAssertion = {
-        type: 'promptfoo:redteam:policy' as const,
+        type: 'aisecurity:redteam:policy' as const,
         metric: 'PolicyViolation:test',
       };
 
@@ -437,7 +437,7 @@ describe('RedteamIterativeMetaProvider', () => {
 
       expect(storedResult.assertion).toBeDefined();
       expect(storedResult.assertion?.value).toBe(mockRenderedRubric);
-      expect(storedResult.assertion?.type).toBe('promptfoo:redteam:policy');
+      expect(storedResult.assertion?.type).toBe('aisecurity:redteam:policy');
     });
 
     it('should use grade.assertion when present', () => {
@@ -447,7 +447,7 @@ describe('RedteamIterativeMetaProvider', () => {
         score: 0,
         reason: 'Failed',
         assertion: {
-          type: 'promptfoo:redteam:harmful' as const,
+          type: 'aisecurity:redteam:harmful' as const,
           metric: 'Harmful',
           value: 'old value',
         },
@@ -461,7 +461,7 @@ describe('RedteamIterativeMetaProvider', () => {
       };
 
       expect(storedResult.assertion?.value).toBe(mockRenderedRubric);
-      expect(storedResult.assertion?.type).toBe('promptfoo:redteam:harmful');
+      expect(storedResult.assertion?.type).toBe('aisecurity:redteam:harmful');
     });
 
     it('should not create assertion for AssertionSet', () => {
@@ -1107,7 +1107,7 @@ describe('RedteamIterativeMetaProvider', () => {
         targetProvider: mockTargetProvider,
         test: {
           vars: { query: 'test' },
-          assert: [{ type: 'promptfoo:redteam:harmful', metric: 'Harmful' }],
+          assert: [{ type: 'aisecurity:redteam:harmful', metric: 'Harmful' }],
         } as AtomicTestCase,
         vars: { query: 'test' },
       });

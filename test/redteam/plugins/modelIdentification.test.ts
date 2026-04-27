@@ -9,7 +9,7 @@ describe('ModelIdentificationGrader', () => {
   });
 
   it('should have the correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:model-identification');
+    expect(grader.id).toBe('aisecurity:redteam:model-identification');
   });
 
   it('should use standardized UserQuery tags in rubric', () => {

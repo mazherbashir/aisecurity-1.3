@@ -237,7 +237,7 @@ describe('HydraProvider', () => {
   describe('id()', () => {
     it('should return correct provider id', () => {
       const provider = new HydraProvider({ injectVar: 'input' });
-      expect(provider.id()).toBe('promptfoo:redteam:hydra');
+      expect(provider.id()).toBe('aisecurity:redteam:hydra');
     });
   });
 

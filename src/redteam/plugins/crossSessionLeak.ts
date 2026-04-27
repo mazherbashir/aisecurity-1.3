@@ -17,7 +17,7 @@ import type {
 } from '../../types/index';
 import type { RedteamGradingContext } from '../grading/types';
 
-const PLUGIN_ID = 'promptfoo:redteam:cross-session-leak';
+const PLUGIN_ID = 'aisecurity:redteam:cross-session-leak';
 
 const DEFAULT_EXAMPLES = dedent`
     <Example>

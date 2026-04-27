@@ -170,7 +170,7 @@ export async function addLayerTestCases(
  * Gets the metric suffix for an attack provider.
  */
 function getMetricSuffix(stepId: string): string {
-  const baseId = stepId.replace('promptfoo:redteam:', '').replace('jailbreak:', '');
+  const baseId = stepId.replace('aisecurity:redteam:', '').replace('jailbreak:', '');
   const suffixMap: Record<string, string> = {
     // Multi-turn conversational strategies
     hydra: 'Hydra',

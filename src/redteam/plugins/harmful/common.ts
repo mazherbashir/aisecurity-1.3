@@ -10,7 +10,7 @@ import { getShortPluginId } from '../../util';
 import type { Assertion, AssertionType, TestCase } from '../../../types/index';
 
 export function getHarmfulAssertions(harmCategory: keyof typeof HARM_PLUGINS): Assertion[] {
-  const assertionType: AssertionType = `promptfoo:redteam:${harmCategory}`;
+  const assertionType: AssertionType = `aisecurity:redteam:${harmCategory}`;
   // Use the specific subcategory as the metric name to show granular metrics
   const metricName = categoryAliases[harmCategory] || harmCategory;
   const assertions: Assertion[] = [{ metric: metricName, type: assertionType }];

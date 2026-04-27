@@ -5,7 +5,7 @@ export function addHydra(
   injectVar: string,
   config: Record<string, any>,
 ): TestCase[] {
-  const providerName = 'promptfoo:redteam:hydra';
+  const providerName = 'aisecurity:redteam:hydra';
   const metricSuffix = 'Hydra';
   const strategyId = 'jailbreak:hydra';
   const scanId = crypto.randomUUID(); // Generate once for all tests in this scan

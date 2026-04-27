@@ -832,24 +832,24 @@ describe('loadApiProvider', () => {
     expect(provider.id()).toBe('python:script.py:default');
   });
 
-  it('loadApiProvider with promptfoo:redteam:iterative', async () => {
-    const provider = await loadApiProvider('promptfoo:redteam:iterative', {
+  it('loadApiProvider with aisecurity:redteam:iterative', async () => {
+    const provider = await loadApiProvider('aisecurity:redteam:iterative', {
       options: { config: { injectVar: 'foo' } },
     });
     expect(provider).toBeInstanceOf(RedteamIterativeProvider);
-    expect(provider.id()).toBe('promptfoo:redteam:iterative');
+    expect(provider.id()).toBe('aisecurity:redteam:iterative');
   });
 
-  it('loadApiProvider with promptfoo:redteam:iterative:tree', async () => {
-    const provider = await loadApiProvider('promptfoo:redteam:iterative:tree', {
+  it('loadApiProvider with aisecurity:redteam:iterative:tree', async () => {
+    const provider = await loadApiProvider('aisecurity:redteam:iterative:tree', {
       options: { config: { injectVar: 'foo' } },
     });
     expect(provider).toBeInstanceOf(RedteamIterativeTreeProvider);
-    expect(provider.id()).toBe('promptfoo:redteam:iterative:tree');
+    expect(provider.id()).toBe('aisecurity:redteam:iterative:tree');
   });
 
-  it('loadApiProvider with promptfoo:redteam:iterative:image', async () => {
-    const provider = await loadApiProvider('promptfoo:redteam:iterative:image', {
+  it('loadApiProvider with aisecurity:redteam:iterative:image', async () => {
+    const provider = await loadApiProvider('aisecurity:redteam:iterative:image', {
       options: {
         config: {
           injectVar: 'imageUrl',
@@ -857,15 +857,15 @@ describe('loadApiProvider', () => {
       },
     });
     expect(provider).toBeInstanceOf(RedteamImageIterativeProvider);
-    expect(provider.id()).toBe('promptfoo:redteam:iterative:image');
+    expect(provider.id()).toBe('aisecurity:redteam:iterative:image');
   });
 
-  it('loadApiProvider with promptfoo:redteam:goat', async () => {
-    const provider = await loadApiProvider('promptfoo:redteam:goat', {
+  it('loadApiProvider with aisecurity:redteam:goat', async () => {
+    const provider = await loadApiProvider('aisecurity:redteam:goat', {
       options: { config: { injectVar: 'goal' } },
     });
     expect(provider).toBeInstanceOf(RedteamGoatProvider);
-    expect(provider.id()).toBe('promptfoo:redteam:goat');
+    expect(provider.id()).toBe('aisecurity:redteam:goat');
   });
 
   it('loadApiProvider with RawProviderConfig', async () => {

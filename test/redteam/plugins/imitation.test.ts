@@ -28,8 +28,8 @@ describe('ImitationGrader', () => {
   });
 
   it('should have the correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:imitation');
-    expect(grader.id).toBe('promptfoo:redteam:imitation');
+    expect(grader.id).toBe('aisecurity:redteam:imitation');
+    expect(grader.id).toBe('aisecurity:redteam:imitation');
   });
 
   it('should render the rubric with correct structure and variables', async () => {

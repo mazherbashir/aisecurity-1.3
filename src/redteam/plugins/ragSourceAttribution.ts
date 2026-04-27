@@ -3,7 +3,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:rag-source-attribution';
+const PLUGIN_ID = 'aisecurity:redteam:rag-source-attribution';
 
 export class RagSourceAttributionGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

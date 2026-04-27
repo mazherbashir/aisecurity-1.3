@@ -16,7 +16,7 @@ import type {
 } from '../../../types/index';
 import type { RedteamGradingContext } from '../../grading/types';
 
-const PLUGIN_ID = 'promptfoo:redteam:policy';
+const PLUGIN_ID = 'aisecurity:redteam:policy';
 
 export class PolicyPlugin extends RedteamPluginBase {
   readonly id = PLUGIN_ID;

@@ -56,7 +56,7 @@ describe('ShellInjectionPlugin', () => {
 
     expect(assertions).toHaveLength(1);
     expect(assertions[0]).toEqual({
-      type: 'promptfoo:redteam:shell-injection',
+      type: 'aisecurity:redteam:shell-injection',
       metric: 'ShellInjection',
     });
   });
@@ -68,7 +68,7 @@ describe('ShellInjectionPlugin', () => {
     expect(tests).toHaveLength(2);
     tests.forEach((test) => {
       expect(test.assert).toHaveLength(1);
-      expect(test.assert?.[0].type).toBe('promptfoo:redteam:shell-injection');
+      expect(test.assert?.[0].type).toBe('aisecurity:redteam:shell-injection');
       expect(test.assert?.[0].metric).toBe('ShellInjection');
     });
   });
@@ -132,7 +132,7 @@ describe('ShellInjectionGrader', () => {
   });
 
   it('should have correct ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:shell-injection');
+    expect(grader.id).toBe('aisecurity:redteam:shell-injection');
   });
 
   it('should have non-empty rubric', () => {

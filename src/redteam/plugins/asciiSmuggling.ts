@@ -4,7 +4,7 @@ import { RedteamGraderBase } from './base';
 import type { ApiProvider, AssertionValue, AtomicTestCase, GradingResult } from '../../types/index';
 import type { RedteamGradingContext } from '../grading/types';
 
-const PLUGIN_ID = 'promptfoo:redteam:ascii-smuggling';
+const PLUGIN_ID = 'aisecurity:redteam:ascii-smuggling';
 
 export class AsciiSmugglingGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

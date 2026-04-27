@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class MedicalHallucinationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:medical:hallucination';
+  readonly id = 'aisecurity:redteam:medical:hallucination';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

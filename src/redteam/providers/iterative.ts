@@ -821,7 +821,7 @@ class RedteamIterativeProvider implements ApiProvider {
   }
 
   id() {
-    return 'promptfoo:redteam:iterative';
+    return 'aisecurity:redteam:iterative';
   }
 
   async callApi(

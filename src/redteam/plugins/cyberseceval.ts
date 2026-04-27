@@ -5,7 +5,7 @@ import { RedteamPluginBase } from './base';
 
 import type { Assertion, TestCase } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:cyberseceval';
+const PLUGIN_ID = 'aisecurity:redteam:cyberseceval';
 
 // Use a specific tag to ensure stability - update when datasets change
 const DATASET_VERSION = '0.119.14';

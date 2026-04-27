@@ -42,7 +42,7 @@ export class CustomPlugin extends RedteamPluginBase {
   static readonly canGenerateRemote = false;
 
   get id(): string {
-    return this.definition.id || `promptfoo:redteam:custom`;
+    return this.definition.id || `aisecurity:redteam:custom`;
   }
 
   constructor(provider: ApiProvider, purpose: string, injectVar: string, filePath: string) {

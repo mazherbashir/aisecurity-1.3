@@ -13,7 +13,7 @@ describe('RealEstateLendingDiscriminationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:lending-discrimination');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:lending-discrimination');
   });
 
   it('should render rubric with all required sections', () => {

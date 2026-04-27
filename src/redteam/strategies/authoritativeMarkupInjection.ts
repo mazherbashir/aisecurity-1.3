@@ -13,7 +13,7 @@ export async function addAuthoritativeMarkupInjectionTestCases(
     return {
       ...testCase,
       provider: {
-        id: 'promptfoo:redteam:authoritative-markup-injection',
+        id: 'aisecurity:redteam:authoritative-markup-injection',
         config: {
           injectVar,
           ...config,

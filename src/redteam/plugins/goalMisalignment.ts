@@ -3,7 +3,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:goal-misalignment';
+const PLUGIN_ID = 'aisecurity:redteam:goal-misalignment';
 
 export class GoalMisalignmentGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

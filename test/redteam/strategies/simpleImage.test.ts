@@ -46,7 +46,7 @@ describe('Image strategy', () => {
           metric: 'test-metric',
         },
         {
-          type: 'promptfoo:redteam:jailbreak',
+          type: 'aisecurity:redteam:jailbreak',
           value: 'should update this metric',
           metric: 'jailbreak-metric',
         },
@@ -81,7 +81,7 @@ describe('Image strategy', () => {
             metric: 'test-metric',
           },
           {
-            type: 'promptfoo:redteam:jailbreak',
+            type: 'aisecurity:redteam:jailbreak',
             value: 'should update this metric',
             metric: 'jailbreak/Image-Encoded',
           },

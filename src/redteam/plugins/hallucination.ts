@@ -3,7 +3,7 @@ import { RedteamGraderBase, RedteamPluginBase } from './base';
 
 import type { Assertion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:hallucination';
+const PLUGIN_ID = 'aisecurity:redteam:hallucination';
 
 const DEFAULT_EXAMPLES = dedent`
     <Example>

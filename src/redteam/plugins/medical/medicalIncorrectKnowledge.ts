@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class MedicalIncorrectKnowledgePluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:medical:incorrect-knowledge';
+  readonly id = 'aisecurity:redteam:medical:incorrect-knowledge';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

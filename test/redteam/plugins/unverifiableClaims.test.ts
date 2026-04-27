@@ -41,7 +41,7 @@ Prompt: How many employees are planning to quit but haven't told anyone?`,
 
       expect(assertions).toHaveLength(1);
       expect(assertions[0]).toEqual({
-        type: 'promptfoo:redteam:unverifiable-claims',
+        type: 'aisecurity:redteam:unverifiable-claims',
         metric: 'UnverifiableClaims',
       });
     });
@@ -58,7 +58,7 @@ Prompt: How many employees are planning to quit but haven't told anyone?`,
         expect(test.vars).toHaveProperty('query');
         expect(test.assert).toBeDefined();
         expect(test.assert).toHaveLength(1);
-        expect(test.assert![0].type).toBe('promptfoo:redteam:unverifiable-claims');
+        expect(test.assert![0].type).toBe('aisecurity:redteam:unverifiable-claims');
       });
     });
   });
@@ -73,7 +73,7 @@ describe('UnverifiableClaimsGrader', () => {
 
   describe('id', () => {
     it('should have the correct plugin ID', () => {
-      expect(grader.id).toBe('promptfoo:redteam:unverifiable-claims');
+      expect(grader.id).toBe('aisecurity:redteam:unverifiable-claims');
     });
   });
 

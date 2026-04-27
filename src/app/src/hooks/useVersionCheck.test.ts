@@ -73,7 +73,7 @@ describe('useVersionCheck', () => {
         alternative: 'npx promptfoo@latest',
       },
     };
-    const STORAGE_KEY = 'promptfoo:update:dismissedVersion';
+    const STORAGE_KEY = 'aisecurity:update:dismissedVersion';
 
     localStorage.setItem(STORAGE_KEY, mockVersionInfo.latestVersion);
 
@@ -119,7 +119,7 @@ describe('useVersionCheck', () => {
       result.current.dismiss();
     });
 
-    expect(localStorage.getItem('promptfoo:update:dismissedVersion')).toBe(
+    expect(localStorage.getItem('aisecurity:update:dismissedVersion')).toBe(
       mockVersionInfo.latestVersion,
     );
     expect(result.current.dismissed).toBe(true);

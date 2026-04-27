@@ -11,7 +11,7 @@ import { RedteamGraderBase, RedteamPluginBase } from './base';
 import type { PluginActionParams, TestCase } from '../../types/index';
 import type { PII_PLUGINS } from '../constants';
 
-const PLUGIN_ID = 'promptfoo:redteam:pii';
+const PLUGIN_ID = 'aisecurity:redteam:pii';
 
 /**
  * Extract content from <Prompt> tags and parse JSON if inputs are defined.

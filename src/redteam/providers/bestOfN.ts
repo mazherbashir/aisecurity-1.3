@@ -34,7 +34,7 @@ export default class BestOfNProvider implements ApiProvider {
   readonly config: BestOfNConfig;
 
   id() {
-    return 'promptfoo:redteam:best-of-n';
+    return 'aisecurity:redteam:best-of-n';
   }
 
   constructor(

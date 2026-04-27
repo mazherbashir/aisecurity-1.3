@@ -36,7 +36,7 @@ describe('CyberSecEvalPlugin', () => {
   });
 
   it('should have the correct plugin ID', () => {
-    expect(plugin.id).toBe('promptfoo:redteam:cyberseceval');
+    expect(plugin.id).toBe('aisecurity:redteam:cyberseceval');
   });
 
   it('should set canGenerateRemote to false', () => {

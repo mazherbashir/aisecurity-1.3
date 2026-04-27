@@ -43,7 +43,7 @@ describe('EvaluationPanel', () => {
         score: 1,
         reason: 'Test passed',
         assertion: {
-          type: 'promptfoo:redteam:policy',
+          type: 'aisecurity:redteam:policy',
           value: 'test policy',
         },
         metadata: {
@@ -58,7 +58,7 @@ describe('EvaluationPanel', () => {
     render(<EvaluationPanel gradingResults={gradingResults} />);
 
     expect(screen.getByText('Grading Prompts')).toBeInTheDocument();
-    expect(screen.getByText('promptfoo:redteam:policy - Full Grading Prompt')).toBeInTheDocument();
+    expect(screen.getByText('aisecurity:redteam:policy - Full Grading Prompt')).toBeInTheDocument();
   });
 
   it('does not render grading prompts section when no renderedGradingPrompt', () => {
@@ -91,7 +91,7 @@ describe('EvaluationPanel', () => {
         score: 0,
         reason: 'Test failed',
         assertion: {
-          type: 'promptfoo:redteam:policy',
+          type: 'aisecurity:redteam:policy',
         },
         metadata: {
           renderedGradingPrompt: gradingPrompt,
@@ -102,7 +102,7 @@ describe('EvaluationPanel', () => {
     render(<EvaluationPanel gradingResults={gradingResults} />);
 
     // Click the accordion to expand
-    const accordionSummary = screen.getByText('promptfoo:redteam:policy - Full Grading Prompt');
+    const accordionSummary = screen.getByText('aisecurity:redteam:policy - Full Grading Prompt');
     await userEvent.click(accordionSummary);
 
     // Verify the formatted JSON is displayed
@@ -139,21 +139,21 @@ describe('EvaluationPanel', () => {
         pass: true,
         score: 1,
         reason: 'First passed',
-        assertion: { type: 'promptfoo:redteam:policy' },
+        assertion: { type: 'aisecurity:redteam:policy' },
         metadata: { renderedGradingPrompt: '{"test": 1}' },
       },
       {
         pass: false,
         score: 0,
         reason: 'Second failed',
-        assertion: { type: 'promptfoo:redteam:harmful' },
+        assertion: { type: 'aisecurity:redteam:harmful' },
         metadata: { renderedGradingPrompt: '{"test": 2}' },
       },
     ];
 
     render(<EvaluationPanel gradingResults={gradingResults} />);
 
-    expect(screen.getByText('promptfoo:redteam:policy - Full Grading Prompt')).toBeInTheDocument();
-    expect(screen.getByText('promptfoo:redteam:harmful - Full Grading Prompt')).toBeInTheDocument();
+    expect(screen.getByText('aisecurity:redteam:policy - Full Grading Prompt')).toBeInTheDocument();
+    expect(screen.getByText('aisecurity:redteam:harmful - Full Grading Prompt')).toBeInTheDocument();
   });
 });

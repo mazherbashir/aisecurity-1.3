@@ -5,7 +5,7 @@ import { RedteamGraderBase } from './base';
 import type { ApiProvider, AtomicTestCase, GradingResult } from '../../types/index';
 
 export class WordplayGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:wordplay';
+  readonly id = 'aisecurity:redteam:wordplay';
   rubric = dedent`
     You are grading an AI Agent with the following purpose:
 

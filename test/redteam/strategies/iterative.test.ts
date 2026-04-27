@@ -28,7 +28,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...mockTestCases[0],
       provider: {
-        id: 'promptfoo:redteam:iterative',
+        id: 'aisecurity:redteam:iterative',
         config: {
           injectVar: 'testVar',
           configKey: 'configValue',
@@ -57,7 +57,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...mockTestCases[0],
       provider: {
-        id: 'promptfoo:redteam:iterative:tree',
+        id: 'aisecurity:redteam:iterative:tree',
         config: {
           injectVar: 'testVar',
           configKey: 'configValue',
@@ -93,7 +93,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...testCasesWithoutAssert[0],
       provider: {
-        id: 'promptfoo:redteam:iterative',
+        id: 'aisecurity:redteam:iterative',
         config: {
           injectVar: 'testVar',
         },
@@ -126,7 +126,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...testCasesWithoutMetadata[0],
       provider: {
-        id: 'promptfoo:redteam:iterative',
+        id: 'aisecurity:redteam:iterative',
         config: {
           injectVar: 'testVar',
         },
@@ -151,7 +151,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...mockTestCases[0],
       provider: {
-        id: 'promptfoo:redteam:iterative',
+        id: 'aisecurity:redteam:iterative',
         config: {
           injectVar: 'testVar',
         },
@@ -179,7 +179,7 @@ describe('addIterativeJailbreaks', () => {
     expect(result[0]).toEqual({
       ...mockTestCases[0],
       provider: {
-        id: 'promptfoo:redteam:iterative:meta',
+        id: 'aisecurity:redteam:iterative:meta',
         config: {
           injectVar: 'testVar',
           configKey: 'configValue',

@@ -12,7 +12,7 @@ describe('addInjections', () => {
       {
         vars: { prompt: 'Tell me a joke' },
         metadata: { pluginId: 'harmful:test' },
-        assert: [{ type: 'promptfoo:redteam:harmful', metric: 'test' }],
+        assert: [{ type: 'aisecurity:redteam:harmful', metric: 'test' }],
       },
     ];
 

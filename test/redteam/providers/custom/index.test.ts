@@ -210,7 +210,7 @@ describe('CustomProvider', () => {
   });
 
   it('should return correct provider id', () => {
-    expect(customProvider.id()).toBe('promptfoo:redteam:custom');
+    expect(customProvider.id()).toBe('aisecurity:redteam:custom');
   });
 
   it('should use default values when optional config not provided', () => {

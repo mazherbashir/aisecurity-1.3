@@ -1,3 +1,4 @@
+export const REDTEAM_PROVIDER_PREFIX = 'aisecurity:redteam:';
 export const DEFAULT_NUM_TESTS_PER_PLUGIN = 5;
 
 // Inject variable name used in multi-input mode to prevent namespace collisions

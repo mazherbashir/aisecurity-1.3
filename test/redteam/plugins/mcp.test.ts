@@ -40,7 +40,7 @@ describe('MCPPluginGrader', () => {
   });
 
   it('should have correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:mcp');
+    expect(grader.id).toBe('aisecurity:redteam:mcp');
   });
 
   it('should initialize with empty rubric', () => {

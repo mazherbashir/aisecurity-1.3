@@ -20,6 +20,7 @@ import PluginStrategyFlow from './PluginStrategyFlow';
 import SuggestionsDialog from './SuggestionsDialog';
 import { getPassRateStyles, getStrategyIdFromTest, type TestWithMetadata } from './shared';
 import type { GradingResult } from '@promptfoo/types';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 
 interface RiskCategoryDrawerProps {
   open: boolean;
@@ -163,7 +164,7 @@ const RiskCategoryDrawer = ({
   }
 
   const displayName =
-    displayNameOverrides[category as keyof typeof displayNameOverrides] || categoryName;
+    displayNameOverrides[category as keyof typeof displayNameOverrides] || rebrandProviderId(categoryName);
 
   const totalTests = numPassed + numFailed;
   const passPercentage = totalTests > 0 ? Math.round((numPassed / totalTests) * 100) : 0;
@@ -195,7 +196,7 @@ const RiskCategoryDrawer = ({
     const chatMessages = buildChatMessages(test);
     const maxTurns = Math.ceil(chatMessages.length / 2);
     const strategyLabel = strategyId
-      ? displayNameOverrides[strategyId as keyof typeof displayNameOverrides] || strategyId
+      ? displayNameOverrides[strategyId as keyof typeof displayNameOverrides] || rebrandProviderId(strategyId)
       : undefined;
 
     return (

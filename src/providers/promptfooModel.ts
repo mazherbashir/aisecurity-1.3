@@ -70,7 +70,7 @@ export class PromptfooModelProvider implements ApiProvider {
   }
 
   id() {
-    return `promptfoo:model:${this.model}`;
+    return `aisecurity:model:${this.model}`;
   }
 
   async callApi(
@@ -95,7 +95,7 @@ export class PromptfooModelProvider implements ApiProvider {
       }
 
       const payload = {
-        task: 'promptfoo:model',
+        task: 'aisecurity:model',
         model: this.model,
         messages,
         config: this.config,

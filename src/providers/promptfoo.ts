@@ -46,7 +46,7 @@ export class PromptfooHarmfulCompletionProvider implements ApiProvider {
   }
 
   id(): string {
-    return `promptfoo:redteam:${this.harmCategory}`;
+    return `aisecurity:redteam:${this.harmCategory}`;
   }
 
   toString(): string {
@@ -166,7 +166,7 @@ export class PromptfooChatCompletionProvider implements ApiProvider {
   }
 
   id(): string {
-    return this.options.id || 'promptfoo:chatcompletion';
+    return this.options.id || 'aisecurity:chatcompletion';
   }
 
   toString(): string {
@@ -268,7 +268,7 @@ export class PromptfooSimulatedUserProvider implements ApiProvider {
   }
 
   id(): string {
-    return this.options.id || 'promptfoo:agent';
+    return this.options.id || 'aisecurity:agent';
   }
 
   toString(): string {

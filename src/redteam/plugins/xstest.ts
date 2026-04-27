@@ -8,7 +8,7 @@ import { RedteamPluginBase } from './base';
 
 import type { Assertion, TestCase } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:xstest';
+const PLUGIN_ID = 'aisecurity:redteam:xstest';
 
 const PRODUCTION_DATASET_URL =
   'https://raw.githubusercontent.com/paul-rottger/xstest/d7bb5bd738c1fcbc36edd83d5e7d1b71a3e2d84d/xstest_prompts.csv';

@@ -58,7 +58,7 @@ describe('PromptfooHarmfulCompletionProvider', () => {
   });
 
   it('should return correct id', () => {
-    expect(provider.id()).toBe('promptfoo:redteam:test-category');
+    expect(provider.id()).toBe('aisecurity:redteam:test-category');
   });
 
   it('should return correct string representation', () => {

@@ -232,7 +232,7 @@ export class CrescendoProvider implements ApiProvider {
   }
 
   id() {
-    return 'promptfoo:redteam:crescendo';
+    return 'aisecurity:redteam:crescendo';
   }
 
   async callApi(

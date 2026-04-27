@@ -14,6 +14,7 @@ import { type RedteamPluginObject } from '@promptfoo/redteam/types';
 import { compareByASRDescending } from '../utils/utils';
 import { type CategoryStats, type TestResultStats } from './FrameworkComplianceUtils';
 import { getPluginIdFromResult, getStrategyIdFromTest, type TestWithMetadata } from './shared';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 
 /**
  * Gets the progress bar color based on ASR percentage.
@@ -189,7 +190,7 @@ const DrawerContent = ({
     <div className="p-6">
       <h2 className="mb-2 text-xl font-semibold">
         {displayNameOverrides[selectedStrategy as keyof typeof displayNameOverrides] ||
-          selectedStrategy}
+          rebrandProviderId(selectedStrategy)}
       </h2>
       <p className="mb-6 text-sm text-muted-foreground">
         {subCategoryDescriptions[selectedStrategy as keyof typeof subCategoryDescriptions] || ''}
@@ -245,7 +246,7 @@ const DrawerContent = ({
                   <td className="px-4 py-3 font-medium">
                     {customPolicy?.name ??
                       (displayNameOverrides[stat.plugin as keyof typeof displayNameOverrides] ||
-                        stat.plugin)}
+                        rebrandProviderId(stat.plugin))}
                   </td>
                   <td className="px-4 py-3 text-right">{formatASRForDisplay(stat.asr)}%</td>
                   <td className="px-4 py-3 text-right">{stat.total - stat.successfulAttacks}</td>
@@ -344,7 +345,7 @@ const StrategySheet = ({
         <SheetTitle className="sr-only">
           {selectedStrategy
             ? displayNameOverrides[selectedStrategy as keyof typeof displayNameOverrides] ||
-              selectedStrategy
+              rebrandProviderId(selectedStrategy)
             : 'Strategy'}{' '}
           Details
         </SheetTitle>
@@ -455,7 +456,7 @@ const StrategyStats = ({
                 >
                   <p className="mb-2 font-semibold">
                     {displayNameOverrides[strategy as keyof typeof displayNameOverrides] ||
-                      strategy}
+                      rebrandProviderId(strategy)}
                   </p>
                   <p className="mb-4 min-h-10 text-sm text-muted-foreground">
                     {subCategoryDescriptions[strategy as keyof typeof subCategoryDescriptions] ||

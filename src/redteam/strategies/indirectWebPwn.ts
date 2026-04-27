@@ -362,7 +362,7 @@ function transformForStandaloneMode(
 ): TestCase[] {
   logger.debug('[IndirectWebPwn] Using standalone mode (setting provider)');
 
-  const providerName = 'promptfoo:redteam:indirect-web-pwn';
+  const providerName = 'aisecurity:redteam:indirect-web-pwn';
   const metricSuffix = 'IndirectWebPwn';
   const strategyId = 'indirect-web-pwn';
   const scanId = randomUUID();

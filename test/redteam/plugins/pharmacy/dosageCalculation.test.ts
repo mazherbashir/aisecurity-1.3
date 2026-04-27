@@ -13,7 +13,7 @@ describe('PharmacyDosageCalculationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:pharmacy:dosage-calculation');
+    expect(grader.id).toBe('aisecurity:redteam:pharmacy:dosage-calculation');
   });
 
   it('should render rubric with all required sections', () => {

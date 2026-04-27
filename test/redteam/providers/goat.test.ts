@@ -97,7 +97,7 @@ describe('RedteamGoatProvider', () => {
       maxTurns: 3,
     });
 
-    expect(provider.id()).toBe('promptfoo:redteam:goat');
+    expect(provider.id()).toBe('aisecurity:redteam:goat');
   });
 
   it('should throw error if injectVar is missing', () => {
@@ -746,7 +746,7 @@ describe('RedteamGoatProvider', () => {
       vars: {},
       assert: [
         {
-          type: 'promptfoo:redteam:policy',
+          type: 'aisecurity:redteam:policy',
           metric: 'PolicyViolation:401a805692b3',
         },
       ],
@@ -761,7 +761,7 @@ describe('RedteamGoatProvider', () => {
     expect(result.metadata?.storedGraderResult).toBeDefined();
     expect(result.metadata?.storedGraderResult?.assertion).toBeDefined();
     expect(result.metadata?.storedGraderResult?.assertion?.value).toBe(mockRenderedRubric);
-    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('promptfoo:redteam:policy');
+    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('aisecurity:redteam:policy');
     expect(result.metadata?.stopReason).toBe('Grader failed');
   });
 
@@ -779,7 +779,7 @@ describe('RedteamGoatProvider', () => {
       score: 0,
       reason: 'Test failed',
       assertion: {
-        type: 'promptfoo:redteam:policy' as const,
+        type: 'aisecurity:redteam:policy' as const,
         metric: 'PolicyViolation:test',
         value: 'old value',
       },
@@ -795,7 +795,7 @@ describe('RedteamGoatProvider', () => {
       vars: {},
       assert: [
         {
-          type: 'promptfoo:redteam:policy',
+          type: 'aisecurity:redteam:policy',
           metric: 'PolicyViolation:test',
         },
       ],
@@ -808,7 +808,7 @@ describe('RedteamGoatProvider', () => {
 
     // Verify that the rubric overrides the old value
     expect(result.metadata?.storedGraderResult?.assertion?.value).toBe(mockRenderedRubric);
-    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('promptfoo:redteam:policy');
+    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('aisecurity:redteam:policy');
     expect(result.metadata?.storedGraderResult?.assertion?.metric).toBe('PolicyViolation:test');
   });
 
@@ -837,7 +837,7 @@ describe('RedteamGoatProvider', () => {
       vars: {},
       assert: [
         {
-          type: 'promptfoo:redteam:harmful',
+          type: 'aisecurity:redteam:harmful',
           metric: 'Harmful',
         },
       ],
@@ -850,7 +850,7 @@ describe('RedteamGoatProvider', () => {
 
     // Should use assertion from test config with rubric as value
     expect(result.metadata?.storedGraderResult?.assertion?.value).toBe(mockRenderedRubric);
-    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('promptfoo:redteam:harmful');
+    expect(result.metadata?.storedGraderResult?.assertion?.type).toBe('aisecurity:redteam:harmful');
     expect(result.metadata?.storedGraderResult?.assertion?.metric).toBe('Harmful');
   });
 

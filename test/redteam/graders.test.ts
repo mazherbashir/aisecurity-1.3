@@ -24,80 +24,80 @@ import { UnsafeBenchGrader } from '../../src/redteam/plugins/unsafebench';
 
 describe('getGraderById', () => {
   it('should return correct grader for valid ID', () => {
-    const asciiGrader = getGraderById('promptfoo:redteam:ascii-smuggling');
+    const asciiGrader = getGraderById('aisecurity:redteam:ascii-smuggling');
     expect(asciiGrader).toBeInstanceOf(AsciiSmugglingGrader);
 
-    const beavertailsGrader = getGraderById('promptfoo:redteam:beavertails');
+    const beavertailsGrader = getGraderById('aisecurity:redteam:beavertails');
     expect(beavertailsGrader).toBeInstanceOf(BeavertailsGrader);
 
-    const harmfulGrader = getGraderById('promptfoo:redteam:harmful');
+    const harmfulGrader = getGraderById('aisecurity:redteam:harmful');
     expect(harmfulGrader).toBeInstanceOf(HarmfulGrader);
 
-    const unsafebenchGrader = getGraderById('promptfoo:redteam:unsafebench');
+    const unsafebenchGrader = getGraderById('aisecurity:redteam:unsafebench');
     expect(unsafebenchGrader).toBeInstanceOf(UnsafeBenchGrader);
 
-    const plinyGrader = getGraderById('promptfoo:redteam:pliny');
+    const plinyGrader = getGraderById('aisecurity:redteam:pliny');
     expect(plinyGrader).toBeInstanceOf(PlinyGrader);
 
-    const toxicChatGrader = getGraderById('promptfoo:redteam:toxic-chat');
+    const toxicChatGrader = getGraderById('aisecurity:redteam:toxic-chat');
     expect(toxicChatGrader).toBeInstanceOf(ToxicChatGrader);
 
     const financialCalculationGrader = getGraderById(
-      'promptfoo:redteam:financial:calculation-error',
+      'aisecurity:redteam:financial:calculation-error',
     );
     expect(financialCalculationGrader).toBeInstanceOf(FinancialCalculationErrorPluginGrader);
 
     const financialComplianceGrader = getGraderById(
-      'promptfoo:redteam:financial:compliance-violation',
+      'aisecurity:redteam:financial:compliance-violation',
     );
     expect(financialComplianceGrader).toBeInstanceOf(FinancialComplianceViolationPluginGrader);
 
-    const financialDataLeakageGrader = getGraderById('promptfoo:redteam:financial:data-leakage');
+    const financialDataLeakageGrader = getGraderById('aisecurity:redteam:financial:data-leakage');
     expect(financialDataLeakageGrader).toBeInstanceOf(FinancialDataLeakagePluginGrader);
 
-    const financialHallucinationGrader = getGraderById('promptfoo:redteam:financial:hallucination');
+    const financialHallucinationGrader = getGraderById('aisecurity:redteam:financial:hallucination');
     expect(financialHallucinationGrader).toBeInstanceOf(FinancialHallucinationPluginGrader);
 
-    const financialSycophancyGrader = getGraderById('promptfoo:redteam:financial:sycophancy');
+    const financialSycophancyGrader = getGraderById('aisecurity:redteam:financial:sycophancy');
     expect(financialSycophancyGrader).toBeInstanceOf(FinancialSycophancyPluginGrader);
 
-    const aegisGrader = getGraderById('promptfoo:redteam:aegis');
+    const aegisGrader = getGraderById('aisecurity:redteam:aegis');
     expect(aegisGrader).toBeInstanceOf(AegisGrader);
 
-    const mcpGrader = getGraderById('promptfoo:redteam:mcp');
+    const mcpGrader = getGraderById('aisecurity:redteam:mcp');
     expect(mcpGrader).toBeInstanceOf(MCPPluginGrader);
 
-    const medicalAnchoringBiasGrader = getGraderById('promptfoo:redteam:medical:anchoring-bias');
+    const medicalAnchoringBiasGrader = getGraderById('aisecurity:redteam:medical:anchoring-bias');
     expect(medicalAnchoringBiasGrader).toBeInstanceOf(MedicalAnchoringBiasPluginGrader);
 
-    const medicalHallucinationGrader = getGraderById('promptfoo:redteam:medical:hallucination');
+    const medicalHallucinationGrader = getGraderById('aisecurity:redteam:medical:hallucination');
     expect(medicalHallucinationGrader).toBeInstanceOf(MedicalHallucinationPluginGrader);
 
-    const offTopicGrader = getGraderById('promptfoo:redteam:off-topic');
+    const offTopicGrader = getGraderById('aisecurity:redteam:off-topic');
     expect(offTopicGrader).toBeInstanceOf(OffTopicPluginGrader);
 
-    const toolDiscoveryGrader = getGraderById('promptfoo:redteam:tool-discovery');
+    const toolDiscoveryGrader = getGraderById('aisecurity:redteam:tool-discovery');
     expect(toolDiscoveryGrader).toBeInstanceOf(ToolDiscoveryGrader);
 
-    const biasGrader = getGraderById('promptfoo:redteam:bias');
+    const biasGrader = getGraderById('aisecurity:redteam:bias');
     expect(biasGrader).toBeInstanceOf(BiasGrader);
   });
 
   it('should return specific grader for misinformation-disinformation', () => {
     const misinformationGrader = getGraderById(
-      'promptfoo:redteam:harmful:misinformation-disinformation',
+      'aisecurity:redteam:harmful:misinformation-disinformation',
     );
     expect(misinformationGrader).toBeInstanceOf(MisinformationDisinformationGrader);
     expect(misinformationGrader?.id).toBe(
-      'promptfoo:redteam:harmful:misinformation-disinformation',
+      'aisecurity:redteam:harmful:misinformation-disinformation',
     );
   });
 
-  it('should return harmful grader for IDs starting with promptfoo:redteam:harmful', () => {
-    const specificHarmfulGrader = getGraderById('promptfoo:redteam:harmful:specific-type');
+  it('should return harmful grader for IDs starting with aisecurity:redteam:harmful', () => {
+    const specificHarmfulGrader = getGraderById('aisecurity:redteam:harmful:specific-type');
     expect(specificHarmfulGrader).toBeInstanceOf(HarmfulGrader);
 
-    const anotherHarmfulGrader = getGraderById('promptfoo:redteam:harmful:another-type');
+    const anotherHarmfulGrader = getGraderById('aisecurity:redteam:harmful:another-type');
     expect(anotherHarmfulGrader).toBeInstanceOf(HarmfulGrader);
   });
 

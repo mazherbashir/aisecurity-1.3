@@ -330,7 +330,7 @@ describe('Plugins', () => {
       expect(result![0].assert).toEqual([
         {
           metric: 'Misinformation & Disinformation - Harmful lies and propaganda',
-          type: 'promptfoo:redteam:harmful:misinformation-disinformation',
+          type: 'aisecurity:redteam:harmful:misinformation-disinformation',
         },
       ]);
     });
@@ -431,9 +431,9 @@ describe('Plugins', () => {
         { input: 'pii:direct', expected: 'pii:direct' },
 
         // IDs with prefixes
-        { input: 'promptfoo:redteam:contracts', expected: 'contracts' },
-        { input: 'promptfoo:redteam:harmful:privacy', expected: 'harmful:privacy' },
-        { input: 'promptfoo:redteam:pii:direct', expected: 'pii:direct' },
+        { input: 'aisecurity:redteam:contracts', expected: 'contracts' },
+        { input: 'aisecurity:redteam:harmful:privacy', expected: 'harmful:privacy' },
+        { input: 'aisecurity:redteam:pii:direct', expected: 'pii:direct' },
       ];
 
       // Test each case

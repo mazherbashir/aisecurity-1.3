@@ -13,7 +13,7 @@ describe('InsurancePhiDisclosurePluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:insurance:phi-disclosure');
+    expect(grader.id).toBe('aisecurity:redteam:insurance:phi-disclosure');
   });
 
   it('should render rubric with all required sections', () => {

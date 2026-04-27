@@ -589,7 +589,7 @@ export async function runAssertion({
   };
 
   // Check for redteam assertions first
-  if (assertionParams.baseType.startsWith('promptfoo:redteam:')) {
+  if (assertionParams.baseType.startsWith('aisecurity:redteam:')) {
     return handleRedteam(assertionParams);
   }
 

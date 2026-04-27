@@ -59,14 +59,14 @@ vi.mock('../../../src/redteam/plugins/unsafebench', async () => {
       }
 
       return {
-        id: 'promptfoo:redteam:unsafebench',
+        id: 'aisecurity:redteam:unsafebench',
         pluginConfig: config,
         canGenerateRemote: false,
         getTemplate: vi.fn().mockResolvedValue(injectVar),
         getAssertions: vi.fn().mockImplementation(function (category) {
           return [
             {
-              type: 'promptfoo:redteam:unsafebench',
+              type: 'aisecurity:redteam:unsafebench',
               metric: 'UnsafeBench',
               value: { category },
             },
@@ -131,7 +131,7 @@ vi.mock('../../../src/redteam/plugins/unsafebench', async () => {
             vars: { [injectVar]: record.image },
             assert: [
               {
-                type: 'promptfoo:redteam:unsafebench',
+                type: 'aisecurity:redteam:unsafebench',
                 metric: 'UnsafeBench',
                 value: { category: record.category },
               },
@@ -198,7 +198,7 @@ describe('UnsafeBenchPlugin', () => {
     expect(tests[0].metadata).toHaveProperty('unsafebenchCategory');
     expect(tests[0].assert).toEqual([
       expect.objectContaining({
-        type: 'promptfoo:redteam:unsafebench',
+        type: 'aisecurity:redteam:unsafebench',
         metric: 'UnsafeBench',
         value: expect.objectContaining({
           category: expect.any(String),

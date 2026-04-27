@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class PharmacyDosageCalculationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:pharmacy:dosage-calculation';
+  readonly id = 'aisecurity:redteam:pharmacy:dosage-calculation';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

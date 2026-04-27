@@ -598,7 +598,7 @@ export async function addMultilingual(
         ...testCase,
         assert: testCase.assert?.map((assertion) => ({
           ...assertion,
-          metric: assertion.type?.startsWith('promptfoo:redteam:')
+          metric: assertion.type?.startsWith('aisecurity:redteam:')
             ? `${assertion.type?.split(':').pop() || assertion.metric}/Multilingual-${lang.toUpperCase()}`
             : assertion.metric,
         })),

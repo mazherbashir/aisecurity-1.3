@@ -8,10 +8,10 @@ export function addIterativeJailbreaks(
 ): TestCase[] {
   const providerName =
     strategy === 'iterative'
-      ? 'promptfoo:redteam:iterative'
+      ? 'aisecurity:redteam:iterative'
       : strategy === 'iterative:tree'
-        ? 'promptfoo:redteam:iterative:tree'
-        : 'promptfoo:redteam:iterative:meta';
+        ? 'aisecurity:redteam:iterative:tree'
+        : 'aisecurity:redteam:iterative:meta';
 
   const metricSuffix =
     strategy === 'iterative'

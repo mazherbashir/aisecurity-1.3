@@ -13,7 +13,7 @@ describe('InsuranceNetworkMisinformationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:insurance:network-misinformation');
+    expect(grader.id).toBe('aisecurity:redteam:insurance:network-misinformation');
   });
 
   it('should render rubric with all required sections', () => {

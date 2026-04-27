@@ -10,7 +10,7 @@ export interface BlobMetadata {
 
 /**
  * Blob reference format used across API/UI.
- * Example URI: promptfoo://blob/<hash>
+ * Example URI: aisecurity://blob/<hash>
  */
 export interface BlobRef {
   uri: string;

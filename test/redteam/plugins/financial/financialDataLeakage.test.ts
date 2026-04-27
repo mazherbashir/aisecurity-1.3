@@ -9,7 +9,7 @@ describe('FinancialDataLeakagePluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:data-leakage');
+    expect(grader.id).toBe('aisecurity:redteam:financial:data-leakage');
   });
 
   it('should render rubric with all required sections', () => {

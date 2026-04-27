@@ -13,7 +13,7 @@ describe('PharmacyDrugInteractionPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:pharmacy:drug-interaction');
+    expect(grader.id).toBe('aisecurity:redteam:pharmacy:drug-interaction');
   });
 
   it('should render rubric with all required sections', () => {

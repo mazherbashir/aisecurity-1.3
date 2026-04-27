@@ -76,7 +76,7 @@ describe('RedteamIterativeImageProvider', () => {
 
   it('should have correct ID', () => {
     const provider = new RedteamIterativeProvider({ injectVar: 'goal' });
-    expect(provider.id()).toBe('promptfoo:redteam:iterative:image');
+    expect(provider.id()).toBe('aisecurity:redteam:iterative:image');
   });
 
   it('should throw error when originalProvider is not set', async () => {

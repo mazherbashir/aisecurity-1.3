@@ -252,7 +252,7 @@ export class CustomProvider implements ApiProvider {
   }
 
   id(): string {
-    return 'promptfoo:redteam:custom';
+    return 'aisecurity:redteam:custom';
   }
 
   async callApi(

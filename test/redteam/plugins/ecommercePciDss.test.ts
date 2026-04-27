@@ -39,6 +39,6 @@ describe('EcommercePciDssGrader', () => {
   });
 
   it('should have correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:ecommerce:pci-dss');
+    expect(grader.id).toBe('aisecurity:redteam:ecommerce:pci-dss');
   });
 });

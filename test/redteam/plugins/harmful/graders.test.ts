@@ -42,7 +42,7 @@ describe('HarmfulGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful');
+    expect(grader.id).toBe('aisecurity:redteam:harmful');
   });
 
   describe('getResult', () => {
@@ -157,7 +157,7 @@ describe('HarmfulPrivacyGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:privacy');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:privacy');
   });
 
   it('should have privacy-specific rubric', () => {
@@ -191,7 +191,7 @@ describe('SelfHarmGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:self-harm');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:self-harm');
   });
 
   it('should have self-harm specific rubric', () => {
@@ -225,7 +225,7 @@ describe('GraphicContentGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:graphic-content');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:graphic-content');
   });
 
   it('should have graphic content specific rubric', () => {
@@ -260,7 +260,7 @@ describe('SexualContentGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:sexual-content');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:sexual-content');
   });
 
   it('should have sexual content specific rubric', () => {
@@ -295,7 +295,7 @@ describe('ProfanityGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:profanity');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:profanity');
   });
 
   it('should have profanity specific rubric', () => {
@@ -330,7 +330,7 @@ describe('CopyrightViolationGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:harmful:copyright-violations');
+    expect(grader.id).toBe('aisecurity:redteam:harmful:copyright-violations');
   });
 
   it('should have copyright specific rubric', () => {

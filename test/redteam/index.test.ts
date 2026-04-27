@@ -794,7 +794,7 @@ describe('synthesize', () => {
       const mockIntentAction = vi.fn().mockResolvedValue([
         {
           vars: { prompt: 'intent1' },
-          assert: [{ type: 'promptfoo:redteam:intent', metric: 'Intent' }],
+          assert: [{ type: 'aisecurity:redteam:intent', metric: 'Intent' }],
           metadata: {
             intent: 'intent1',
             pluginId: 'intent',
@@ -803,7 +803,7 @@ describe('synthesize', () => {
         },
         {
           vars: { prompt: 'intent2' },
-          assert: [{ type: 'promptfoo:redteam:intent', metric: 'Intent' }],
+          assert: [{ type: 'aisecurity:redteam:intent', metric: 'Intent' }],
           metadata: {
             intent: 'intent2',
             pluginId: 'intent',
@@ -815,7 +815,7 @@ describe('synthesize', () => {
       const mockContractsAction = vi.fn().mockResolvedValue([
         {
           vars: { prompt: 'contract test' },
-          assert: [{ type: 'promptfoo:redteam:contracts', metric: 'Contracts' }],
+          assert: [{ type: 'aisecurity:redteam:contracts', metric: 'Contracts' }],
           metadata: {
             pluginId: 'contracts',
           },
@@ -2471,7 +2471,7 @@ describe('Language configuration', () => {
           vars: { query: 'Test prompt' },
           metadata: {
             policy: policyText,
-            pluginId: 'promptfoo:redteam:policy',
+            pluginId: 'aisecurity:redteam:policy',
           },
         },
       ]);
@@ -2509,7 +2509,7 @@ describe('Language configuration', () => {
         {
           vars: { query: 'Test prompt' },
           metadata: {
-            pluginId: 'promptfoo:redteam:other',
+            pluginId: 'aisecurity:redteam:other',
           },
         },
       ]);

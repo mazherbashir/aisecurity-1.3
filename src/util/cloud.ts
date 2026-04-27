@@ -734,7 +734,7 @@ export async function getPoliciesFromCloud(ids: string[], teamId: string): Promi
  * @throws Error if validation fails
  */
 export async function validateLinkedTargetId(linkedTargetId: string): Promise<void> {
-  // Validate format: promptfoo://provider/{id}
+  // Validate format: aisecurity://provider/{id}
   if (!isCloudProvider(linkedTargetId)) {
     const apiHost = cloudConfig.getApiHost();
     const appHost = apiHost.replace('/api', '').replace(':3201', '');

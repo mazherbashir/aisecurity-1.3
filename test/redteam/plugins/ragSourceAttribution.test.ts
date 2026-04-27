@@ -9,7 +9,7 @@ describe('RagSourceAttributionGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:rag-source-attribution');
+    expect(grader.id).toBe('aisecurity:redteam:rag-source-attribution');
   });
 
   it('should have rubric containing key terms', () => {

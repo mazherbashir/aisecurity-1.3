@@ -4,7 +4,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:indirect-prompt-injection';
+const PLUGIN_ID = 'aisecurity:redteam:indirect-prompt-injection';
 
 export class IndirectPromptInjectionGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

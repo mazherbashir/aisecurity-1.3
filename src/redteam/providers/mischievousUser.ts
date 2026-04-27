@@ -6,7 +6,7 @@ import { getLastMessageContent, messagesToRedteamHistory } from './shared';
 
 import type { ProviderResponse, TokenUsage } from '../../types/index';
 
-const PROVIDER_ID = 'promptfoo:redteam:mischievous-user';
+const PROVIDER_ID = 'aisecurity:redteam:mischievous-user';
 
 type Config = {
   injectVar: string;

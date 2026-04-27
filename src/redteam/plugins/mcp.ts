@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from './base';
 
 export class MCPPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:mcp';
+  readonly id = 'aisecurity:redteam:mcp';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

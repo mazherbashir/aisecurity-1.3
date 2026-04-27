@@ -19,7 +19,7 @@ export class ManualInputProvider implements ApiProvider {
   }
 
   id() {
-    return 'promptfoo:manual-input';
+    return 'aisecurity:manual-input';
   }
 
   async callApi(prompt: string): Promise<ProviderResponse> {

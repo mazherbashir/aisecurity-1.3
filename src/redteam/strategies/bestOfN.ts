@@ -14,7 +14,7 @@ export async function addBestOfNTestCases(
     return {
       ...testCase,
       provider: {
-        id: 'promptfoo:redteam:best-of-n',
+        id: 'aisecurity:redteam:best-of-n',
         config: {
           injectVar,
           ...config,

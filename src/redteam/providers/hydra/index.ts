@@ -187,7 +187,7 @@ export class HydraProvider implements ApiProvider {
   }
 
   id() {
-    return 'promptfoo:redteam:hydra';
+    return 'aisecurity:redteam:hydra';
   }
 
   async callApi(

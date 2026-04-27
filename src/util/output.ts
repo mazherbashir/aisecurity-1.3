@@ -248,7 +248,7 @@ export async function writeOutput(
       indentBy: '  ',
     });
     const xmlData = xmlBuilder.build({
-      promptfoo: {
+      aisecurity: {
         evalId: evalRecord.id,
         results: sanitizeForXml(summary),
         config: sanitizeForXml(redactedConfig),

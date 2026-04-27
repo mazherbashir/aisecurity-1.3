@@ -424,7 +424,7 @@ describe('addLayerTestCases', () => {
       const testCases: TestCaseWithPlugin[] = [
         {
           vars: { input: 'test' },
-          assert: [{ type: 'promptfoo:redteam:harmful:test' as const, metric: 'Harmful/Test' }],
+          assert: [{ type: 'aisecurity:redteam:harmful:test' as const, metric: 'Harmful/Test' }],
           metadata: { pluginId: 'test-plugin' },
         },
       ];
@@ -443,7 +443,7 @@ describe('addLayerTestCases', () => {
       expect(provider).toBeDefined();
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:hydra');
+        expect(provider.id).toBe('aisecurity:redteam:hydra');
         expect(provider.config).toEqual(
           expect.objectContaining({
             injectVar: 'input',
@@ -477,7 +477,7 @@ describe('addLayerTestCases', () => {
       const provider = result[0].provider;
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:crescendo');
+        expect(provider.id).toBe('aisecurity:redteam:crescendo');
         expect(provider.config).toEqual(
           expect.objectContaining({
             _perTurnLayers: ['image'],
@@ -506,7 +506,7 @@ describe('addLayerTestCases', () => {
       const provider = result[0].provider;
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:goat');
+        expect(provider.id).toBe('aisecurity:redteam:goat');
       }
     });
 
@@ -530,7 +530,7 @@ describe('addLayerTestCases', () => {
       const provider = result[0].provider;
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:iterative');
+        expect(provider.id).toBe('aisecurity:redteam:iterative');
       }
     });
 
@@ -554,7 +554,7 @@ describe('addLayerTestCases', () => {
       const provider = result[0].provider;
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:iterative:meta');
+        expect(provider.id).toBe('aisecurity:redteam:iterative:meta');
       }
     });
 
@@ -578,7 +578,7 @@ describe('addLayerTestCases', () => {
       const provider = result[0].provider;
       expect(typeof provider).toBe('object');
       if (typeof provider === 'object' && provider !== null && 'id' in provider) {
-        expect(provider.id).toBe('promptfoo:redteam:iterative:tree');
+        expect(provider.id).toBe('aisecurity:redteam:iterative:tree');
       }
     });
 
@@ -665,7 +665,7 @@ describe('addLayerTestCases', () => {
       const testCasesWithAssert: TestCaseWithPlugin[] = [
         {
           vars: { input: 'test' },
-          assert: [{ type: 'promptfoo:redteam:test' as const, metric: 'TestMetric' }],
+          assert: [{ type: 'aisecurity:redteam:test' as const, metric: 'TestMetric' }],
           metadata: { pluginId: 'test-plugin' },
         },
       ];

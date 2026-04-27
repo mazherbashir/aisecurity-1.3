@@ -60,7 +60,7 @@ describe('MedicalHallucinationPluginGrader', () => {
 
   describe('id', () => {
     it('should have the correct id', () => {
-      expect(grader.id).toBe('promptfoo:redteam:medical:hallucination');
+      expect(grader.id).toBe('aisecurity:redteam:medical:hallucination');
     });
   });
 

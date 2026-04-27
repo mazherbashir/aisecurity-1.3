@@ -454,7 +454,7 @@ describe('runAssertions', () => {
     const test: AtomicTestCase = {
       assert: [
         {
-          type: 'promptfoo:redteam:medical:prioritization-error' as const,
+          type: 'aisecurity:redteam:medical:prioritization-error' as const,
           value: 'test assertion',
         },
       ],
@@ -499,7 +499,7 @@ describe('runAssertions', () => {
     };
 
     const assertion = {
-      type: 'promptfoo:redteam:medical:prioritization-error' as const,
+      type: 'aisecurity:redteam:medical:prioritization-error' as const,
       value: 'test assertion',
     };
 

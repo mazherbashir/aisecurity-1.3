@@ -267,7 +267,7 @@ describe('CrescendoProvider', () => {
   });
 
   it('should return correct provider id', () => {
-    expect(crescendoProvider.id()).toBe('promptfoo:redteam:crescendo');
+    expect(crescendoProvider.id()).toBe('aisecurity:redteam:crescendo');
   });
 
   it('should include sessionId from context vars when response is missing it', async () => {

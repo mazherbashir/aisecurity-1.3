@@ -17,7 +17,7 @@ export async function addGoatTestCases(
     return {
       ...testCase,
       provider: {
-        id: 'promptfoo:redteam:goat',
+        id: 'aisecurity:redteam:goat',
         config: {
           injectVar,
           ...config,

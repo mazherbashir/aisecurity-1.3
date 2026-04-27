@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class RealEstateSourceOfIncomePluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:realestate:source-of-income';
+  readonly id = 'aisecurity:redteam:realestate:source-of-income';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

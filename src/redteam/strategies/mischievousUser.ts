@@ -8,7 +8,7 @@ export function addMischievousUser(
   return testCases.map((testCase) => ({
     ...testCase,
     provider: {
-      id: 'promptfoo:redteam:mischievous-user',
+      id: 'aisecurity:redteam:mischievous-user',
       config: {
         injectVar,
         ...config,

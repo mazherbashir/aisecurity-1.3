@@ -34,7 +34,7 @@ export const TERMINAL_MAX_WIDTH =
     ? process?.stdout?.columns - 10
     : 120;
 
-export const CLOUD_PROVIDER_PREFIX = 'promptfoo://provider/';
+export const CLOUD_PROVIDER_PREFIX = 'aisecurity://provider/';
 
 // Re-export HUMAN_ASSERTION_TYPE from providers/constants for backward compatibility
 // (providers/constants is browser-safe, constants.ts is not due to envars import)

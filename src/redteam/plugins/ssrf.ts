@@ -12,7 +12,7 @@ import type {
 } from '../../types/index';
 import type { RedteamGradingContext } from '../grading/types';
 
-const PLUGIN_ID = 'promptfoo:redteam:ssrf';
+const PLUGIN_ID = 'aisecurity:redteam:ssrf';
 
 // Severity tiers in order from least to most severe
 const SEVERITY_ORDER = ['none', 'low', 'medium', 'high', 'critical'] as const;

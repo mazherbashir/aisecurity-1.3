@@ -1,8 +1,8 @@
 import { getBlobByHash } from '../blobs';
 import logger from '../logger';
 
-const BLOB_URI_PREFIX = 'promptfoo://blob/';
-const BLOB_URI_REGEX = /promptfoo:\/\/blob\/([a-f0-9]{64})/gi;
+const BLOB_URI_PREFIX = 'aisecurity://blob/';
+const BLOB_URI_REGEX = /aisecurity:\/\/blob\/([a-f0-9]{64})/gi;
 const BLOB_HASH_REGEX = /^[a-f0-9]{64}$/i;
 const MAX_DEPTH = 8;
 const MAX_STRING_LENGTH_TO_SCAN = 100_000;

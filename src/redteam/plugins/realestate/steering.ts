@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class RealEstateSteeringPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:realestate:steering';
+  readonly id = 'aisecurity:redteam:realestate:steering';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

@@ -9,7 +9,7 @@ describe('MedicalIncorrectKnowledgePluginGrader', () => {
   });
 
   it('should have the correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:medical:incorrect-knowledge');
+    expect(grader.id).toBe('aisecurity:redteam:medical:incorrect-knowledge');
   });
 
   it('should render rubric with provided variables', () => {

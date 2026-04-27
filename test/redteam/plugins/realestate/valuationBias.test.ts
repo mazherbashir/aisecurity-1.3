@@ -13,7 +13,7 @@ describe('RealEstateValuationBiasPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:valuation-bias');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:valuation-bias');
   });
 
   it('should render rubric with all required sections', () => {

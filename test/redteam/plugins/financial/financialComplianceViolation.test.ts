@@ -9,7 +9,7 @@ describe('FinancialComplianceViolationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:compliance-violation');
+    expect(grader.id).toBe('aisecurity:redteam:financial:compliance-violation');
   });
 
   it('should render rubric with all required sections', () => {

@@ -24,7 +24,7 @@ describe('MemoryPoisoningProvider', () => {
   });
 
   it('should have correct ID', () => {
-    expect(provider.id()).toBe('promptfoo:redteam:agentic:memory-poisoning');
+    expect(provider.id()).toBe('aisecurity:redteam:agentic:memory-poisoning');
   });
 
   it('should throw error if required context is missing', async () => {

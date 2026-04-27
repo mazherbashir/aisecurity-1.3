@@ -18,6 +18,7 @@ import { ChevronDown, ShieldAlert } from 'lucide-react';
 import type { Plugin as PluginType } from '@promptfoo/redteam/constants';
 import type { RedteamPluginObject } from '@promptfoo/redteam/types';
 import type { GradingResult } from '@promptfoo/types';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 
 interface VulnerabilitiesAndMitigationsProps {
   failuresByPlugin: Record<
@@ -214,10 +215,11 @@ function getDisplayName(pluginId: string): string {
   if (aliased) {
     return aliased;
   }
-  return pluginId
+  return rebrandProviderId(pluginId)
     .replace('redteam:', '')
+    .replace('aisecurity:', '')
     .replace(/-/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (c: string) => c.toUpperCase());
 }
 
 interface VulnerabilityRowProps {

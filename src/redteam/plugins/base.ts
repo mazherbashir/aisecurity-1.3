@@ -299,7 +299,7 @@ export abstract class RedteamPluginBase {
 /**
  * Base class for all redteam graders.
  *
- * Each grader should implement an id (e.g. `promptfoo:redteam:foo`) and a rubric (grading prompt).
+ * Each grader should implement an id (e.g. `aisecurity:redteam:foo`) and a rubric (grading prompt).
  * By default, the rubric is passed to `llm-rubric` grader.
  *
  * But if you'd like, you can override the `getResult` method to use a different grading method.

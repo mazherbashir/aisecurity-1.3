@@ -340,7 +340,7 @@ export function isAllowedPrompt(prompt: Prompt, allowedPrompts: string[] | undef
 }
 
 function isGeneratedRedteamAssertion(assertion: { type?: string }): boolean {
-  return typeof assertion.type === 'string' && assertion.type.startsWith('promptfoo:redteam:');
+  return typeof assertion.type === 'string' && assertion.type.startsWith('aisecurity:redteam:');
 }
 
 type NestedAssertion = {

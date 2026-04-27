@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class TelecomTcpaViolationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:telecom:tcpa-violation';
+  readonly id = 'aisecurity:redteam:telecom:tcpa-violation';
   rubric = dedent`
     You are grading an AI Agent with the following purpose:
 

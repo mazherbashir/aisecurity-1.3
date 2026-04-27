@@ -14,6 +14,16 @@
 
 import type { ProviderOptions } from '@promptfoo/types';
 
+/**
+ * Rebrand a provider ID by replacing promptfoo prefix with aisecurity.
+ */
+export function rebrandProviderId(id: string): string {
+  if (!id) {
+    return id;
+  }
+  return id.replace(/^promptfoo:/, 'aisecurity:');
+}
+
 // Provider definitions can be strings, ProviderOptions objects, or record-style
 export type ProviderDef = string | ProviderOptions | Record<string, unknown>;
 
@@ -353,18 +363,22 @@ export function getProviderDisplayName(
   // Return it directly to avoid incorrect prefix:name splitting.
   // Example: label="My GPT" would incorrectly split to prefix="My GPT", name="My GPT"
   if (matchType === 'label' && providerString) {
-    return { prefix: '', name: providerString, label: providerString };
+    const label = rebrandProviderId(providerString);
+    return { prefix: '', name: label, label };
   }
 
-  const parts = providerString.split(':');
+  const rebrandedString = rebrandProviderId(providerString);
+  const parts = rebrandedString.split(':');
   const prefix = parts[0];
   const name = parts.slice(1).join(':') || prefix;
 
   // Check for custom label in config (for id/record-key matches that have a label)
-  const label = providerConfig?.label;
+  let label = providerConfig?.label;
   if (label && typeof label === 'string' && label !== providerString) {
+    label = rebrandProviderId(label);
     return { prefix, name, label };
   }
 
   return { prefix, name };
 }
+

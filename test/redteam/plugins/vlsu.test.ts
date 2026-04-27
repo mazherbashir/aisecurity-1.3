@@ -70,7 +70,7 @@ describe('VLSUPlugin', () => {
   describe('constructor', () => {
     it('should initialize with default config', () => {
       const plugin = new VLSUPlugin(mockProvider, 'test purpose', 'image', {});
-      expect(plugin.id).toBe('promptfoo:redteam:vlsu');
+      expect(plugin.id).toBe('aisecurity:redteam:vlsu');
     });
 
     it('should validate categories in config', () => {
@@ -129,7 +129,7 @@ describe('VLSUPlugin', () => {
 
       expect(assertions).toEqual([
         {
-          type: 'promptfoo:redteam:vlsu',
+          type: 'aisecurity:redteam:vlsu',
           metric: 'VLSU',
         },
       ]);
@@ -626,7 +626,7 @@ describe('VLSUGrader', () => {
 
   describe('id', () => {
     it('should have correct plugin ID', () => {
-      expect(grader.id).toBe('promptfoo:redteam:vlsu');
+      expect(grader.id).toBe('aisecurity:redteam:vlsu');
     });
   });
 

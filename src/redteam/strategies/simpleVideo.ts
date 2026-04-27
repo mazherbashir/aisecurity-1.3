@@ -222,7 +222,7 @@ export async function addVideoToBase64(
           ...testCase,
           assert: testCase.assert?.map((assertion) => ({
             ...assertion,
-            metric: assertion.type?.startsWith('promptfoo:redteam:')
+            metric: assertion.type?.startsWith('aisecurity:redteam:')
               ? `${assertion.type?.split(':').pop() || assertion.metric}/Video-Encoded`
               : assertion.metric,
           })),

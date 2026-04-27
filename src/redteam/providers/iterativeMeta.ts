@@ -672,7 +672,7 @@ class RedteamIterativeMetaProvider implements ApiProvider {
   }
 
   id() {
-    return 'promptfoo:redteam:iterative:meta';
+    return 'aisecurity:redteam:iterative:meta';
   }
 
   async callApi(

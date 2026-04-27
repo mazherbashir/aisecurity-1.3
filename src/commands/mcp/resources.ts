@@ -10,13 +10,13 @@ initializeToolRegistry();
  */
 export function registerResources(server: McpServer) {
   // Resources with proper namespacing
-  server.resource('promptfoo-config', 'promptfoo://config/default', async () => {
+  server.resource('promptfoo-config', 'aisecurity://config/default', async () => {
     try {
       const { defaultConfig } = await loadDefaultConfig();
       return {
         contents: [
           {
-            uri: 'promptfoo://config/default',
+            uri: 'aisecurity://config/default',
             text: JSON.stringify(defaultConfig, null, 2),
           },
         ],
@@ -25,7 +25,7 @@ export function registerResources(server: McpServer) {
       return {
         contents: [
           {
-            uri: 'promptfoo://config/default',
+            uri: 'aisecurity://config/default',
             text: JSON.stringify(
               {
                 error: `Failed to load default config: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -39,14 +39,14 @@ export function registerResources(server: McpServer) {
     }
   });
 
-  server.resource('promptfoo-docs', 'promptfoo://docs/tools', async () => {
+  server.resource('promptfoo-docs', 'aisecurity://docs/tools', async () => {
     // Auto-generate documentation from the tool registry
     const toolDocs = toolRegistry.generateDocs();
 
     return {
       contents: [
         {
-          uri: 'promptfoo://docs/tools',
+          uri: 'aisecurity://docs/tools',
           text: JSON.stringify(toolDocs, null, 2),
         },
       ],

@@ -9,7 +9,7 @@ describe('FinancialHallucinationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:hallucination');
+    expect(grader.id).toBe('aisecurity:redteam:financial:hallucination');
   });
 
   it('should render rubric with all required sections', () => {

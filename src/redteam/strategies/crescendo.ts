@@ -14,7 +14,7 @@ export function addCrescendo(
     return {
       ...testCase,
       provider: {
-        id: 'promptfoo:redteam:crescendo',
+        id: 'aisecurity:redteam:crescendo',
         config: {
           injectVar,
           ...config,

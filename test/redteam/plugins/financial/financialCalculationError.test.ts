@@ -9,7 +9,7 @@ describe('FinancialCalculationErrorPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:financial:calculation-error');
+    expect(grader.id).toBe('aisecurity:redteam:financial:calculation-error');
   });
 
   it('should render rubric with provided variables', () => {

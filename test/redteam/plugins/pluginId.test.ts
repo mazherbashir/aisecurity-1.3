@@ -79,36 +79,36 @@ describe('Plugin IDs', () => {
     // Create a comprehensive list of all expected plugin IDs, including the prefixed versions
     const expectedPrefixedPluginIds = new Set<string>();
 
-    // Add common plugin format - 'promptfoo:redteam:plugin-name'
+    // Add common plugin format - 'aisecurity:redteam:plugin-name'
     ALL_PLUGINS.forEach((pluginId) => {
       if (typeof pluginId === 'string' && !pluginId.includes(':')) {
-        expectedPrefixedPluginIds.add(`promptfoo:redteam:${pluginId}`);
+        expectedPrefixedPluginIds.add(`aisecurity:redteam:${pluginId}`);
       }
     });
 
     // Add harm plugins which might have different prefixes
     Object.keys(HARM_PLUGINS).forEach((harmPlugin) => {
       if (typeof harmPlugin === 'string') {
-        const fullPluginId = `promptfoo:redteam:${harmPlugin}`;
+        const fullPluginId = `aisecurity:redteam:${harmPlugin}`;
         expectedPrefixedPluginIds.add(fullPluginId);
       }
     });
 
     // Add PII plugins with their prefixes
     PII_PLUGINS.forEach((piiPlugin) => {
-      expectedPrefixedPluginIds.add(`promptfoo:redteam:${piiPlugin}`);
+      expectedPrefixedPluginIds.add(`aisecurity:redteam:${piiPlugin}`);
     });
 
     // Add special case for general PII plugin
-    expectedPrefixedPluginIds.add('promptfoo:redteam:pii');
+    expectedPrefixedPluginIds.add('aisecurity:redteam:pii');
 
     // Add special case for general harmful plugin
-    expectedPrefixedPluginIds.add('promptfoo:redteam:harmful');
+    expectedPrefixedPluginIds.add('aisecurity:redteam:harmful');
 
     // Add special cases from harm sub-categories
     // These are handled specially in the constants file as nested objects
     uniqueIds.forEach((id) => {
-      if (id.startsWith('promptfoo:redteam:harmful:')) {
+      if (id.startsWith('aisecurity:redteam:harmful:')) {
         expectedPrefixedPluginIds.add(id);
       }
     });
@@ -124,14 +124,14 @@ describe('Plugin IDs', () => {
     const unexpectedPlugins: { id: string; baseId: string }[] = [];
 
     uniqueIds.forEach((id) => {
-      if (!id.startsWith('promptfoo:redteam:') && id !== 'policy') {
+      if (!id.startsWith('aisecurity:redteam:') && id !== 'policy') {
         console.warn(
-          `Plugin ID '${id}' does not start with the expected prefix 'promptfoo:redteam:'`,
+          `Plugin ID '${id}' does not start with the expected prefix 'aisecurity:redteam:'`,
         );
       }
 
       if (!expectedPrefixedPluginIds.has(id) && id !== 'policy') {
-        const baseId = id.replace('promptfoo:redteam:', '');
+        const baseId = id.replace('aisecurity:redteam:', '');
         const isHarmSubcategory = baseId.startsWith('harmful:');
 
         // Special case for harm subcategories

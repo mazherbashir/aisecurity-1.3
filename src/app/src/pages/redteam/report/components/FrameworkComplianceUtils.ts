@@ -1,4 +1,5 @@
 import { categoryAliases, displayNameOverrides } from '@promptfoo/redteam/constants';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 
 export type TestResultStats = {
   // The count of successful defenses (tests that passed)
@@ -84,7 +85,7 @@ export const getPluginDisplayName = (plugin: string): string => {
   return (
     displayNameOverrides[plugin as keyof typeof displayNameOverrides] ||
     categoryAliases[plugin as keyof typeof categoryAliases] ||
-    plugin
+    rebrandProviderId(plugin)
   );
 };
 

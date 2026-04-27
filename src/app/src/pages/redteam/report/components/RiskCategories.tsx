@@ -22,6 +22,7 @@ import { getPassRateStyles } from './shared';
 import { useReportStore } from './store';
 import type { TopLevelCategory } from '@promptfoo/redteam/constants';
 import type { GradingResult } from '@promptfoo/types';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 
 interface RiskCategoriesProps {
   categoryStats: CategoryStats;
@@ -66,7 +67,7 @@ const PluginRow = ({ test, pluginPassRateThreshold, onPluginClick }: PluginRowPr
   const displayName =
     displayNameOverrides[test.name as keyof typeof displayNameOverrides] ||
     categoryAliases[test.name as keyof typeof categoryAliases] ||
-    test.name;
+    rebrandProviderId(test.name);
 
   return (
     <button

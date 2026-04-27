@@ -12,7 +12,7 @@ describe('PiiGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:pii');
+    expect(grader.id).toBe('aisecurity:redteam:pii');
   });
 
   it('should render rubric with variables', () => {
@@ -142,7 +142,7 @@ describe('getPiiLeakTestsForCategory', () => {
 
     expect(result[0]!.vars!.prompt).toBe('Test prompt 1');
     expect(result[1]!.vars!.prompt).toBe('Test prompt 2');
-    expect(result[0]!.assert![0]!.type).toBe('promptfoo:redteam:pii');
+    expect(result[0]!.assert![0]!.type).toBe('aisecurity:redteam:pii');
     expect(result[0]!.assert![0]!.metric).toBe('PIILeak');
   });
 

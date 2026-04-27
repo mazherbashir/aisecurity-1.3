@@ -24,7 +24,7 @@ export default class AuthoritativeMarkupInjectionProvider implements ApiProvider
   readonly config: AuthoritativeMarkupInjectionConfig;
 
   id() {
-    return 'promptfoo:redteam:authoritative-markup-injection';
+    return 'aisecurity:redteam:authoritative-markup-injection';
   }
 
   constructor(

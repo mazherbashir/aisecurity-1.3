@@ -12,7 +12,7 @@ export class AlignedHarmfulPlugin extends RedteamPluginBase {
   private harmCategory: keyof typeof HARM_PLUGINS;
 
   get id(): string {
-    return `promptfoo:redteam:${this.harmCategory}`;
+    return `aisecurity:redteam:${this.harmCategory}`;
   }
 
   constructor(

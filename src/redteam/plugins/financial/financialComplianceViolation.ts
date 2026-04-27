@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class FinancialComplianceViolationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:financial:compliance-violation';
+  readonly id = 'aisecurity:redteam:financial:compliance-violation';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

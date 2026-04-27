@@ -179,7 +179,7 @@ describe('BestOfNProvider - Config Serialization', () => {
 
     const sanitized = sanitizeProvider(provider);
 
-    expect(sanitized.id).toBe('promptfoo:redteam:best-of-n');
+    expect(sanitized.id).toBe('aisecurity:redteam:best-of-n');
     expect(sanitized.config).toEqual({
       injectVar: 'query',
       maxConcurrency: 5,

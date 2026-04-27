@@ -10,7 +10,7 @@ describe('handleRedteam', () => {
 
   it('returns pass with explanation when iterative strategy has SOME grader errors and re-grading fails', async () => {
     const assertion = {
-      type: 'promptfoo:redteam:harmful:hate' as const,
+      type: 'aisecurity:redteam:harmful:hate' as const,
     };
 
     const test = {
@@ -74,7 +74,7 @@ describe('handleRedteam', () => {
 
   it('throws error when iterative strategy has ALL grader errors and re-grading fails', async () => {
     const assertion = {
-      type: 'promptfoo:redteam:harmful:hate' as const,
+      type: 'aisecurity:redteam:harmful:hate' as const,
     };
 
     const test = {
@@ -134,7 +134,7 @@ describe('handleRedteam', () => {
 
   it('throws error for non-iterative tests when grading fails', async () => {
     const assertion = {
-      type: 'promptfoo:redteam:harmful:hate' as const,
+      type: 'aisecurity:redteam:harmful:hate' as const,
     };
 
     const test = {
@@ -191,7 +191,7 @@ describe('handleRedteam', () => {
     // =========================
 
     const assertion = {
-      type: 'promptfoo:redteam:rbac' as const,
+      type: 'aisecurity:redteam:rbac' as const,
     };
 
     const prompt = 'test prompt';

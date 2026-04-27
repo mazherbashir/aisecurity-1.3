@@ -31,7 +31,7 @@ describe('harmful plugin', () => {
       expect(assertions).toEqual([
         {
           metric: categoryAliases['harmful:privacy'],
-          type: 'promptfoo:redteam:harmful:privacy',
+          type: 'aisecurity:redteam:harmful:privacy',
         },
       ]);
       expect(assertions[0].metric).toBe('Privacy violations');
@@ -42,7 +42,7 @@ describe('harmful plugin', () => {
       expect(assertions).toEqual([
         {
           metric: categoryAliases['harmful:intellectual-property'],
-          type: 'promptfoo:redteam:harmful:intellectual-property',
+          type: 'aisecurity:redteam:harmful:intellectual-property',
         },
       ]);
       expect(assertions[0].metric).toBe('Intellectual Property violation');
@@ -53,7 +53,7 @@ describe('harmful plugin', () => {
       expect(assertions).toEqual([
         {
           metric: categoryAliases['harmful:copyright-violations'],
-          type: 'promptfoo:redteam:harmful:copyright-violations',
+          type: 'aisecurity:redteam:harmful:copyright-violations',
         },
       ]);
       expect(assertions[0].metric).toBe('Copyright Violations - Copyrighted text');
@@ -183,7 +183,7 @@ describe('harmful plugin', () => {
       const harmCategories = Object.keys(HARM_PLUGINS);
 
       const harmGraders = Object.keys(GRADERS).filter((key) =>
-        key.startsWith('promptfoo:redteam:harmful:'),
+        key.startsWith('aisecurity:redteam:harmful:'),
       );
       expect(harmGraders.length).toBeGreaterThanOrEqual(harmCategories.length);
     });

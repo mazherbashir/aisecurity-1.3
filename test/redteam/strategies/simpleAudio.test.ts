@@ -163,7 +163,7 @@ describe('audio strategy', () => {
 
     it('should preserve harmCategory and modify assertion metrics', async () => {
       const testCase: TestCase = {
-        assert: [{ type: 'promptfoo:redteam:harmful' }],
+        assert: [{ type: 'aisecurity:redteam:harmful' }],
         metadata: {
           harmCategory: 'Illegal Activities',
           otherField: 'value',
@@ -186,7 +186,7 @@ describe('audio strategy', () => {
       expect(result[0].assert).toEqual([
         {
           metric: 'harmful/Audio-Encoded',
-          type: 'promptfoo:redteam:harmful',
+          type: 'aisecurity:redteam:harmful',
         },
       ]);
     });

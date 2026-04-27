@@ -3,7 +3,7 @@ import { RedteamGraderBase, RedteamPluginBase } from './base';
 
 import type { Assertion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:shell-injection';
+const PLUGIN_ID = 'aisecurity:redteam:shell-injection';
 
 export const DEFAULT_EXAMPLES = dedent`
     <Example>

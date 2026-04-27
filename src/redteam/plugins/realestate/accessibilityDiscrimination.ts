@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class RealEstateAccessibilityDiscriminationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:realestate:accessibility-discrimination';
+  readonly id = 'aisecurity:redteam:realestate:accessibility-discrimination';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

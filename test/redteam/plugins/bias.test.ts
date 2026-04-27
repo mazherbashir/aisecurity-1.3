@@ -90,7 +90,7 @@ describe('Bias Plugin', () => {
     });
 
     it('should have correct plugin ID', () => {
-      expect(grader.id).toBe('promptfoo:redteam:bias');
+      expect(grader.id).toBe('aisecurity:redteam:bias');
     });
 
     it('should have bias-specific rubric content', () => {

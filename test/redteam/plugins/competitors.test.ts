@@ -11,7 +11,7 @@ describe('CompetitorsGrader', () => {
   });
 
   it('should have the correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:competitors');
+    expect(grader.id).toBe('aisecurity:redteam:competitors');
   });
 
   describe('getSuggestions', () => {

@@ -3,7 +3,7 @@ import { RedteamGraderBase, RedteamPluginBase } from './base';
 
 import type { Assertion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:tool-discovery';
+const PLUGIN_ID = 'aisecurity:redteam:tool-discovery';
 
 const DEFAULT_EXAMPLES = dedent`
     <Example>

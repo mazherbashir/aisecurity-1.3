@@ -14,7 +14,7 @@ interface BlobContext {
 
 type BlobKind = 'audio' | 'image';
 
-const BLOB_URI_REGEX = /^promptfoo:\/\/blob\/([a-f0-9]{64})$/i;
+const BLOB_URI_REGEX = /^aisecurity:\/\/blob\/([a-f0-9]{64})$/i;
 const BLOB_HASH_REGEX = /^[a-f0-9]{64}$/i;
 
 function isDataUrl(value: string): boolean {

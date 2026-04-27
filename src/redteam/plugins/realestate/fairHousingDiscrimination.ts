@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class RealEstateFairHousingDiscriminationPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:realestate:fair-housing-discrimination';
+  readonly id = 'aisecurity:redteam:realestate:fair-housing-discrimination';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

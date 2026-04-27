@@ -23,17 +23,20 @@ export interface TestWithMetadata {
 }
 
 export function getStrategyIdFromTest(test: TestWithMetadata): string {
-  // Check metadata directly on test
-  if (test.metadata?.strategyId) {
-    return test.metadata.strategyId as string;
+  let id = test.metadata?.strategyId as string | undefined;
+
+  if (!id && test.result?.testCase?.metadata?.strategyId) {
+    id = test.result.testCase.metadata.strategyId as string;
   }
 
-  // Check metadata from test.result.testCase
-  if (test.result?.testCase?.metadata?.strategyId) {
-    return test.result.testCase.metadata.strategyId as string;
+  if (id) {
+    if (id.includes('iterative:meta')) return 'jailbreak:meta';
+    if (id.includes('iterative:tree')) return 'jailbreak:tree';
+    if (id.includes('iterative')) return 'jailbreak';
+    
+    return id.replace(/^promptfoo:redteam:/, '').replace(/^aisecurity:redteam:/, '');
   }
 
-  // Default fallback
   return 'basic';
 }
 
@@ -43,8 +46,10 @@ export function getPluginIdFromResult(result: EvaluateResult): string | null {
     // Policy plugins are handled separately
     result.metadata.pluginId !== 'policy'
   ) {
-    return result.metadata.pluginId as string;
+    const id = result.metadata.pluginId as string;
+    return id.replace(/^promptfoo:redteam:/, '').replace(/^aisecurity:redteam:/, '');
   }
+
 
   const harmCategory = result.vars?.harmCategory || result.metadata?.harmCategory;
   if (harmCategory) {

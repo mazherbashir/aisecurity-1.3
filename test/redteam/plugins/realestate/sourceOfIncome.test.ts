@@ -13,7 +13,7 @@ describe('RealEstateSourceOfIncomePluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:source-of-income');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:source-of-income');
   });
 
   it('should render rubric with all required sections', () => {

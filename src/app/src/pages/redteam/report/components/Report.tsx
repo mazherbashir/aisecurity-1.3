@@ -47,6 +47,7 @@ import { type CategoryStats, type TestResultStats } from './FrameworkComplianceU
 import Overview from './Overview';
 import ReportDownloadButton from './ReportDownloadButton';
 import ReportSettingsDialogButton from './ReportSettingsDialogButton';
+import { findProviderConfig, getProviderDisplayName, rebrandProviderId } from '../../../eval/components/providerConfig';
 import RiskCategories from './RiskCategories';
 import StrategyStats from './StrategyStats';
 import { getPluginIdFromResult, getStrategyIdFromTest } from './shared';
@@ -748,7 +749,7 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
                       <SelectTrigger className="h-6 w-auto rounded-full border-none bg-muted px-3 text-xs">
                         <SelectValue>
                           <span className="text-xs">
-                            <strong>Target:</strong> {prompts[selectedPromptIndex].provider}
+                            <strong>Target:</strong> {rebrandProviderId(prompts[selectedPromptIndex].provider)}
                           </span>
                         </SelectValue>
                       </SelectTrigger>
@@ -762,7 +763,7 @@ const App = ({ evalId: evalIdProp, embedded, onActionsReady }: ReportProps = {})
                     </Select>
                   ) : selectedPrompt ? (
                     <Badge variant="secondary">
-                      <strong>Target:</strong> {selectedPrompt.provider}
+                      <strong>Target:</strong> {rebrandProviderId(selectedPrompt.provider)}
                     </Badge>
                   ) : null}
                   <Tooltip>

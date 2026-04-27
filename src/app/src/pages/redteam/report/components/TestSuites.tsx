@@ -33,6 +33,7 @@ import { getSeverityColor } from '../utils/color';
 import { type TestResultStats } from './FrameworkComplianceUtils';
 import { getStrategyIdFromTest } from './shared';
 import { useReportStore } from './store';
+import { rebrandProviderId } from '../../../eval/components/providerConfig';
 import type { RedteamPluginObject } from '@promptfoo/redteam/types';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 
@@ -146,7 +147,7 @@ const TestSuites = ({
             };
           })();
 
-          let type = categoryAliases[pluginName as keyof typeof categoryAliases] || pluginName;
+          let type = categoryAliases[pluginName as keyof typeof categoryAliases] || rebrandProviderId(pluginName);
           let description =
             subCategoryDescriptions[pluginName as keyof typeof subCategoryDescriptions] ?? '';
 
@@ -302,7 +303,7 @@ const TestSuites = ({
         header: 'Type',
         size: 180,
         accessorFn: (row) =>
-          displayNameOverrides[row.pluginName as keyof typeof displayNameOverrides] || row.type,
+          displayNameOverrides[row.pluginName as keyof typeof displayNameOverrides] || rebrandProviderId(row.type),
         cell: ({ getValue }) => <span style={{ fontWeight: 500 }}>{getValue<string>()}</span>,
       },
       {

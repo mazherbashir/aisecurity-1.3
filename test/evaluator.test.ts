@@ -4898,7 +4898,7 @@ describe('runEval', () => {
         vars: {
           prompt: 'Please answer in two sentences for a user whose role is "{{purpose | trim}}".',
         },
-        assert: [{ type: 'promptfoo:redteam:ascii-smuggling' }],
+        assert: [{ type: 'aisecurity:redteam:ascii-smuggling' }],
         metadata: {
           pluginId: 'ascii-smuggling',
         },
@@ -4962,7 +4962,7 @@ describe('runEval', () => {
         vars: {
           query: 'Please answer in two sentences for a user whose role is "{{purpose | trim}}".',
         },
-        assert: [{ type: 'promptfoo:redteam:ascii-smuggling' }],
+        assert: [{ type: 'aisecurity:redteam:ascii-smuggling' }],
         metadata: {
           pluginId: 'ascii-smuggling',
         },
@@ -4994,7 +4994,7 @@ describe('runEval', () => {
           locale: 'en-US',
           query: 'Please answer in two sentences for a user whose role is "{{purpose | trim}}".',
         },
-        assert: [{ type: 'promptfoo:redteam:ascii-smuggling' }],
+        assert: [{ type: 'aisecurity:redteam:ascii-smuggling' }],
         metadata: {
           pluginId: 'ascii-smuggling',
         },
@@ -5024,7 +5024,7 @@ describe('runEval', () => {
         assert: [
           {
             type: 'assert-set',
-            assert: [{ type: 'promptfoo:redteam:ascii-smuggling' }],
+            assert: [{ type: 'aisecurity:redteam:ascii-smuggling' }],
           },
         ],
         metadata: {

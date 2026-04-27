@@ -23,7 +23,7 @@ interface UseVersionCheckResult {
   dismiss: () => void;
 }
 
-const STORAGE_KEY = 'promptfoo:update:dismissedVersion';
+const STORAGE_KEY = 'aisecurity:update:dismissedVersion';
 
 export function useVersionCheck(): UseVersionCheckResult {
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);

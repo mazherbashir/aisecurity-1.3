@@ -261,9 +261,9 @@ describe('resolveVideoSource', () => {
   });
 
   describe('blob reference resolution', () => {
-    it('resolves promptfoo:// blob URI in blobRef string', () => {
+    it('resolves aisecurity:// blob URI in blobRef string', () => {
       const result = resolveVideoSource({
-        blobRef: 'promptfoo://blob/abc123def456789012345678901234567890',
+        blobRef: 'aisecurity://blob/abc123def456789012345678901234567890',
       });
 
       expect(result).toEqual({
@@ -287,7 +287,7 @@ describe('resolveVideoSource', () => {
 
     it('resolves blobRef object with uri', () => {
       const result = resolveVideoSource({
-        blobRef: { uri: 'promptfoo://blob/abc123def456789012345678901234567890' },
+        blobRef: { uri: 'aisecurity://blob/abc123def456789012345678901234567890' },
       });
 
       expect(result).toEqual({
@@ -454,7 +454,7 @@ describe('resolveVideoSource', () => {
     it('should return an object with the resolved poster URL when the video object includes a thumbnail field with a blob URI, HTTP(S) URL, or legacy API path', () => {
       const videoObject1 = {
         url: 'https://example.com/test.mp4',
-        thumbnail: 'promptfoo://blob/thumbnail-blob-hash',
+        thumbnail: 'aisecurity://blob/thumbnail-blob-hash',
       };
       const result1 = resolveVideoSource(videoObject1);
       expect(result1?.poster).toBe('/api/blobs/thumbnail-blob-hash');
@@ -495,7 +495,7 @@ describe('resolveVideoSource', () => {
   describe('priority order', () => {
     it('prefers blobRef over storageRef', () => {
       const result = resolveVideoSource({
-        blobRef: 'promptfoo://blob/abc123def456789012345678901234567890',
+        blobRef: 'aisecurity://blob/abc123def456789012345678901234567890',
         storageRef: { key: 'video/other.mp4' },
         url: 'https://example.com/video.mp4',
       });
@@ -573,7 +573,7 @@ describe('resolveVideoSource', () => {
       vi.mocked(useApiConfig.getState).mockReturnValue(mockState('https://api.example.com'));
 
       const result = resolveVideoSource({
-        blobRef: 'promptfoo://blob/abc123def456789012345678901234567890',
+        blobRef: 'aisecurity://blob/abc123def456789012345678901234567890',
       });
 
       expect(result?.src).toBe(
@@ -664,8 +664,8 @@ describe('resolveBlobUri security', () => {
     expect(resolveBlobUri(dataUri)).toBe(dataUri);
   });
 
-  it('should convert promptfoo://blob/ URIs', () => {
-    expect(resolveBlobUri('promptfoo://blob/abc123')).toBe('/api/blobs/abc123');
+  it('should convert aisecurity://blob/ URIs', () => {
+    expect(resolveBlobUri('aisecurity://blob/abc123')).toBe('/api/blobs/abc123');
   });
 
   it('should convert storageRef: URIs', () => {
@@ -697,7 +697,7 @@ describe('resolveImageSource security', () => {
   });
 
   it('should return promptfoo blob references', () => {
-    expect(resolveImageSource('promptfoo://blob/abc123')).toBe('/api/blobs/abc123');
+    expect(resolveImageSource('aisecurity://blob/abc123')).toBe('/api/blobs/abc123');
   });
 
   it('should return storage references', () => {

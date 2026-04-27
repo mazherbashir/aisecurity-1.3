@@ -256,7 +256,7 @@ export class VoiceCrescendoProvider implements ApiProvider {
   }
 
   id(): string {
-    return 'promptfoo:redteam:voice-crescendo';
+    return 'aisecurity:redteam:voice-crescendo';
   }
 
   private async getRedTeamProvider(): Promise<ApiProvider> {

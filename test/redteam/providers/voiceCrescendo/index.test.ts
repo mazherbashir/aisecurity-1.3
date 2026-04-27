@@ -98,7 +98,7 @@ describe('VoiceCrescendoProvider', () => {
 
   it('should have correct ID', () => {
     const provider = new VoiceCrescendoProvider({ injectVar: 'goal' });
-    expect(provider.id()).toBe('promptfoo:redteam:voice-crescendo');
+    expect(provider.id()).toBe('aisecurity:redteam:voice-crescendo');
   });
 
   it('should return error when no target provider configured', async () => {

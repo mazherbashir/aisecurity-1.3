@@ -199,7 +199,7 @@ describe('simpleVideo strategy', () => {
         },
         assert: [
           {
-            type: 'promptfoo:redteam:test',
+            type: 'aisecurity:redteam:test',
             metric: 'test-metric',
           },
         ],

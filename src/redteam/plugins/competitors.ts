@@ -3,7 +3,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:competitors';
+const PLUGIN_ID = 'aisecurity:redteam:competitors';
 
 export class CompetitorsGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

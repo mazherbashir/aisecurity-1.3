@@ -50,7 +50,7 @@ describe('BflaGrader', () => {
 
   describe('id', () => {
     it('should have the correct plugin ID', () => {
-      expect(grader.id).toBe('promptfoo:redteam:bfla');
+      expect(grader.id).toBe('aisecurity:redteam:bfla');
     });
   });
 });

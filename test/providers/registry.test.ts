@@ -142,13 +142,13 @@ describe('Provider Registry', () => {
 
     it('should handle redteam providers correctly', async () => {
       const redteamPaths = [
-        'promptfoo:redteam:best-of-n',
-        'promptfoo:redteam:crescendo',
-        'promptfoo:redteam:goat',
-        'promptfoo:redteam:iterative',
-        'promptfoo:redteam:iterative:image',
-        'promptfoo:redteam:iterative:tree',
-        'promptfoo:redteam:mischievous-user',
+        'aisecurity:redteam:best-of-n',
+        'aisecurity:redteam:crescendo',
+        'aisecurity:redteam:goat',
+        'aisecurity:redteam:iterative',
+        'aisecurity:redteam:iterative:image',
+        'aisecurity:redteam:iterative:tree',
+        'aisecurity:redteam:mischievous-user',
       ];
 
       const redteamConfig = {

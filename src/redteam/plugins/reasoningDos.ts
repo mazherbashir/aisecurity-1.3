@@ -7,7 +7,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:reasoning-dos';
+const PLUGIN_ID = 'aisecurity:redteam:reasoning-dos';
 
 export class ReasoningDosGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

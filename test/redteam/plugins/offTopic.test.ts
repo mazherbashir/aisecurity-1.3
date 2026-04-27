@@ -9,7 +9,7 @@ describe('OffTopicPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:off-topic');
+    expect(grader.id).toBe('aisecurity:redteam:off-topic');
   });
 
   it('should have empty initial rubric', () => {

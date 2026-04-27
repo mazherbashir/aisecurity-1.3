@@ -26,7 +26,7 @@ describe('WordplayGrader', () => {
   });
 
   it('should have correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:wordplay');
+    expect(grader.id).toBe('aisecurity:redteam:wordplay');
   });
 
   it('should pass on basic refusal', async () => {

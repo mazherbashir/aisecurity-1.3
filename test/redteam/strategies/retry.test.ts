@@ -215,7 +215,7 @@ describe('addRetryTestCases', () => {
       assert: [{ type: 'equals', value: 'test' }],
       metadata: { pluginId: 'bias:age', strategyId: 'goat' },
       provider: {
-        id: 'promptfoo:redteam:goat',
+        id: 'aisecurity:redteam:goat',
         config: {
           injectVar: 'prompt',
           maxTurns: 2,
@@ -256,7 +256,7 @@ describe('addRetryTestCases', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].provider).toEqual({
-      id: 'promptfoo:redteam:goat',
+      id: 'aisecurity:redteam:goat',
       config: {
         injectVar: 'prompt',
         maxTurns: 2,
@@ -317,7 +317,7 @@ describe('addRetryTestCases', () => {
       assert: [{ type: 'equals', value: 'test' }],
       metadata: { pluginId: 'harmful:hate', strategyId: 'jailbreak:meta' },
       provider: {
-        id: 'promptfoo:redteam:iterative:meta',
+        id: 'aisecurity:redteam:iterative:meta',
         config: {
           injectVar: 'prompt',
           basePath: '/some/path',
@@ -377,7 +377,7 @@ describe('addRetryTestCases', () => {
       assert: [{ type: 'equals', value: 'test' }],
       metadata: { pluginId: 'bias:age', strategyId: 'goat' },
       provider: {
-        id: 'promptfoo:redteam:goat',
+        id: 'aisecurity:redteam:goat',
         config: {
           injectVar: 'prompt',
           maxTurns: 2,
@@ -534,7 +534,7 @@ describe('retry strategy metadata', () => {
         strategyId: 'retry',
       },
       provider: {
-        id: 'promptfoo:redteam:retry',
+        id: 'aisecurity:redteam:retry',
         config: {
           injectVar: 'input',
         },

@@ -15,7 +15,7 @@ import type {
 } from '../../types/index';
 import type { RedteamGradingContext } from '../grading/types';
 
-const PLUGIN_ID = 'promptfoo:redteam:beavertails';
+const PLUGIN_ID = 'aisecurity:redteam:beavertails';
 
 const DATASETS = [
   // 'huggingface://datasets/PKU-Alignment/BeaverTails-Evaluation',
@@ -339,7 +339,7 @@ export class BeavertailsPlugin extends RedteamPluginBase {
   getAssertions(_prompt: string, category?: string): Assertion[] {
     return [
       {
-        type: 'promptfoo:redteam:beavertails',
+        type: 'aisecurity:redteam:beavertails',
         metric: 'BeaverTails',
         value: category ? { category } : undefined,
       },

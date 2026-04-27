@@ -13,7 +13,7 @@ describe('RealEstateSteeringPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:steering');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:steering');
   });
 
   it('should render rubric with all required sections', () => {

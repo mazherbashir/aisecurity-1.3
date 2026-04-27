@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class FinancialJapanFieaSuitabilityPluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:financial:japan-fiea-suitability';
+  readonly id = 'aisecurity:redteam:financial:japan-fiea-suitability';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

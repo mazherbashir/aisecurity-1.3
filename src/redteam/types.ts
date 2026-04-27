@@ -239,7 +239,7 @@ export interface SynthesizeOptions extends CommonOptions {
   showProgressBar?: boolean;
 }
 
-export type RedteamAssertionTypes = `promptfoo:redteam:${string}`;
+export type RedteamAssertionTypes = `aisecurity:redteam:${string}` | `aisecurity:redteam:${string}`;
 
 export interface RedteamRunOptions {
   id?: string;

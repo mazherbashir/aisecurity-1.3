@@ -235,7 +235,7 @@ export async function addImageToBase64(
       ...testCase,
       assert: testCase.assert?.map((assertion) => ({
         ...assertion,
-        metric: assertion.type?.startsWith('promptfoo:redteam:')
+        metric: assertion.type?.startsWith('aisecurity:redteam:')
           ? `${assertion.type?.split(':').pop() || assertion.metric}/Image-Encoded`
           : assertion.metric,
       })),

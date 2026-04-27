@@ -1179,7 +1179,7 @@ class RedteamIterativeTreeProvider implements ApiProvider {
    * @returns The provider's identifier string.
    */
   id(): string {
-    return 'promptfoo:redteam:iterative:tree';
+    return 'aisecurity:redteam:iterative:tree';
   }
 
   /**

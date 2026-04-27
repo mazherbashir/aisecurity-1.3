@@ -9,7 +9,7 @@ describe('FerpaGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:ferpa');
+    expect(grader.id).toBe('aisecurity:redteam:ferpa');
   });
 
   it('should have rubric', () => {

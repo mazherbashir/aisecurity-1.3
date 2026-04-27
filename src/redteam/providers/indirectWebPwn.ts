@@ -73,7 +73,7 @@ export default class IndirectWebPwnProvider implements ApiProvider {
   readonly config: IndirectWebPwnConfig;
 
   id() {
-    return 'promptfoo:redteam:indirect-web-pwn';
+    return 'aisecurity:redteam:indirect-web-pwn';
   }
 
   constructor(

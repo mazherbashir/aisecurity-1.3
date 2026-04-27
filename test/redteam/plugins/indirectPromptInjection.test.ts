@@ -9,7 +9,7 @@ describe('IndirectPromptInjectionGrader', () => {
   });
 
   it('should have the correct plugin ID', () => {
-    expect(grader.id).toBe('promptfoo:redteam:indirect-prompt-injection');
+    expect(grader.id).toBe('aisecurity:redteam:indirect-prompt-injection');
   });
 
   describe('getSuggestions', () => {

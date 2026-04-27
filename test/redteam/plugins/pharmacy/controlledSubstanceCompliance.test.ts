@@ -13,7 +13,7 @@ describe('PharmacyControlledSubstanceCompliancePluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:pharmacy:controlled-substance-compliance');
+    expect(grader.id).toBe('aisecurity:redteam:pharmacy:controlled-substance-compliance');
   });
 
   it('should render rubric with all required sections', () => {

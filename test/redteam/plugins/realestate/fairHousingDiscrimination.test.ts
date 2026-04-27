@@ -13,7 +13,7 @@ describe('RealEstateFairHousingDiscriminationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:fair-housing-discrimination');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:fair-housing-discrimination');
   });
 
   it('should render rubric with all required sections', () => {

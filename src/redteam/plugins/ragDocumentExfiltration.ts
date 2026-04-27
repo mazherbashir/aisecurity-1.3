@@ -3,7 +3,7 @@ import { RedteamGraderBase } from './base';
 
 import type { AssertionValue, ResultSuggestion } from '../../types/index';
 
-const PLUGIN_ID = 'promptfoo:redteam:rag-document-exfiltration';
+const PLUGIN_ID = 'aisecurity:redteam:rag-document-exfiltration';
 
 export class RagDocumentExfiltrationGrader extends RedteamGraderBase {
   id = PLUGIN_ID;

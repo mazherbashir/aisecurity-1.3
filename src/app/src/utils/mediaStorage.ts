@@ -16,7 +16,7 @@ import useApiConfig from '@app/stores/apiConfig';
 
 /** Prefix for storage references */
 const STORAGE_REF_PREFIX = 'storageRef:';
-const BLOB_REF_PREFIX = 'promptfoo://blob/';
+const BLOB_REF_PREFIX = 'aisecurity://blob/';
 
 export type StorageRefString = `${typeof STORAGE_REF_PREFIX}${string}`;
 export type BlobRefString = `${typeof BLOB_REF_PREFIX}${string}`;

@@ -400,7 +400,7 @@ describe('ResultsTable Metrics Display', () => {
                     format: 'jpeg',
                   },
                 },
-                [Symbol.for('promptfoo:file')]: {
+                [Symbol.for('aisecurity:file')]: {
                   imageVar: {
                     path: '/path/to/image.jpg',
                     type: 'image',

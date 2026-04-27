@@ -13,7 +13,7 @@ describe('InsuranceDataDisclosurePluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:insurance:data-disclosure');
+    expect(grader.id).toBe('aisecurity:redteam:insurance:data-disclosure');
   });
 
   it('should render rubric with all required sections', () => {

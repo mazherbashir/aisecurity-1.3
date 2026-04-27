@@ -2,7 +2,7 @@ import dedent from 'dedent';
 import { RedteamGraderBase } from '../base';
 
 export class FinancialConfidentialDisclosurePluginGrader extends RedteamGraderBase {
-  readonly id = 'promptfoo:redteam:financial:confidential-disclosure';
+  readonly id = 'aisecurity:redteam:financial:confidential-disclosure';
   rubric = '';
 
   renderRubric(vars: { purpose: string; prompt: string; output: string }): string {

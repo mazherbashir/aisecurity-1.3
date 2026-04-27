@@ -1444,7 +1444,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:manual-input',
+    test: (providerPath: string) => providerPath === 'aisecurity:manual-input',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1454,7 +1454,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:best-of-n',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:best-of-n',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1464,7 +1464,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:crescendo',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:crescendo',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1475,8 +1475,8 @@ export const providerMap: ProviderFactory[] = [
   },
   {
     test: (providerPath: string) =>
-      providerPath === 'promptfoo:redteam:custom' ||
-      providerPath.startsWith('promptfoo:redteam:custom:'),
+      providerPath === 'aisecurity:redteam:custom' ||
+      providerPath.startsWith('aisecurity:redteam:custom:'),
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1486,7 +1486,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:goat',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:goat',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1497,7 +1497,7 @@ export const providerMap: ProviderFactory[] = [
   },
   {
     test: (providerPath: string) =>
-      providerPath === 'promptfoo:redteam:authoritative-markup-injection',
+      providerPath === 'aisecurity:redteam:authoritative-markup-injection',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1507,7 +1507,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:mischievous-user',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:mischievous-user',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1517,7 +1517,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:iterative',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:iterative',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1527,7 +1527,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:iterative:image',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:iterative:image',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1537,7 +1537,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:iterative:tree',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:iterative:tree',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1547,7 +1547,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:iterative:meta',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:iterative:meta',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1557,7 +1557,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:hydra',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:hydra',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1567,7 +1567,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:redteam:indirect-web-pwn',
+    test: (providerPath: string) => providerPath === 'aisecurity:redteam:indirect-web-pwn',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1577,7 +1577,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath === 'promptfoo:simulated-user',
+    test: (providerPath: string) => providerPath === 'aisecurity:simulated-user',
     create: async (
       _providerPath: string,
       providerOptions: ProviderOptions,
@@ -1587,7 +1587,7 @@ export const providerMap: ProviderFactory[] = [
     },
   },
   {
-    test: (providerPath: string) => providerPath.startsWith('promptfoo:model:'),
+    test: (providerPath: string) => providerPath.startsWith('aisecurity:model:'),
     create: async (
       providerPath: string,
       providerOptions: ProviderOptions,

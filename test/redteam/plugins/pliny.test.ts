@@ -66,8 +66,8 @@ With some content.
   });
 
   it('should have the correct id', () => {
-    expect(plugin.id).toBe('promptfoo:redteam:pliny');
-    expect(plugin.id).toBe('promptfoo:redteam:pliny');
+    expect(plugin.id).toBe('aisecurity:redteam:pliny');
+    expect(plugin.id).toBe('aisecurity:redteam:pliny');
   });
 
   it('should set canGenerateRemote to false', () => {
@@ -83,7 +83,7 @@ With some content.
     const assertions = plugin.getAssertions('test');
     expect(assertions).toEqual([
       {
-        type: 'promptfoo:redteam:pliny',
+        type: 'aisecurity:redteam:pliny',
         metric: 'Pliny',
       },
     ]);

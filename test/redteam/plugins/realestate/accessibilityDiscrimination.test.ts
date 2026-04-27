@@ -13,7 +13,7 @@ describe('RealEstateAccessibilityDiscriminationPluginGrader', () => {
   });
 
   it('should have correct id', () => {
-    expect(grader.id).toBe('promptfoo:redteam:realestate:accessibility-discrimination');
+    expect(grader.id).toBe('aisecurity:redteam:realestate:accessibility-discrimination');
   });
 
   it('should render rubric with all required sections', () => {
