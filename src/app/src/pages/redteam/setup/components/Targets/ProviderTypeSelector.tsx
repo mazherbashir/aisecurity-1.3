@@ -5,7 +5,32 @@ import { Input } from '@app/components/ui/input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
 import { useTelemetry } from '@app/hooks/useTelemetry';
 import { cn } from '@app/lib/utils';
-import { CheckCircle, Edit, HelpCircle, Search, X } from 'lucide-react';
+import {
+  CheckCircle,
+  Edit,
+  HelpCircle,
+  Search,
+  X,
+  Globe,
+  FileCode,
+  Terminal,
+  Monitor,
+  Cpu,
+  Bot,
+  Cloud,
+  Settings,
+  Zap,
+  Code2,
+  Workflow,
+  BrainCircuit,
+  Sparkles,
+  Database,
+  CpuIcon,
+  Server,
+  Blocks,
+  Network,
+  Share2,
+} from 'lucide-react';
 import { DEFAULT_WEBSOCKET_TIMEOUT_MS, DEFAULT_WEBSOCKET_TRANSFORM_RESPONSE } from './consts';
 import { getProviderDocumentationUrl, hasSpecificDocumentation } from './providerDocumentationMap';
 
@@ -35,12 +60,14 @@ const allProviderOptions = [
     description: 'Connect to your REST API or HTTP endpoint',
     tag: 'app',
     recommended: true,
+    icon: Globe,
   },
   {
     value: 'websocket',
     label: 'WebSocket',
     description: 'Real-time WebSocket connections',
     tag: 'app',
+    icon: Network,
   },
   {
     value: 'python',
@@ -48,6 +75,7 @@ const allProviderOptions = [
     description: 'Custom Python script or integration',
     tag: 'app',
     recommended: true,
+    icon: FileCode,
   },
   {
     value: 'javascript',
@@ -55,24 +83,28 @@ const allProviderOptions = [
     description: 'Custom JS/TS script or integration',
     tag: 'app',
     recommended: true,
+    icon: Code2,
   },
   {
     value: 'go',
     label: 'Go',
     description: 'Custom Go integration',
     tag: 'app',
+    icon: Zap,
   },
   {
     value: 'exec',
     label: 'Shell Command',
     description: 'Execute shell scripts or CLI commands',
     tag: 'app',
+    icon: Terminal,
   },
   {
     value: 'browser',
     label: 'Browser Automation',
     description: 'Test web apps via browser automation',
     tag: 'app',
+    icon: Monitor,
   },
   {
     value: 'custom',
@@ -80,17 +112,15 @@ const allProviderOptions = [
     description: 'Other custom providers and implementations',
     tag: 'app',
     last: true,
+    icon: Settings,
   },
-
-  // ============================================
-  // AGENT FRAMEWORKS - Popular agent SDKs
-  // ============================================
   {
     value: 'claude-agent-sdk',
     label: 'Claude Agent SDK',
     description: "Anthropic's official SDK for building agents",
     tag: 'agents',
     recommended: true,
+    icon: Bot,
   },
   {
     value: 'openai-agents-sdk',
@@ -98,60 +128,70 @@ const allProviderOptions = [
     description: "OpenAI's official agent framework",
     tag: 'agents',
     recommended: true,
+    icon: BrainCircuit,
   },
   {
     value: 'langchain',
     label: 'LangChain',
     description: 'Popular framework for LLM applications',
     tag: 'agents',
+    icon: Workflow,
   },
   {
     value: 'langgraph',
     label: 'LangGraph',
     description: 'Stateful, multi-actor agent applications',
     tag: 'agents',
+    icon: Share2,
   },
   {
     value: 'crewai',
     label: 'CrewAI',
     description: 'Multi-agent orchestration framework',
     tag: 'agents',
+    icon: Network,
   },
   {
     value: 'autogen',
     label: 'AutoGen',
     description: "Microsoft's multi-agent framework",
     tag: 'agents',
+    icon: Blocks,
   },
   {
     value: 'pydantic-ai',
     label: 'PydanticAI',
     description: 'Type-safe agents with structured outputs',
     tag: 'agents',
+    icon: FileCode,
   },
   {
     value: 'llamaindex',
     label: 'LlamaIndex',
     description: 'RAG and data framework for LLM apps',
     tag: 'agents',
+    icon: Database,
   },
   {
     value: 'google-adk',
     label: 'Google ADK',
     description: 'Google AI Development Kit',
     tag: 'agents',
+    icon: BrainCircuit,
   },
   {
     value: 'bedrock-agent',
     label: 'AWS Bedrock Agents',
     description: "Amazon's agent orchestration service",
     tag: 'agents',
+    icon: Server,
   },
   {
     value: 'mcp',
     label: 'MCP Server',
     description: 'Model Context Protocol for tool use',
     tag: 'agents',
+    icon: Network,
   },
   {
     value: 'generic-agent',
@@ -159,18 +199,15 @@ const allProviderOptions = [
     description: 'Any other agent framework via custom provider',
     tag: 'agents',
     last: true,
+    icon: Bot,
   },
-
-  // ============================================
-  // AI PROVIDERS - Hosted AI services
-  // ============================================
-  // Major Model Providers
   {
     value: 'openai',
     label: 'OpenAI',
     description: 'GPT-5.2, GPT-5.1, and GPT-5 models',
     tag: 'providers',
     recommended: true,
+    icon: BrainCircuit,
   },
   {
     value: 'anthropic',
@@ -178,6 +215,7 @@ const allProviderOptions = [
     description: 'Claude Sonnet, Opus, and Haiku models',
     tag: 'providers',
     recommended: true,
+    icon: Sparkles,
   },
   {
     value: 'google',
@@ -185,195 +223,218 @@ const allProviderOptions = [
     description: 'Gemini models via Google AI',
     tag: 'providers',
     recommended: true,
+    icon: BrainCircuit,
   },
   {
     value: 'mistral',
     label: 'Mistral AI',
     description: 'Mistral and Mixtral models',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'deepseek',
     label: 'DeepSeek',
     description: 'DeepSeek-V3 and R1 models',
     tag: 'providers',
+    icon: BrainCircuit,
   },
   {
     value: 'cohere',
     label: 'Cohere',
     description: 'Command and embedding models',
     tag: 'providers',
+    icon: BrainCircuit,
   },
   {
     value: 'ai21',
     label: 'AI21 Labs',
     description: 'Jamba and Jurassic models',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'xai',
     label: 'X.AI (Grok)',
     description: 'Grok models from X.AI',
     tag: 'providers',
+    icon: Sparkles,
   },
   {
     value: 'perplexity',
     label: 'Perplexity AI',
     description: 'Search-augmented AI with citations',
     tag: 'providers',
+    icon: Globe,
   },
-  // Cloud Platforms
   {
     value: 'azure',
     label: 'Azure OpenAI',
     description: 'OpenAI models on Azure',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'vertex',
     label: 'Google Vertex AI',
     description: 'Gemini on Google Cloud',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'bedrock',
     label: 'AWS Bedrock',
     description: 'Multiple models on AWS',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'sagemaker',
     label: 'Amazon SageMaker',
     description: 'Custom model endpoints on AWS',
     tag: 'providers',
+    icon: Server,
   },
-  // Inference APIs & Routers
   {
     value: 'groq',
     label: 'Groq',
     description: 'Ultra-fast inference API',
     tag: 'providers',
+    icon: Zap,
   },
   {
     value: 'openrouter',
     label: 'OpenRouter',
     description: 'Unified API for 200+ models',
     tag: 'providers',
+    icon: Share2,
   },
   {
     value: 'fireworks',
     label: 'Fireworks AI',
     description: 'Fast inference for open models',
     tag: 'providers',
+    icon: Zap,
   },
   {
     value: 'together',
     label: 'Together AI',
     description: 'Open-source model inference',
     tag: 'providers',
+    icon: Network,
   },
   {
     value: 'cerebras',
     label: 'Cerebras',
     description: 'High-speed Llama inference',
     tag: 'providers',
+    icon: Zap,
   },
   {
     value: 'hyperbolic',
     label: 'Hyperbolic',
     description: 'Fast open model inference',
     tag: 'providers',
+    icon: Zap,
   },
   {
     value: 'aimlapi',
     label: 'AI/ML API',
     description: 'Access 300+ AI models',
     tag: 'providers',
+    icon: Cloud,
   },
-  // Other Cloud Services
   {
     value: 'huggingface',
     label: 'Hugging Face',
     description: 'Inference API for thousands of models',
     tag: 'providers',
+    icon: BrainCircuit,
   },
   {
     value: 'github',
     label: 'GitHub Models',
     description: 'AI models via GitHub',
     tag: 'providers',
+    icon: Monitor,
   },
   {
     value: 'cloudflare-ai',
     label: 'Cloudflare AI',
     description: 'Edge AI inference',
     tag: 'providers',
+    icon: Cloud,
   },
   {
     value: 'databricks',
     label: 'Databricks',
     description: 'Foundation Model APIs',
     tag: 'providers',
+    icon: Database,
   },
   {
     value: 'replicate',
     label: 'Replicate',
     description: 'Run open-source models',
     tag: 'providers',
+    icon: Cloud,
   },
-  // Specialized
   {
     value: 'fal',
     label: 'fal.ai',
     description: 'Image generation models',
     tag: 'providers',
+    icon: Sparkles,
   },
   {
     value: 'voyage',
     label: 'Voyage AI',
     description: 'Embedding models',
     tag: 'providers',
+    icon: BrainCircuit,
   },
-
-  // ============================================
-  // LOCAL MODELS - Self-hosted inference
-  // ============================================
   {
     value: 'ollama',
     label: 'Ollama',
     description: 'Easy local model runner',
     tag: 'local',
     recommended: true,
+    icon: Cpu,
   },
   {
     value: 'vllm',
     label: 'vLLM',
     description: 'High-performance inference server',
     tag: 'local',
+    icon: Server,
   },
   {
     value: 'llama.cpp',
     label: 'llama.cpp',
     description: 'Lightweight CPU/GPU inference',
     tag: 'local',
+    icon: CpuIcon,
   },
   {
     value: 'localai',
     label: 'LocalAI',
     description: 'OpenAI-compatible local API',
     tag: 'local',
+    icon: Server,
   },
   {
     value: 'llamafile',
     label: 'Llamafile',
     description: 'Single-file executable models',
     tag: 'local',
+    icon: FileCode,
   },
   {
     value: 'text-generation-webui',
     label: 'Text Generation WebUI',
     description: 'Gradio-based model interface',
     tag: 'local',
+    icon: Monitor,
   },
 ].sort((a, b) => {
   // Items marked as 'last' always go to the end
@@ -1157,70 +1218,50 @@ export default function ProviderTypeSelector({
         </div>
       </div>
 
-      {/* Provider list */}
-      <div className="space-y-2">
+      {/* Provider grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredProviderOptions.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border p-8 text-center">
+          <div className="col-span-full rounded-lg border border-dashed border-border p-8 text-center">
             <p className="text-sm text-muted-foreground">
               No providers found matching your search.
             </p>
           </div>
         ) : (
           filteredProviderOptions.map((option, index) => {
-            // Check if we need to show a divider before this option
-            const tier2Providers = ['openai', 'google', 'anthropic', 'openrouter'];
-            const showDivider =
-              index > 0 &&
-              tier2Providers.includes(filteredProviderOptions[index - 1].value) &&
-              !tier2Providers.includes(option.value);
             const isSelected = selectedProviderType === option.value;
+            const Icon = option.icon || Settings;
 
             return (
-              <Fragment key={option.value}>
-                {showDivider && (
-                  <div className="py-2">
-                    <div className="h-px w-full bg-border" />
-                  </div>
+              <div
+                key={option.value}
+                role="button"
+                tabIndex={0}
+                onClick={() => handleProviderTypeSelect(option.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleProviderTypeSelect(option.value);
+                  }
+                }}
+                className={cn(
+                  'relative group flex flex-col w-full cursor-pointer rounded-xl border p-5 transition-all duration-200',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  isSelected
+                    ? 'border-primary bg-primary/[0.03] shadow-[0_0_0_1px_inset_var(--primary)]'
+                    : 'border-border bg-card hover:border-primary/50 hover:bg-muted/30 hover:shadow-md',
                 )}
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => handleProviderTypeSelect(option.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleProviderTypeSelect(option.value);
-                    }
-                  }}
-                  className={cn(
-                    'flex w-full cursor-pointer items-center rounded-lg border p-4 transition-colors',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                    isSelected
-                      ? 'border-2 border-primary bg-primary/5'
-                      : 'border-border hover:bg-muted/50',
-                  )}
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-1 flex items-center gap-2">
-                      <p
-                        className={cn(
-                          isSelected ? 'font-semibold text-primary' : 'font-medium text-foreground',
-                        )}
-                      >
-                        {option.label}
-                      </p>
-                      {option.recommended && (
-                        <span className="rounded bg-secondary px-1.5 py-0.5 text-xs text-secondary-foreground">
-                          Popular
-                        </span>
-                      )}
-                    </div>
-                    <p className="line-clamp-2 text-sm text-muted-foreground">
-                      {option.description}
-                    </p>
+              >
+                {/* Header: Icon + Selection Indicator */}
+                <div className="flex items-start justify-between mb-4">
+                  <div
+                    className={cn(
+                      'p-2.5 rounded-lg transition-colors',
+                      isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground group-hover:bg-primary/10 group-hover:text-primary',
+                    )}
+                  >
+                    <Icon className="size-5" />
                   </div>
-
-                  <div className="ml-4 flex shrink-0 items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     {/* Documentation link */}
                     {hasSpecificDocumentation(option.value) && (
                       <Tooltip>
@@ -1230,7 +1271,7 @@ export default function ProviderTypeSelector({
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-muted-foreground hover:text-foreground"
+                            className="text-muted-foreground hover:text-foreground p-1"
                           >
                             <HelpCircle className="size-4" />
                           </a>
@@ -1238,11 +1279,37 @@ export default function ProviderTypeSelector({
                         <TooltipContent>View {option.label} documentation</TooltipContent>
                       </Tooltip>
                     )}
-
                     {isSelected && <CheckCircle className="size-5 text-primary" />}
                   </div>
                 </div>
-              </Fragment>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <p
+                      className={cn(
+                        'text-sm truncate',
+                        isSelected ? 'font-bold text-primary' : 'font-semibold text-foreground',
+                      )}
+                    >
+                      {option.label}
+                    </p>
+                    {option.recommended && (
+                      <span className="shrink-0 rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-secondary-foreground">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+                  <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                    {option.description}
+                  </p>
+                </div>
+
+                {/* Hover Indicator */}
+                {!isSelected && (
+                  <div className="absolute inset-0 rounded-xl border-2 border-primary/0 transition-all group-hover:border-primary/20 pointer-events-none" />
+                )}
+              </div>
             );
           })
         )}
