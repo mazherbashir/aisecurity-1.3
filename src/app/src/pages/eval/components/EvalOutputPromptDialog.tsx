@@ -18,6 +18,7 @@ import { type ExpandedMetadataState, MetadataPanel } from './MetadataPanel';
 import { OutputsPanel } from './OutputsPanel';
 import { PromptEditor } from './PromptEditor';
 import type { GradingResult, Vars } from '@promptfoo/types';
+import { rebrandProviderId } from './providerConfig';
 
 import type { Trace } from '../../../components/traces/TraceView';
 import type { CloudConfigData } from '../../../hooks/useCloudConfig';
@@ -395,7 +396,7 @@ export default function EvalOutputPromptDialog({
       >
         {/* Header with title and close button */}
         <SheetHeader className="flex flex-row items-center justify-between p-4 border-b border-border space-y-0">
-          <SheetTitle>Details{provider && `: ${provider}`}</SheetTitle>
+          <SheetTitle>Details{provider && `: ${rebrandProviderId(provider)}`}</SheetTitle>
           <SheetDescription className="sr-only">
             View prompt, output, evaluation results, and metadata details
           </SheetDescription>

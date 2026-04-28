@@ -91,7 +91,7 @@ export function MetadataPanel({
                             className="flex items-center gap-1 text-primary hover:underline"
                             data-testid="pf-cloud-policy-detail-link"
                           >
-                            <span>View policy in Promptfoo Cloud</span>
+                            <span>View policy in AISecurity Cloud</span>
                             <ExternalLink className="size-3.5" />
                           </a>
                         )}

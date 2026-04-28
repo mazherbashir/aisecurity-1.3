@@ -10,6 +10,7 @@ import { cn } from '@app/lib/utils';
 import { Check, ChevronDown, CircleCheck, CircleX, Copy } from 'lucide-react';
 import { ellipsize } from '../../../../../util/text';
 import type { GradingResult } from '@promptfoo/types';
+import { rebrandProviderId } from './providerConfig';
 
 const COPY_FEEDBACK_DURATION_MS = 2000;
 
@@ -100,7 +101,7 @@ function AssertionResults({ gradingResults }: { gradingResults?: GradingResult[]
                   )}
                 </td>
                 <td className="px-4 py-3 tabular-nums">{result.score?.toFixed(2)}</td>
-                <td className="px-4 py-3 font-mono text-xs">{result.assertion?.type || ''}</td>
+                <td className="px-4 py-3 font-mono text-xs">{rebrandProviderId(result.assertion?.type || '')}</td>
                 <td
                   className="relative px-4 py-3 whitespace-pre-wrap cursor-pointer max-w-md"
                   onClick={() => toggleExpand(i)}
@@ -189,7 +190,7 @@ function GradingPromptSection({ gradingResults }: { gradingResults?: GradingResu
             <div className="rounded-lg border border-border">
               <CollapsibleTrigger asChild>
                 <button className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-muted/50 transition-colors">
-                  <span>{result.assertion?.type || 'Assertion'} - Full Grading Prompt</span>
+                  <span>{rebrandProviderId(result.assertion?.type || 'Assertion')} - Full Grading Prompt</span>
                   <ChevronDown
                     className={cn(
                       'size-4 text-muted-foreground transition-transform',
