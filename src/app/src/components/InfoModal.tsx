@@ -57,7 +57,7 @@ export default function InfoModal<T extends { open: boolean; onClose: () => void
           </a>
         </DialogHeader>
         <DialogDescription>
-          Promptfoo is a MIT licensed open-source tool for evaluating and red-teaming LLMs. We make
+          AISecurity is a MIT licensed open-source tool for evaluating and red-teaming LLMs. We make
           it easy to track the performance of your models and prompts over time with automated
           support for dataset generation and grading.
         </DialogDescription>

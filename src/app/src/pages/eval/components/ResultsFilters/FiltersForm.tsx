@@ -18,6 +18,7 @@ import { formatPolicyIdentifierAsMetric } from '@promptfoo/redteam/plugins/polic
 import { Plus, SlidersHorizontal, X } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 import { type ResultsFilter, useTableStore } from '../store';
+import { rebrandProviderId } from '../providerConfig';
 
 const TYPE_LABELS: Record<ResultsFilter['type'], string> = {
   metric: 'Metric',
@@ -302,8 +303,8 @@ function FilterRow({
           }
           return {
             value: optionValue,
-            label: displayName ?? optionValue,
-            sortValue: displayName ?? optionValue,
+            label: displayName ?? rebrandProviderId(optionValue),
+            sortValue: displayName ?? rebrandProviderId(optionValue),
           };
         })
         .sort((a, b) => a.sortValue.localeCompare(b.sortValue));

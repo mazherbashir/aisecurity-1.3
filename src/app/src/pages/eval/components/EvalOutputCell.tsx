@@ -34,6 +34,7 @@ import { useResultsViewSettingsStore, useTableStore } from './store';
 import CommentDialog from './TableCommentDialog';
 import TruncatedText from './TruncatedText';
 import { getHumanRating } from './utils';
+import { rebrandProviderId } from './providerConfig';
 
 type CSSPropertiesWithCustomVars = React.CSSProperties & {
   [key: `--${string}`]: string | number;
@@ -785,7 +786,7 @@ function EvalOutputCell({
       providerOverride = (
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="provider pill">{providerId}</span>
+            <span className="provider pill">{rebrandProviderId(providerId)}</span>
           </TooltipTrigger>
           <TooltipContent side="top">Model override for this test</TooltipContent>
         </Tooltip>

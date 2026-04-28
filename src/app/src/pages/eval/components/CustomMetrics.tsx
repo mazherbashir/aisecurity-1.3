@@ -15,6 +15,7 @@ import { ExternalLink } from 'lucide-react';
 import useCloudConfig from '../../../hooks/useCloudConfig';
 import { useApplyFilterFromMetric } from './hooks';
 import { useTableStore } from './store';
+import { rebrandProviderId } from './providerConfig';
 
 interface CustomMetricsProps {
   lookup: Record<string, number>;
@@ -91,7 +92,7 @@ const CustomMetrics = ({
       {displayMetrics
         .sort(([metricA], [metricB]) => metricA.localeCompare(metricB))
         .map(([metric, score]) => {
-          let displayLabel: string = metric;
+          let displayLabel: string = rebrandProviderId(metric);
           let tooltipContent: React.ReactNode | null = null;
           // Display a tooltip for policy metrics.
           if (isPolicyMetric(metric)) {
@@ -111,7 +112,7 @@ const CustomMetrics = ({
                         rel="noopener noreferrer"
                         className="flex items-center gap-1 text-primary hover:underline"
                       >
-                        <span>View policy in Promptfoo Cloud</span>
+                        <span>View policy in AISecurity Cloud</span>
                         <ExternalLink className="size-3.5" />
                       </a>
                     </p>

@@ -45,6 +45,7 @@ import ShareModal from './ShareModal';
 import { useResultsViewSettingsStore, useTableStore } from './store';
 import SettingsModal from './TableSettings/TableSettingsModal';
 import { hashVarSchema } from './utils';
+import { rebrandProviderId } from './providerConfig';
 import type { EvalResultsFilterMode, ResultLightweightWithLabel } from '@promptfoo/types';
 import type { CopyEvalResponse } from '@promptfoo/types/api/eval';
 import type { VisibilityState } from '@tanstack/table-core';
@@ -117,13 +118,13 @@ function getAppliedFilterLabel(
 
   if (filter.type === 'plugin') {
     const displayName =
-      displayNameOverrides[filter.value as keyof typeof displayNameOverrides] || filter.value;
+      displayNameOverrides[filter.value as keyof typeof displayNameOverrides] || rebrandProviderId(filter.value);
     return filter.operator === 'not_equals' ? `Plugin != ${displayName}` : `Plugin: ${displayName}`;
   }
 
   if (filter.type === 'strategy') {
     const displayName =
-      displayNameOverrides[filter.value as keyof typeof displayNameOverrides] || filter.value;
+      displayNameOverrides[filter.value as keyof typeof displayNameOverrides] || rebrandProviderId(filter.value);
     return `Strategy: ${displayName}`;
   }
 
@@ -420,7 +421,7 @@ export default function ResultsView({
     const provider = prompt.provider || 'unknown';
     const displayLabel = [
       label && `"${label.slice(0, 60)}${label.length > 60 ? '...' : ''}"`,
-      provider && `[${provider}]`,
+      provider && `[${rebrandProviderId(provider)}]`,
     ]
       .filter(Boolean)
       .join(' ');
