@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<buildlist xmlns="https://analysiscenter.veracode.com/schema/2.0/buildlist" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" account_id="11045" app_id="2323176" app_name="BEL-ASR-Payment App_BE" buildlist_version="1.3" xsi:schemaLocation="https://analysiscenter.veracode.com/schema/2.0/buildlist https://analysiscenter.veracode.com/resource/2.0/buildlist.xsd">
-  <build build_id="47394591" policy_updated_date="2026-04-02T08:39:44-04:00" version="2025-02-27 SAST v1.0.0 APR RITM20202743"/>
-  <build build_id="66465676" policy_updated_date="2026-04-30T03:18:23-04:00" version="0.1.0-main-1b4902c"/>
-  <build build_id="67253996" policy_updated_date="2026-04-30T04:53:56-04:00" version="0.1.0-main-9e6ca1f"/>
-</buildlist>
