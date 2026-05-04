@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class VeracodeConfig {
 
     private String url;
+    private boolean debug;
     private List<String> ignoreModules = new ArrayList<>();
     private List<String> includeModules = new ArrayList<>();
     private Key key = new Key();
@@ -20,6 +21,14 @@ public class VeracodeConfig {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public Key getKey() {

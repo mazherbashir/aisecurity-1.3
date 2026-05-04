@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<prescanresults xmlns="https://analysiscenter.veracode.com/schema/2.0/prescanresults" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" account_id="11045" app_id="2945055" build_id="67351932" prescanresults_version="1.4" xsi:schemaLocation="https://analysiscenter.veracode.com/schema/2.0/prescanresults https://analysiscenter.veracode.com/resource/2.0/prescanresults.xsd">
+  <module app_file_id="21607955709" checksum="6740c5abbd50a28360612c1436bfe436" difference="modified" has_fatal_errors="false" id="3281750207" is_dependency="false" name="JS files within deals-insights-veracode-main.zip" platform="JAVASCRIPT / JavaScript / JAVASCRIPT_5_1" size="1MB" status="OK">
+    <issue details="No supporting files or PDB files"/>
+    <sourcefile>
+      <new>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/config/runtimeConfig.ts"/>
+      </new>
+      <modified>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/api/client.ts"/>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/components/ProtectedRoute.tsx"/>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/config/authConfig.ts"/>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/config/featureFlags.ts"/>
+        <file path="deals-insights-veracode-main/frontend/deals-insight-dashboard/src/test/setup.ts"/>
+      </modified>
+    </sourcefile>
+  </module>
+  <module app_file_id="21607940336" checksum="6740c5abbd50a28360612c1436bfe436" difference="unmodified" has_fatal_errors="true" id="3281750209" is_dependency="false" name="PL/SQL Files" platform="PL/SQL / PL/SQL / PL/SQL" size="0KB" status="Support Issue - 1 File, (Fatal)Support Issue: Fatal - 1 File">
+    <issue details="Support Issue: Cannot parse file 'deals-insights-veracode-main/backend/deals-dash-board/init-db.sql'. Error at line 5:7: no viable alternative at input 'CREATE EXTENSION'"/>
+    <issue details="Support issue (fatal): Too many parse failures. 0% of files successfully parsed. A success rate of greater than 30% is required." level="fatal"/>
+    <issue details="No supporting files or PDB files"/>
+  </module>
+  <module app_file_id="21607961706" checksum="6740c5abbd50a28360612c1436bfe436" difference="unmodified" has_fatal_errors="false" id="3281750210" is_dependency="false" name="Python Files" platform="Python / Python" size="452KB" status="OK">
+    <issue details="No supporting files or PDB files"/>
+  </module>
+</prescanresults>

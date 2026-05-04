@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<prescanresults xmlns="https://analysiscenter.veracode.com/schema/2.0/prescanresults" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" account_id="11045" app_id="2323176" build_id="67253996" prescanresults_version="1.4" xsi:schemaLocation="https://analysiscenter.veracode.com/schema/2.0/prescanresults https://analysiscenter.veracode.com/resource/2.0/prescanresults.xsd">
+  <module app_file_id="21586445114" checksum="1660d2bd75a3b988d7e0bcdc6ab10ad5" difference="unmodified" has_fatal_errors="true" id="3280846042" is_dependency="false" name="PwC.PaymentApp.Api" platform="X86_64 / Linux (X86_64) / GCC_Linux_X86_64_4_9_4" size="0KB" status="(Fatal)Primary Files Compiled without Debug Symbols - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: The image &quot;PwC.PaymentApp.Api&quot; was built with the GCC_Linux_X86_64_5_4_0 compiler, which is a later version than the supported GCC_Linux_X86_64_4_9_4 compiler. Proceeding with this compiler version will degrade the performance of the analysis and the quality of the results. Use a supported compiler version to build the image."/>
+    <issue details="No supporting files or PDB files"/>
+  </module>
+  <module app_file_id="21586444481" checksum="30107c56eef52f3a08e99a74880b7265" difference="unmodified" has_fatal_errors="false" id="3280846044" is_dependency="false" name="PwC.PaymentApp.Api.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Azure.Identity.dll has the wrong version, 1.13.2.0. Should be 1.13.1.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Microsoft.IdentityModel.JsonWebTokens.dll has the wrong version, 8.0.2.0. Should be 7.1.2.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll has the wrong version, 8.0.2.0. Should be 7.1.2.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Microsoft.IdentityModel.Protocols.dll has the wrong version, 8.0.2.0. Should be 7.1.2.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Microsoft.IdentityModel.Tokens.dll has the wrong version, 8.0.2.0. Should be 7.1.2.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/System.IdentityModel.Tokens.Jwt.dll has the wrong version, 8.0.2.0. Should be 7.1.2.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/.azurefunctions/Microsoft.Identity.Client.dll has the wrong version, 4.61.3.0. Should be 4.56.0.0."/>
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Security.KeyVault.Secrets.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.PerfCounterCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="HealthChecks.UI.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.SqlServer.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.ApplicationInsights.AspNetCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="HealthChecks.Uris.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.DependencyCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Data.SqlClient.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Identity.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="Swashbuckle.AspNetCore.SwaggerUI.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Logging.ApplicationInsights.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Blobs.dll"/>
+    <file_issue details="Found (Optional)" filename="Swashbuckle.AspNetCore.Swagger.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Azure.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="System.Memory.Data.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Api.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="System.IdentityModel.Tokens.Jwt.dll"/>
+    <file_issue details="Found (Optional)" filename="Swashbuckle.AspNetCore.SwaggerGen.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.EventCounterCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AspNetCore.Authentication.JwtBearer.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="System.IO.Hashing.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="System.ClientModel.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.ServerTelemetryChannel.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.DependencyInjectionExtensions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.WindowsServer.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.OpenApi.dll"/>
+    <file_issue details="Found (Optional)" filename="HealthChecks.SqlServer.dll"/>
+    <file_issue details="Found (Optional)" filename="HealthChecks.UI.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+  </module>
+  <module app_file_id="21586444521" checksum="2f1d9113a926f63da6c5ee6c58e69a7f" difference="unmodified" has_fatal_errors="false" id="3280846045" is_dependency="true" name="PwC.PaymentApp.Application.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+  </module>
+  <module app_file_id="21586443604" checksum="b99f8cd167497d12c4890cb62f117c6c" difference="unmodified" has_fatal_errors="false" id="3280846046" is_dependency="true" name="PwC.PaymentApp.Domain.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+  </module>
+  <module app_file_id="21586444500" checksum="10fdb695dba31047a679981c1ec4d240" difference="unmodified" has_fatal_errors="false" id="3280846047" is_dependency="true" name="PwC.PaymentApp.Helpers.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+  </module>
+  <module app_file_id="21586445101" checksum="4f7e030f37ca0c7c727fa6302d240499" difference="unmodified" has_fatal_errors="false" id="3280846048" is_dependency="true" name="PwC.PaymentApp.Infrastructure.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Azure.Identity.dll has the wrong version, 1.13.2.0. Should be 1.13.1.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/.azurefunctions/Microsoft.Identity.Client.dll has the wrong version, 4.61.3.0. Should be 4.56.0.0."/>
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Security.KeyVault.Secrets.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.SqlServer.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Data.SqlClient.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Identity.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Blobs.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Azure.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="System.Memory.Data.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="System.IO.Hashing.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="System.ClientModel.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.DependencyInjectionExtensions.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.dll"/>
+  </module>
+  <module app_file_id="21586444451" checksum="94e7275e86e651266c447f59bcd3dfa0" difference="unmodified" has_fatal_errors="false" id="3280846049" is_dependency="true" name="PwC.PaymentApp.Integrations.Aura.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+  </module>
+  <module app_file_id="21586443603" checksum="d3ba28533396a150229842b086cc8f42" difference="unmodified" has_fatal_errors="false" id="3280846050" is_dependency="true" name="PwC.PaymentApp.Integrations.PwCIdentity.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+  </module>
+  <module app_file_id="21586444463" checksum="38753c11c9f9e47d1b8aa9727dbb6694" difference="unmodified" has_fatal_errors="false" id="3280846051" is_dependency="true" name="PwC.PaymentApp.Providers.Common.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+  </module>
+  <module app_file_id="21586444529" checksum="4c86f5841e6b2978388fe1388c3abc35" difference="unmodified" has_fatal_errors="false" id="3280846052" is_dependency="true" name="PwC.PaymentApp.Providers.Ponto.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+  </module>
+  <module app_file_id="21586446945" checksum="2f1d9113a926f63da6c5ee6c58e69a7f" difference="modified" has_fatal_errors="false" id="3280846053" is_dependency="false" name="PwC.PaymentApp.Application.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Application.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Application.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586446974" checksum="b3a51a3e30108a0501a5f97048dad8e5" difference="unmodified" has_fatal_errors="true" id="3280846054" is_dependency="false" name="PwC.PaymentApp.AzureFunctions" platform="X86_64 / Linux (X86_64) / GCC_Linux_X86_64_4_9_4" size="0KB" status="(Fatal)Primary Files Compiled without Debug Symbols - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: The image &quot;PwC.PaymentApp.AzureFunctions&quot; was built with the GCC_Linux_X86_64_5_4_0 compiler, which is a later version than the supported GCC_Linux_X86_64_4_9_4 compiler. Proceeding with this compiler version will degrade the performance of the analysis and the quality of the results. Use a supported compiler version to build the image."/>
+    <issue details="No supporting files or PDB files"/>
+  </module>
+  <module app_file_id="21586445968" checksum="4bb4659361bad2671a03b6cc431442b3" difference="unmodified" has_fatal_errors="false" id="3280846055" is_dependency="false" name="PwC.PaymentApp.AzureFunctions.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Azure.Identity.dll has the wrong version, 1.13.2.0. Should be 1.12.0.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Azure.Identity.dll has the wrong version, 1.13.2.0. Should be 1.13.1.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/.azurefunctions/Azure.Storage.Queues.dll has the wrong version, 12.19.0.0. Should be 12.17.1.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/.azurefunctions/Microsoft.Identity.Client.dll has the wrong version, 4.61.3.0. Should be 4.56.0.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/Microsoft.Azure.Functions.Worker.Core.dll has the wrong version, 2.0.0.0. Should be 1.18.0.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/Microsoft.Azure.Functions.Worker.Core.dll has the wrong version, 2.0.0.0. Should be 1.19.0.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/Microsoft.Azure.Functions.Worker.Extensions.Http.dll has the wrong version, 3.3.0.0. Should be 3.2.0.0."/>
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Grpc.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Security.KeyVault.Secrets.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.PerfCounterCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.SqlServer.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.ApplicationInsights.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.DependencyCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Extensions.Timer.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Data.SqlClient.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Identity.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Extensions.Http.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="Azure.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Logging.ApplicationInsights.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Blobs.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Google.Protobuf.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.ApplicationInsights.WorkerService.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Azure.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Extensions.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="System.Memory.Data.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.EventCounterCollector.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="System.IO.Hashing.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="System.ClientModel.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.AzureFunctions.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.ServerTelemetryChannel.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.DependencyInjectionExtensions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.AI.WindowsServer.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.dll"/>
+  </module>
+  <module app_file_id="21586445976" checksum="b99f8cd167497d12c4890cb62f117c6c" difference="modified" has_fatal_errors="false" id="3280846056" is_dependency="false" name="PwC.PaymentApp.Domain.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586446385" checksum="10fdb695dba31047a679981c1ec4d240" difference="modified" has_fatal_errors="false" id="3280846057" is_dependency="false" name="PwC.PaymentApp.Helpers.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586447337" checksum="4f7e030f37ca0c7c727fa6302d240499" difference="modified" has_fatal_errors="false" id="3280846058" is_dependency="false" name="PwC.PaymentApp.Infrastructure.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File, Support Issue - 1 File, Support Issue - 1 File">
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/Api/Azure.Identity.dll has the wrong version, 1.13.2.0. Should be 1.13.1.0."/>
+    <issue details="Support Issue: Available image Code quality scan 0.1.0-ci.797_20260430.1_1777538225798_zip/AzureFunctions/.azurefunctions/Microsoft.Identity.Client.dll has the wrong version, 4.61.3.0. Should be 4.56.0.0."/>
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.Extensions.Msal.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Security.KeyVault.Secrets.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.SqlServer.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.JsonWebTokens.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="DocumentFormat.OpenXml.Framework.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Data.SqlClient.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Identity.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Queues.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.Parser.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.Relational.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Blobs.dll"/>
+    <file_issue details="Found (Optional)" filename="Azure.Storage.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Azure.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="System.Memory.Data.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="RBush.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="ClosedXML.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Infrastructure.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="System.IO.Hashing.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Identity.Client.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="SixLabors.Fonts.dll"/>
+    <file_issue details="Found (Optional)" filename="System.ClientModel.dll"/>
+    <file_issue details="Found (Optional)" filename="ExcelNumberFormat.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.DependencyInjectionExtensions.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.EntityFrameworkCore.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Application.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Infrastructure.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Application.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Infrastructure.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Application.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586446026" checksum="94e7275e86e651266c447f59bcd3dfa0" difference="modified" has_fatal_errors="false" id="3280846059" is_dependency="false" name="PwC.PaymentApp.Integrations.Aura.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.Aura.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.Aura.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586445972" checksum="d3ba28533396a150229842b086cc8f42" difference="modified" has_fatal_errors="false" id="3280846060" is_dependency="false" name="PwC.PaymentApp.Integrations.PwCIdentity.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Integrations.PwCIdentity.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Tokens.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Protocols.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IdentityModel.Logging.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Integrations.PwCIdentity.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586446338" checksum="38753c11c9f9e47d1b8aa9727dbb6694" difference="modified" has_fatal_errors="false" id="3280846061" is_dependency="false" name="PwC.PaymentApp.Providers.Common.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586446951" checksum="4c86f5841e6b2978388fe1388c3abc35" difference="modified" has_fatal_errors="false" id="3280846062" is_dependency="false" name="PwC.PaymentApp.Providers.Ponto.dll" platform="CIL32 / Windows / MSIL_MSVC14_X86" size="0KB" status="Support Issue - 1 File">
+    <issue details="Support Issue: No precompiled files were found for this .NET web application. If this is an ASP.NET application, please precompile the project and upload all generated assemblies."/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.DependencyInjection.AutoActivation.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Core.dll"/>
+    <file_issue details="Found (Optional)" filename="FluentValidation.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Compliance.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.Abstractions.dll"/>
+    <file_issue details="Found (Optional)" filename="MediatR.Contracts.dll"/>
+    <file_issue details="Found (Optional)" filename="OpenMcdf.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.Extensions.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.dll"/>
+    <file_issue details="Found (Optional)" filename="Polly.RateLimiting.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Domain.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.IO.RecyclableMemoryStream.dll"/>
+    <file_issue details="Found (Optional)" filename="FileSignatures.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Ponto.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.AmbientMetadata.Application.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Diagnostics.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Providers.Common.pdb"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Telemetry.dll"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.pdb"/>
+    <file_issue details="Found (Optional)" filename="PwC.PaymentApp.Helpers.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Http.Resilience.dll"/>
+    <file_issue details="Found (Optional)" filename="Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll"/>
+    <sourcefile>
+      <new>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.797_20260430.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+      </new>
+      <removed>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Ponto.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Domain.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Helpers.dll"/>
+        <file path="Code quality scan 0.1.0-ci.793_20260416.1__zip/Api/PwC.PaymentApp.Providers.Common.dll"/>
+      </removed>
+    </sourcefile>
+  </module>
+  <module app_file_id="21586460438" checksum="1b7844ea49069d9e46015be5336df8e6" difference="modified" has_fatal_errors="false" id="3280846063" is_dependency="false" name="JS files within Code quality scan 0.1.0-ci.797_20260430.1.zip" platform="JAVASCRIPT / JavaScript / JAVASCRIPT_5_1" size="439KB" status="OK">
+    <issue details="No supporting files or PDB files"/>
+    <sourcefile>
+      <modified>
+        <file path="Client/src/app/dashboard/components/modals/AddAccounts/AddAccountsUpload.tsx"/>
+        <file path="Client/src/app/dashboard/components/modals/BankDataRequest/BankDataRequestModal.tsx"/>
+        <file path="Client/src/network/api.ts"/>
+        <file path="Client/src/openapi/generated/schemas.gen.ts"/>
+        <file path="Client/src/openapi/generated/services.gen.ts"/>
+        <file path="Client/src/app/dashboard/engagement-detail/_id_/settings/SettingsComponent.tsx"/>
+      </modified>
+    </sourcefile>
+  </module>
+</prescanresults>

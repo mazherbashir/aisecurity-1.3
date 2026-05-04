@@ -27,7 +27,7 @@ public class VeracodeService {
     public String getAppId(String appName) {
         try {
             UploadAPIWrapper uploadWrapper = new UploadAPIWrapper();
-            uploadWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(uploadWrapper);
             String xml = uploadWrapper.getAppList();
             saveXmlToLog("app_list", "all", xml);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -49,10 +49,10 @@ public class VeracodeService {
     public String getLatestBuildId(String appId) {
         try {
             UploadAPIWrapper uploadWrapper = new UploadAPIWrapper();
-            uploadWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(uploadWrapper);
             String xml = uploadWrapper.getBuildList(appId);
             saveXmlToLog("build_list", appId, xml);
-            System.out.println("[" + java.time.LocalDateTime.now() + "] Raw Build List for App ID " + appId + ": " + xml);
+            debugLog("[" + java.time.LocalDateTime.now() + "] Raw Build List for App ID " + appId + ": " + xml);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(xml)));
@@ -69,13 +69,13 @@ public class VeracodeService {
     public VeracodeReport getDetailedReportObject(String buildId) {
         try {
             ResultsAPIWrapper resultsWrapper = new ResultsAPIWrapper();
-            resultsWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(resultsWrapper);
             String xml = resultsWrapper.detailedReport(buildId);
             
             // Save to log file for analysis
             saveXmlToLog("detailed_report", buildId, xml);
 
-            System.out.println("[" + java.time.LocalDateTime.now() + "] Detailed Report Snippet: " + (xml.length() > 500 ? xml.substring(0, 500) : xml));
+            debugLog("[" + java.time.LocalDateTime.now() + "] Detailed Report Snippet: " + (xml.length() > 500 ? xml.substring(0, 500) : xml));
             JAXBContext context = JAXBContext.newInstance(VeracodeReport.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             return (VeracodeReport) unmarshaller.unmarshal(new StringReader(xml));
@@ -85,6 +85,7 @@ public class VeracodeService {
     }
 
     private void saveXmlToLog(String prefix, String id, String xml) {
+        if (!veracodeConfig.isDebug()) return;
         try {
             String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             java.nio.file.Path logDir = java.nio.file.Paths.get("logs", "veracode");
@@ -92,9 +93,56 @@ public class VeracodeService {
             
             String fileName = String.format("%s_%s_%s.xml", prefix, id, timestamp);
             java.nio.file.Files.writeString(logDir.resolve(fileName), xml);
-            System.out.println("DEBUG: Saved report log to: " + logDir.resolve(fileName));
+            debugLog("DEBUG: Saved report log to: " + logDir.resolve(fileName));
         } catch (Exception e) {
             System.err.println("Warning: Could not save XML log: " + e.getMessage());
+        }
+    }
+
+    private void debugLog(String message) {
+        if (veracodeConfig.isDebug()) {
+            System.out.println(message);
+        }
+    }
+
+    private void setupCredentials(Object wrapper) {
+        String id = veracodeConfig.getKey().getId();
+        String secret = veracodeConfig.getKey().getSecret();
+
+        if (id == null || id.isEmpty() || secret == null || secret.isEmpty()) {
+            try {
+                String home = System.getProperty("user.home");
+                java.nio.file.Path credPath = java.nio.file.Paths.get(home, ".veracode", "credentials");
+                if (java.nio.file.Files.exists(credPath)) {
+                    List<String> lines = java.nio.file.Files.readAllLines(credPath);
+                    for (String line : lines) {
+                        String trimmed = line.trim();
+                        if (trimmed.startsWith("veracode_api_key_id")) {
+                            id = trimmed.split("=")[1].trim();
+                        } else if (trimmed.startsWith("veracode_api_key_secret")) {
+                            secret = trimmed.split("=")[1].trim();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                if (veracodeConfig.isDebug()) {
+                    System.err.println("DEBUG: Error reading Veracode credentials file: " + e.getMessage());
+                }
+            }
+        }
+
+        if (id == null || id.isEmpty() || secret == null || secret.isEmpty()) {
+            throw new RuntimeException("CRITICAL: Veracode credentials not found. Please ensure 'veracode_api_key_id' and 'veracode_api_key_secret' are set in application.properties or your local ~/.veracode/credentials file.");
+        }
+
+        try {
+            if (wrapper instanceof UploadAPIWrapper) {
+                ((UploadAPIWrapper) wrapper).setUpApiCredentials(id, secret);
+            } else if (wrapper instanceof ResultsAPIWrapper) {
+                ((ResultsAPIWrapper) wrapper).setUpApiCredentials(id, secret);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set up API credentials using provided keys", e);
         }
     }
 
@@ -140,12 +188,12 @@ public class VeracodeService {
                 // NEW: Populate breakdown and findings using the same XML
                 generateDetailedBreakdown(detailedXml, report, dto);
                 
-                System.out.println("DEBUG: DOM processed detailed report for breakdown and modules.");
+                debugLog("DEBUG: DOM processed detailed report for breakdown and modules.");
 
             // 2. Get Unselected Modules from Prescan Results XML (KEEP FILTERS HERE)
             PrescanResults prescan = getPreScanResults(effectiveAppId, effectiveBuildId);
             if (prescan != null && prescan.getModules() != null) {
-                System.out.println("DEBUG: Processing " + prescan.getModules().size() + " modules from prescan.");
+                debugLog("DEBUG: Processing " + prescan.getModules().size() + " modules from prescan.");
                 int prescanPythonCount = 0;
                 int prescanJsCount = 0;
                 
@@ -166,12 +214,12 @@ public class VeracodeService {
                     
                     // Filter: Skip if explicitly a dependency (unless it's a jar/zip) or has fatal errors
                     if (m.hasFatalErrors()) {
-                        System.out.println("DEBUG: Skipping unselected module (Fatal Errors): " + moduleName);
+                        debugLog("DEBUG: Skipping unselected module (Fatal Errors): " + moduleName);
                         continue;
                     }
                     if (m.isDependency() && !moduleName.toLowerCase().endsWith(".zip") && !moduleName.toLowerCase().endsWith(".jar") &&
                         (finalFileName == null || (!finalFileName.toLowerCase().endsWith(".zip") && !finalFileName.toLowerCase().endsWith(".jar")))) {
-                        System.out.println("DEBUG: Skipping unselected module (Dependency): " + moduleName);
+                        debugLog("DEBUG: Skipping unselected module (Dependency): " + moduleName);
                         continue;
                     }
 
@@ -186,23 +234,45 @@ public class VeracodeService {
                         });
 
                     if (isAlreadySelected) {
-                        System.out.println("DEBUG: Skipping unselected module (Already Selected): " + moduleName);
+                        debugLog("DEBUG: Skipping unselected module (Already Selected): " + moduleName);
                         continue;
                     }
 
-                    boolean containsIgnore = veracodeConfig.getIgnoreModules().stream()
-                        .anyMatch(ignore -> moduleName.toLowerCase().contains(ignore.toLowerCase()));
-                    
                     String displayName = (finalFileName != null && !finalFileName.isEmpty()) ? finalFileName : moduleName;
                     
                     boolean isExplicitInclude = veracodeConfig.getIncludeModules() != null && veracodeConfig.getIncludeModules().stream()
                         .anyMatch(inc -> displayName.toLowerCase().contains(inc.toLowerCase()));
 
-                    // Rule: Include if NOT ignored OR if it's a priority file (.zip, PwC, or in include-modules)
-                    if (isExplicitInclude || !containsIgnore || displayName.startsWith("PwC") || displayName.toLowerCase().endsWith(".zip")) {
-                        dto.unselectedModules.add(displayName);
+                    boolean hasSelectedMatch = dto.selectedModules.stream()
+                        .anyMatch(selected -> {
+                            String s = selected.toLowerCase();
+                            String d = displayName.toLowerCase();
+                            // Exact prefix/suffix match
+                            if (d.startsWith(s) || d.endsWith(s)) return true;
+                            
+                            // Fuzzy prefix match: check if both start with the same 6 characters
+                            if (s.length() >= 6 && d.length() >= 6) {
+                                String sPrefix = s.substring(0, 6);
+                                String dPrefix = d.substring(0, 6);
+                                if (sPrefix.equals(dPrefix)) return true;
+                            }
+                            return false;
+                        });
+
+                    // Rule: Include only if explicitly in include-modules OR if prefix/suffix matches a selected module
+                    if (isExplicitInclude || hasSelectedMatch) {
+                        boolean isIgnored = veracodeConfig.getIgnoreModules().stream()
+                            .anyMatch(ignore -> displayName.toLowerCase().contains(ignore.toLowerCase()));
+                        
+                        if (!isIgnored) {
+                            if (!dto.unselectedModules.contains(displayName)) {
+                                dto.unselectedModules.add(displayName);
+                            }
+                        } else {
+                            debugLog("DEBUG: Skipping unselected module (Ignored via blacklist): " + displayName);
+                        }
                     } else {
-                        System.out.println("DEBUG: Skipping unselected module (Ignored): " + displayName);
+                        debugLog("DEBUG: Skipping unselected module (Not in inclusion list): " + displayName);
                     }
                 }
 
@@ -212,9 +282,11 @@ public class VeracodeService {
                     .count();
                 int missingPython = prescanPythonCount - (int)selectedPythonCount;
                 for (int i = 0; i < missingPython; i++) {
-                    dto.unselectedModules.add("Python Files");
+                    if (!dto.unselectedModules.contains("Python Files")) {
+                        dto.unselectedModules.add("Python Files");
+                    }
                 }
-                if (missingPython > 0) System.out.println("DEBUG: Added " + missingPython + " unselected Python Files via balancing logic.");
+                if (missingPython > 0) debugLog("DEBUG: Added " + missingPython + " unselected Python Files via balancing logic.");
 
                 // Apply Balancing Logic for JS
                 long selectedJsCount = dto.selectedModules.stream()
@@ -222,9 +294,11 @@ public class VeracodeService {
                     .count();
                 int missingJs = prescanJsCount - (int)selectedJsCount;
                 for (int i = 0; i < missingJs; i++) {
-                    dto.unselectedModules.add("JS Files");
+                    if (!dto.unselectedModules.contains("JS Files")) {
+                        dto.unselectedModules.add("JS Files");
+                    }
                 }
-                if (missingJs > 0) System.out.println("DEBUG: Added " + missingJs + " unselected JS Files via balancing logic.");
+                if (missingJs > 0) debugLog("DEBUG: Added " + missingJs + " unselected JS Files via balancing logic.");
             }
         } catch (Exception e) {
             System.err.println("Warning: Could not perform gap analysis: " + e.getMessage());
@@ -244,10 +318,10 @@ public class VeracodeService {
     public BuildInfo getBuildInfo(String buildId) {
         try {
             UploadAPIWrapper uploadWrapper = new UploadAPIWrapper();
-            uploadWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(uploadWrapper);
             String xml = uploadWrapper.getBuildInfo(buildId);
             saveXmlToLog("build_info", buildId, xml);
-            System.out.println("[" + java.time.LocalDateTime.now() + "] Raw Build Info for ID " + buildId + ": " + xml);
+            debugLog("[" + java.time.LocalDateTime.now() + "] Raw Build Info for ID " + buildId + ": " + xml);
 
             if (xml.contains("<error>")) {
                 JAXBContext errContext = JAXBContext.newInstance(VeracodeError.class);
@@ -268,10 +342,10 @@ public class VeracodeService {
     public PrescanResults getPreScanResults(String appId, String buildId) {
         try {
             UploadAPIWrapper uploadWrapper = new UploadAPIWrapper();
-            uploadWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(uploadWrapper);
             String xml = uploadWrapper.getPreScanResults(appId, buildId);
             saveXmlToLog("prescan_results", buildId, xml);
-            System.out.println("[" + java.time.LocalDateTime.now() + "] Raw Prescan Results: " + (xml.length() > 500 ? xml.substring(0, 500) : xml));
+            debugLog("[" + java.time.LocalDateTime.now() + "] Raw Prescan Results: " + (xml.length() > 500 ? xml.substring(0, 500) : xml));
 
             if (xml.contains("<error>")) {
                 System.err.println("Veracode API Error in Prescan: " + xml);
@@ -289,7 +363,7 @@ public class VeracodeService {
     public String getRawDetailedReport(String buildId) {
         try {
             ResultsAPIWrapper resultsWrapper = new ResultsAPIWrapper();
-            resultsWrapper.setUpApiCredentials(veracodeConfig.getKey().getId(), veracodeConfig.getKey().getSecret());
+            setupCredentials(resultsWrapper);
             return resultsWrapper.detailedReport(buildId);
         } catch (Exception e) {
             throw new RuntimeException("Failed to get raw detailed report", e);
@@ -489,7 +563,14 @@ public class VeracodeService {
                     
                     var comments = new java.util.ArrayList<String>();
                     for (int k = 0; k < mitigations.getLength(); k++) {
-                        comments.add(((org.w3c.dom.Element)mitigations.item(k)).getAttribute("comment"));
+                        var mitElem = (org.w3c.dom.Element) mitigations.item(k);
+                        String comment = mitElem.getAttribute("description");
+                        if (comment == null || comment.isEmpty()) {
+                            comment = mitElem.getAttribute("comment");
+                        }
+                        if (comment != null && !comment.isEmpty()) {
+                            comments.add(comment);
+                        }
                     }
                     fDto.userComments = comments;
                     dto.findingsWithComments.add(fDto);
