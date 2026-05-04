@@ -226,11 +226,20 @@ public class VeracodeService {
                     // CHECK: Is this specific module already selected?
                     boolean isAlreadySelected = dto.selectedModules.stream()
                         .anyMatch(selected -> {
-                            boolean nameMatch = selected.equalsIgnoreCase(moduleName);
-                            boolean fileMatch = (finalFileName != null && selected.equalsIgnoreCase(finalFileName));
-                            boolean nameInside = selected.toLowerCase().contains(moduleName.toLowerCase());
-                            boolean fileInside = (finalFileName != null && selected.toLowerCase().contains(finalFileName.toLowerCase()));
-                            return nameMatch || fileMatch || nameInside || fileInside;
+                            String selLower = selected.toLowerCase();
+                            String modLower = moduleName.toLowerCase();
+                            String fileLower = (finalFileName != null) ? finalFileName.toLowerCase() : null;
+
+                            boolean nameMatch = selLower.equals(modLower);
+                            boolean fileMatch = (fileLower != null && selLower.equals(fileLower));
+                            boolean nameInside = selLower.contains(modLower);
+                            boolean fileInside = (fileLower != null && selLower.contains(fileLower));
+                            
+                            // Handles "Go files within 936599.zip" matching "936599.zip"
+                            boolean selectedInsideName = modLower.contains(selLower);
+                            boolean selectedInsideFile = (fileLower != null && fileLower.contains(selLower));
+
+                            return nameMatch || fileMatch || nameInside || fileInside || selectedInsideName || selectedInsideFile;
                         });
 
                     if (isAlreadySelected) {
@@ -430,7 +439,7 @@ public class VeracodeService {
             var factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             var builder = factory.newDocumentBuilder();
-            var doc = builder.parse(new java.io.ByteArrayInputStream(xml.getBytes()));
+            var doc = builder.parse(new java.io.ByteArrayInputStream(xml.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
 
             // Build issueId -> mitigation descriptions map from JAXB model
             var mitigationsByIssueId = new java.util.HashMap<String, List<String>>();
@@ -467,10 +476,16 @@ public class VeracodeService {
 
             for (int i = 0; i < flaws.getLength(); i++) {
                 var flaw = (org.w3c.dom.Element) flaws.item(i);
+                String issueId = flaw.getAttribute("issueid");
                 String mitigationStatus = flaw.getAttribute("mitigation_status");
+                String remediationStatus = flaw.getAttribute("remediation_status");
 
-                // Logic: Exclude "accepted" from breakdown and total
-                if ("accepted".equalsIgnoreCase(mitigationStatus)) continue;
+                if (mitigationStatus != null) mitigationStatus = mitigationStatus.trim();
+                
+                // Logic: Exclude "accepted" or "Fixed" from breakdown and total
+                if ("accepted".equalsIgnoreCase(mitigationStatus) || "Fixed".equalsIgnoreCase(remediationStatus)) {
+                    continue;
+                }
 
                 int sev = Integer.parseInt(flaw.getAttribute("severity"));
                 String cweId = flaw.getAttribute("cweid");
@@ -481,22 +496,40 @@ public class VeracodeService {
                 severityMap.get(sev).get(cwe).add(flaw);
                 totalSast++;
 
-                // Logic for findingsWithComments: Report all mitigation_status="proposed"
+                // Logic for findingsWithComments: Report ONLY mitigation_status="proposed" with actual comments
                 if ("proposed".equalsIgnoreCase(mitigationStatus)) {
-                    var fDto = new VeracodeReportDTO.FindingDTO();
-                    fDto.type = "SAST";
-                    fDto.id = flaw.getAttribute("issueid");
-                    fDto.cweid = cweId;
-                    fDto.title = flaw.getAttribute("categoryname");
-                    fDto.severity = getSeverityName(sev);
-                    fDto.location = flaw.getAttribute("sourcefile") + ":" + flaw.getAttribute("line");
-                    fDto.userComments = mitigationsByIssueId.getOrDefault(flaw.getAttribute("issueid"), java.util.Collections.emptyList());
-                    findings.add(fDto);
+                    // Extract comments using DOM for consistency
+                    var mitNodes = flaw.getElementsByTagNameNS("*", "mitigation");
+                    if (mitNodes.getLength() == 0) continue;
+
+                    var comments = new java.util.ArrayList<String>();
+                    for (int k = 0; k < mitNodes.getLength(); k++) {
+                        var mitElem = (org.w3c.dom.Element) mitNodes.item(k);
+                        String comment = mitElem.getAttribute("description");
+                        if (comment == null || comment.isEmpty()) {
+                            comment = mitElem.getAttribute("comment");
+                        }
+                        if (comment != null && !comment.isEmpty()) {
+                            comments.add(comment);
+                        }
+                    }
+
+                    if (!comments.isEmpty()) {
+                        var fDto = new VeracodeReportDTO.FindingDTO();
+                        fDto.type = "SAST";
+                        fDto.id = issueId;
+                        fDto.cweid = cweId;
+                        fDto.title = flaw.getAttribute("categoryname");
+                        fDto.severity = getSeverityName(sev);
+                        fDto.location = flaw.getAttribute("sourcefile") + ":" + flaw.getAttribute("line");
+                        fDto.userComments = comments;
+                        findings.add(fDto);
+                    }
                 }
             }
             
             dto.sastSummary.vulnerabilities = totalSast;
-            dto.findingsWithComments.addAll(findings);
+            dto.findingsWithCommentsSAST.addAll(findings);
             
             // Format Breakdown String
             var sb = new StringBuilder();
@@ -548,11 +581,39 @@ public class VeracodeService {
                 vulnerabilitiesSca++;
                 hasVulnerability = true;
 
-                // Mitigation checks
-                boolean isMitigated = "true".equalsIgnoreCase(vuln.getAttribute("mitigation"));
-                var mitigations = vuln.getElementsByTagNameNS("*", "mitigation");
-                
-                if (!isMitigated && mitigations.getLength() > 0) {
+                // Mitigation checks for SCA
+                String isMitigated = vuln.getAttribute("mitigation");
+                if ("true".equalsIgnoreCase(isMitigated)) continue;
+
+                var mitNodes = vuln.getElementsByTagNameNS("*", "mitigation");
+                boolean hasApprove = false;
+                boolean hasProposedAction = false;
+                var scaComments = new java.util.ArrayList<String>();
+
+                for (int k = 0; k < mitNodes.getLength(); k++) {
+                    var mitElem = (org.w3c.dom.Element) mitNodes.item(k);
+                    String action = mitElem.getAttribute("action");
+
+                    if ("Approve Mitigation".equalsIgnoreCase(action)) {
+                        hasApprove = true;
+                        break; // If approved, we don't report it
+                    }
+
+                    if ("Mitigate by Design".equalsIgnoreCase(action) || 
+                        "Mitigate By Environment".equalsIgnoreCase(action) || 
+                        "Potential False Positive".equalsIgnoreCase(action)) {
+                        hasProposedAction = true;
+                        String comment = mitElem.getAttribute("description");
+                        if (comment == null || comment.isEmpty()) {
+                            comment = mitElem.getAttribute("comment");
+                        }
+                        if (comment != null && !comment.isEmpty()) {
+                            scaComments.add(comment);
+                        }
+                    }
+                }
+
+                if (hasProposedAction && !hasApprove) {
                     var fDto = new VeracodeReportDTO.FindingDTO();
                     fDto.type = "SCA";
                     fDto.id = vuln.getAttribute("cve_id");
@@ -560,20 +621,8 @@ public class VeracodeService {
                     fDto.title = vuln.getAttribute("cve_id");
                     fDto.severity = getSeverityName(sev);
                     fDto.location = comp.getAttribute("library");
-                    
-                    var comments = new java.util.ArrayList<String>();
-                    for (int k = 0; k < mitigations.getLength(); k++) {
-                        var mitElem = (org.w3c.dom.Element) mitigations.item(k);
-                        String comment = mitElem.getAttribute("description");
-                        if (comment == null || comment.isEmpty()) {
-                            comment = mitElem.getAttribute("comment");
-                        }
-                        if (comment != null && !comment.isEmpty()) {
-                            comments.add(comment);
-                        }
-                    }
-                    fDto.userComments = comments;
-                    dto.findingsWithComments.add(fDto);
+                    fDto.userComments = scaComments;
+                    dto.findingsWithCommentsSCA.add(fDto);
                 }
             }
             if (hasVulnerability) {
@@ -651,6 +700,7 @@ public class VeracodeService {
         map.put("PHP", "composer");
         map.put("RUBY", "rubygems");
         map.put("GO", "go");
+        map.put("GOLANG", "go");
 
         // 1. Architecture detected in SAST but Ecosystem missing in SCA
         for (String arch : architectures) {
@@ -673,14 +723,17 @@ public class VeracodeService {
         reverseMap.put("gradle", "JAVA");
         reverseMap.put("composer", "PHP");
         reverseMap.put("rubygems", "RUBY");
-        reverseMap.put("go", "GO");
+        reverseMap.put("go", "GOLANG");
 
         for (String eco : ecosystems) {
             String expectedArch = reverseMap.get(eco);
             if (expectedArch != null) {
                 boolean archFound = false;
                 for (String a : architectures) {
-                    if (a.equals(expectedArch) || (expectedArch.equals("CIL32") && a.equals("MSIL"))) {
+                    if (a.equals(expectedArch) || 
+                        (expectedArch.equals("CIL32") && a.equals("MSIL")) ||
+                        (expectedArch.equals("GOLANG") && a.equals("GO")) ||
+                        (expectedArch.equals("GO") && a.equals("GOLANG"))) {
                         archFound = true;
                         break;
                     }

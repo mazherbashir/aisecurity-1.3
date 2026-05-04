@@ -11,7 +11,8 @@ public class VeracodeReportDTO {
     public List<ScaDetailDTO> scaDetails = new ArrayList<>();
     public String scaEcosystems;
     public List<String> packagingAnomalies = new ArrayList<>();
-    public List<FindingDTO> findingsWithComments = new ArrayList<>();
+    public List<FindingDTO> findingsWithCommentsSAST = new ArrayList<>();
+    public List<FindingDTO> findingsWithCommentsSCA = new ArrayList<>();
     public List<String> unselectedModules = new ArrayList<>();
     public List<String> selectedModules = new ArrayList<>();
     public List<String> architectures = new ArrayList<>();
