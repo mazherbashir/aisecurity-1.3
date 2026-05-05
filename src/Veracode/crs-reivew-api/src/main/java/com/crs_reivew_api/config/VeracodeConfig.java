@@ -13,6 +13,7 @@ public class VeracodeConfig {
     private boolean debug;
     private List<String> ignoreModules = new ArrayList<>();
     private List<String> includeModules = new ArrayList<>();
+    private List<String> ignoreEcosystems = new ArrayList<>();
     private Key key = new Key();
 
     public String getUrl() {
@@ -53,6 +54,14 @@ public class VeracodeConfig {
 
     public void setIncludeModules(List<String> includeModules) {
         this.includeModules = includeModules;
+    }
+    
+    public List<String> getIgnoreEcosystems() {
+        return ignoreEcosystems;
+    }
+
+    public void setIgnoreEcosystems(List<String> ignoreEcosystems) {
+        this.ignoreEcosystems = ignoreEcosystems;
     }
 
     public static class Key {

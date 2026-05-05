@@ -643,7 +643,12 @@ public class VeracodeService {
             String library = comp.getAttribute("library");
             String libId = comp.getAttribute("library_id");
             if (libId != null && libId.contains(":")) {
-                ecosystems.add(libId.split(":")[0]);
+                String eco = libId.split(":")[0];
+                boolean ignore = veracodeConfig.getIgnoreEcosystems().stream()
+                    .anyMatch(ecoName -> ecoName.equalsIgnoreCase(eco));
+                if (!ignore) {
+                    ecosystems.add(eco);
+                }
             }
             var vulns = comp.getElementsByTagNameNS("*", "vulnerability");
             

@@ -1,139 +1,319 @@
 {
   "overview" : {
-    "applicationName" : "BEL-ASR-Payment App_BE",
-    "appId" : "2323176",
+    "applicationName" : "GBL-ADV-Fusion (Replacing Map)",
+    "appId" : "729193",
     "accountId" : "11045",
-    "buildId" : "67253996",
-    "analysisId" : "67212544",
-    "scanName" : "0.1.0-main-9e6ca1f",
-    "generationDate" : "2026-05-02 20:09:17 UTC",
-    "policyName" : "PwC_DC3HighlyConfidential_External",
-    "policyComplianceStatus" : "Did Not Pass",
-    "sastScore" : 93,
-    "sastRating" : "A"
+    "buildId" : "67352589",
+    "analysisId" : "67311128",
+    "scanName" : "1 May 2026 Static",
+    "generationDate" : "2026-05-04 20:57:30 UTC",
+    "policyName" : "PwC_DC3HighlyConfidential_Internal",
+    "policyComplianceStatus" : "Conditional Pass",
+    "sastScore" : 87,
+    "sastRating" : "B"
   },
   "sastSummary" : {
-    "total" : 16,
-    "breakdown" : "High: 2\n CWE-259: x 1 : date_first_occurrence=\"2026-04-01 13:57:12 UTC\"\n CWE-295: x 1 : date_first_occurrence=\"2026-04-16 06:26:41 UTC\"\nMedium: 13\n CWE-1174: x 4 : date_first_occurrence=\"2026-04-16 06:26:41 UTC\"\n CWE-285: x 2 : date_first_occurrence=\"2026-04-16 06:26:41 UTC\"\n CWE-331: x 7 : date_first_occurrence=\"2026-04-16 06:26:41 UTC\"\nLow: 1\n CWE-201: x 1 : date_first_occurrence=\"2026-04-01 13:57:12 UTC\""
+    "vulnerabilities" : 146,
+    "breakdown" : "High: 1\n CWE-259: x 1 : date_first_occurrence=\"2026-05-01 20:55:18 UTC\"\nLow: 145\n CWE-117: x 122 : date_first_occurrence=\"2025-02-05 21:27:02 UTC\"\n CWE-201: x 21 : date_first_occurrence=\"2025-10-21 19:35:22 UTC\"\n CWE-209: x 2 : date_first_occurrence=\"2025-10-21 19:35:22 UTC\""
   },
   "scaSummary" : {
-    "total" : 6,
-    "breakdown" : "Very High: 0, High: 4, Medium: 2, Low: 0, Very Low: 0, Info: 0"
+    "vulnerabilities" : 1,
+    "breakdown" : "Very High: 0, High: 0, Medium: 0, Low: 1, Very Low: 0, Info: 0",
+    "totalPackages" : 707,
+    "totalVulnerablePackages" : 1
   },
-  "findingsWithComments" : [ {
+  "scaDetails" : [ {
+    "packageName" : "ajv",
+    "firstFoundDate" : "2026-02-19 06:49:11 UTC",
+    "severityCounts" : "Low: 1",
+    "cveList" : "CVE-2025-69873"
+  } ],
+  "scaEcosystems" : "[npm, nuget, so]",
+  "packagingAnomalies" : [ ],
+  "findingsWithCommentsSAST" : [ {
     "type" : "SAST",
-    "id" : "18",
+    "id" : "1794",
     "cweid" : "259",
     "title" : "Use of Hard-coded Password",
     "severity" : "High",
-    "location" : "en.ts:122",
-    "userComments" : [ "This is not a password, it is a translation text" ]
+    "location" : "googledriveaudit.cs:53",
+    "userComments" : [ "This is flagging as \"Use of hard coded password\" on a call where we are using an azure keyvault to retrieve a securely stored password. No hardcoded keyvault names or passwords are used in this function" ]
   }, {
     "type" : "SAST",
-    "id" : "20",
-    "cweid" : "295",
-    "title" : "Improper Certificate Validation",
-    "severity" : "High",
-    "location" : "bankdataprovidersservicesconfig.cs:57",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : per SDD document, the connection to Denodo is considered secure and hosted on PwC PaaS\n\r\nRemaining Risk : No\r\nVerification : per SDD document, the connection to Denodo is considered secure and hosted on PwC PaaS\n" ]
+    "id" : "1436",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "authenticationservice.cs:658",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal logging information passed from authenticated endpoints with previously parsed and verified input parameters\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : These are flagging for a siteURL not properly being neutralized when logging. This is passed to the function internally and is not a user entered input so there is no need to neutralize the output\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "32",
-    "cweid" : "285",
-    "title" : "Improper Authorization",
-    "severity" : "Medium",
-    "location" : "authcontroller.cs:17",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The auth controller needs by design public endpoint in order to exchange codes from returned by the sign on provider for access tokens amonst other things like refresh and logout.\r\nRemaining Risk : None\r\nVerification : See specifics" ]
+    "id" : "1437",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "authenticationservice.cs:695",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal logging information passed from authenticated endpoints with previously parsed and verified input parameters\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : These are flagging for a siteURL not properly being neutralized when logging. This is passed to the function internally and is not a user entered input so there is no need to neutralize the output\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "33",
-    "cweid" : "285",
-    "title" : "Improper Authorization",
-    "severity" : "Medium",
-    "location" : "engagementscontroller.cs:36",
-    "userComments" : [ "This is a false positive. All of our endpoints are secured by default fallback policy, so unless it explicitely has AllowUnauthenticated it will always check for a token. \n\n    public static IServiceCollection AddApiAuthorization(this IServiceCollection services)\n    {\n\n        services.AddAuthorization(options =>\n       {\n           options.AddPolicy(AuthConstants.Policies.CoE,\n               policy =>\n               {\n                   policy.RequireAuthenticatedUser();\n                   policy.RequireClaim(AuthConstants.Claims.groups, AuthConstants.Roles.CoE);\n               });\n\n           options.FallbackPolicy = new AuthorizationPolicyBuilder()\n               .RequireAuthenticatedUser()\n               .Build();\n       });\n        return services;\n    }" ]
+    "id" : "1525",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "cosmosworkspacemetadataupdate.cs:38",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : Logging request method only. No user input logged\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "27",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:70",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1462",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "fusionservice.cs:340",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : This is a log statement if our Portfolio API call fails. This is an in system call that does not receive any user input. No need to neutralize the log statement\r\nRemaining Risk : none\r\nVerification : Code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "26",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:71",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1475",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "googledriveadd.cs:93",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : These logs are not outputting any user entered data. Data is all internal and does not need to be neutralized\r\nRemaining Risk : none\r\nVerification : Code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "25",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:73",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1476",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "googledriveadd.cs:124",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : These logs are not outputting any user entered data. Data is all internal and does not need to be neutralized\r\nRemaining Risk : none\r\nVerification : Code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "24",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:73",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1511",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "googledrivetoken.cs:37",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : Just is logging the request method information. No user input logged.\r\nRemaining Risk : none\r\nVerification : code reviewed", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : Logging request method only. No user input logged\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "23",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:73",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1527",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "pnpservice.cs:386",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : Internally logged variables. No user input logged, logs do not need to be neutralized\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "22",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:73",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1528",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "pnpservice.cs:425",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : Internally logged variables. No user input logged, logs do not need to be neutralized\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
     "type" : "SAST",
-    "id" : "21",
-    "cweid" : "331",
-    "title" : "Insufficient Entropy",
-    "severity" : "Medium",
-    "location" : "mockbankdataprovider.cs:116",
-    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : The flagged use of System.Random in MockBankDataProvider.cs is intentional and\nnon-cryptographic. This class is a mock implementation of IBankAccountsDataProvider\nand IBankAccountsMandatingProvider used exclusively for local development and\ntesting. It generates deterministic fake account/transaction data and is never\nregistered in production DI. The Random instance is seeded from an account ID hash\npurely to produce reproducible test fixtures (stable IDs, amounts, descriptions\nacross runs) — it is not used to generate keys, tokens, nonces, salts, IVs, session\nidentifiers, or any value with security significance. The hard-coded \"mock-secret-\nnot-real\" string in CreateClientIntegration is likewise a placeholder for tests, not\na real secret.\r\nRemaining Risk : None in production. The mock provider is only wired into the DI container in\nDevelopment/Test environments and replaced by the real Ponto-based provider in\nStaging and Production builds. Even if the mock were somehow loaded, the values it\nproduces (account IDs, IBANs, transaction amounts, the literal \"mock-secret-not-\nreal\") cannot authenticate against any real banking system and grant no access to\nany genuine cryptographic material.\r\nVerification : Verified by code review and DI configuration inspection: the real\nIBankAccountsDataProvider / IBankAccountsMandatingProvider implementations are\nregistered for production environments; MockBankDataProvider is only registered\nunder the development/test environment branch. The class is marked `internal` and\ncontains no real keys, secrets, or PII. CI build artifacts and runtime configuration\nfor production confirm the mock assembly path is not exercised." ]
+    "id" : "1500",
+    "cweid" : "117",
+    "title" : "Improper Output Neutralization for Logs",
+    "severity" : "Low",
+    "location" : "workspacefolder.cs:76",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internally logging calls with verified inputs.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw. \nCWE-117 refers to a security weakness where an application fails to properly sanitize user-input data before writing it to log files. This can allow attackers to inject malicious content or forge log entries. The issue is related to Carriage Return and Line Feed (CRLF) characters, where a custom or built-in function needs to replace \\r and \\n.\nPlease check for more reference, https://docs.veracode.com/r/Supported_NET_Cleansing_Function", "\rTechnique : M2 :  Establish and maintain control over all of your outputs\r\nSpecifics : All logged items are internal and not user imputs. No neutralization needed.\r\nRemaining Risk : none\r\nVerification : code reviewed" ]
   }, {
-    "type" : "SCA",
-    "id" : "CVE-2022-21986",
-    "title" : "CVE-2022-21986",
-    "severity" : 3,
-    "location" : "Microsoft.AspNetCore.Http.Features",
-    "userComments" : [ "urn:pwc:pwd:preferredmail:p:2031kushala.rajanna@pwc.com: Approved because the projects SetupMockData and SetupEnvironment affected by this flaw are used only during deployment as a one time solution to set up the environments and seed data and the resources are not accessible by anyone after setting up the product.", "urn:pwc:pwd:preferredmail:p:2031jakub.spalek@pwc.com: \rTechnique: M2 :  Establish and maintain control over all of your outputs\r\nSpecifics: Components affected by the vulnerability are ASP.NET Core components in the backend of the application. Specifically, these are dependencies of microsoft packages used in SetupMockData and SetupEnvironment projects. These projects are not hosted in any way, they are only used during deployment process to setup the environments configurations and mock data on lower environments. Therefore we believe these do not pose any security threat as they are not accessible by any attack vector.\r\nRemaining Risk: No risk\r\nVerification: Code for SetupMockData and SetupEnvironment projects.", "urn:pwc:pwd:preferredmail:p:2031kushala.rajanna@pwc.com: Rejected because if this is a transitive dependency, try utilizing the https://www.npmjs.com/package/npm-force-resolutions package to force the dependency to a vulnerable free version. Additionally, ensure that only production dependencies are included by running npm install --production and including the generated package-lock.json file in the scan.", "urn:pwc:pwd:preferredmail:p:2031jakub.spalek@pwc.com: \rTechnique: M2 :  Establish and maintain control over all of your outputs\r\nSpecifics: The projects SetupMockData and SetupEnvironment affected by this flaw are used only during deployment as a one time solution to set up the environments and seed data. They are not hosted by any means and therefore are not accessible for any potential attackers.\r\nRemaining Risk: no risk\r\nVerification: Check dependencies and purpose for SetupMockData and SetupEnvironment projects in the codebase." ]
+    "type" : "SAST",
+    "id" : "1495",
+    "cweid" : "209",
+    "title" : "Generation of Error Message Containing Sensitive Information",
+    "severity" : "Low",
+    "location" : "workerextensionstartupcodeexecutor.g.cs:24",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Azure worker functions logging\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw.\nPlease explain what type of message the application returns when an exception occurs. Ensure that no exception or error messages containing potentially sensitive or verbose information are shown to the user. Always display static and controlled messages. Implement default error pages or messages that do not leak any internal details.", "These are flags on the microsoft.azure.sdk worker function error messages. These are not controlled by our code and are built into the sdk" ]
   }, {
-    "type" : "SCA",
-    "id" : "SRCCLR-SID-31414",
-    "title" : "SRCCLR-SID-31414",
-    "severity" : 3,
-    "location" : "yargs-parser",
-    "userComments" : [ "urn:pwc:pwd:preferredmail:p:2031sayan.basu@pwc.com: Approved because the vulnerable method 'isUnknownOption' is not being used by the library, hence satisfies the mitigation by design.", "urn:pwc:pwd:preferredmail:p:2031grzegorz.krempa@pwc.com: \rTechnique: M1 :  Establish and maintain control over all of your inputs\r\nSpecifics: We are using @angular/localize package, which uses yargs, which uses yargs-parser. The flaw is in `isUnknownOption` function in `yargs-parser.ts` in package yargs-parser, but the package yargs is not using it, so the flaw does not exists in our scenario.\n\nLink to the flaw description:\nhttps://sca.analysiscenter.veracode.com/vulnerability-database/security/sca/vulnerability/sid-31414/summary\n\nand to the repository:\nhttps://github.com/yargs/yargs\r\nRemaining Risk: none\r\nVerification: local env", "urn:pwc:pwd:preferredmail:p:2031grzegorz.krempa@pwc.com: \rTechnique: M1 :  Establish and maintain control over all of your inputs\r\nSpecifics: The package yargs-parser is a dependency of dependencies, that we are using. The dependency tree is looking like this:\n\n@angular-devkit/build-angular --> used to build angular application, so it is used only locally and in CI\n  webpack-dev-server\n    yargs\n      yargs-parser\n\n@angular/compiler-cli --> used to build angular application, so it is used only locally and in CI\n  yargs\n    yargs-parser\n\nkarma --> used to run unit tests locally and in CI\n  yargs\n    yargs-parser\n\nprotractor --> used to run UI tests locally and in CI\n  yargs\n    yargs-parser\n\nstylelint --> used to style the code, so it is used only in local development\n  meow\n    yargs-parser\n\nAs you can see above, that package is not used in production, so can be safely marked as 'ok'.\r\nRemaining Risk: none\r\nVerification: local env", "urn:pwc:pwd:preferredmail:p:2031sayan.basu@pwc.com: Rejected because the proposal is not addressing the flaw. We only do review a production ready code without any build or dev dependencies. If this library is a build dependency and not required in production you can use command 'npm install --prod' to get the production ready version and rescan.", "urn:pwc:pwd:preferredmail:p:2031grzegorz.krempa@pwc.com: \rTechnique: M1 :  Establish and maintain control over all of your inputs\r\nSpecifics: Package \"yargs-parser\" in version 20.2.7 is used in 2 packages:\n\nyargs (16.2.0) is used here:\n   @angular/compiler-cli (10.2.5) --> That package is used for compiling and building application - it is not used in production code\nmeow (9.0.0) is used here:\n   stylelint (13.13.0) --> This package is used to prettify files (scss, css), so it is not used in production.\n\nAs you can see that package is not used in production, thus can be safely mitigated.\r\nRemaining Risk: none\r\nVerification: local env" ]
+    "type" : "SAST",
+    "id" : "1556",
+    "cweid" : "209",
+    "title" : "Generation of Error Message Containing Sensitive Information",
+    "severity" : "Low",
+    "location" : "workerextensionstartupcodeexecutor.g.cs:24",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Azure worker functions logging\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because the proposed mitigation does not address the flaw.\nPlease explain what type of message the application returns when an exception occurs. Ensure that no exception or error messages containing potentially sensitive or verbose information are shown to the user. Always display static and controlled messages. Implement default error pages or messages that do not leak any internal details.", "These are flags on the microsoft.azure.sdk worker function error messages. These are not controlled by our code and are built into the sdk" ]
   }, {
-    "type" : "SCA",
-    "id" : "CVE-2022-34716",
-    "title" : "CVE-2022-34716",
-    "severity" : 3,
-    "location" : "System.Security.Cryptography.Xml",
-    "userComments" : [ "urn:pwc:pwd:preferredmail:p:2031sayan.basu@pwc.com: Approved as reviewed the code the library is a system dependent one only used in build pipeline, it is not present in the production bundle. Hence satisfies the requirements for mitigate by design.", "urn:pwc:pwd:preferredmail:p:2031tomasz.mankin@pwc.com: \rTechnique: M3 :  Lock down your environment\r\nSpecifics: Checked and confirmed that the artifact does not contain the affected library, checked included libraries on production environment. Confirmed that the packages are used only in the DevOps, hence no direct access is possible while executing DevOps tasks.\r\nRemaining Risk: None\r\nVerification: Source code / AppService (all environments)", "urn:pwc:pwd:preferredmail:p:2031sayan.basu@pwc.com: Rejected because the proposal is not addressing the flaw. We only review a scan which is build for production only. Your package should only contain production dependency and anything which is used for build or development purpose should be removed from the package(as it would be done for production environment) and rescanned.", "urn:pwc:pwd:preferredmail:p:2031tomasz.mankin@pwc.com: \rTechnique: M3 :  Lock down your environment\r\nSpecifics: Listed projects are used only by DevOps agents to setup initial data for the application to use. The are no external inputs (everything is hardcoded) and those projects are not used / running on the production environment.\n\nDevOps agents are isolated, hence no access to them is possible.\r\nRemaining Risk: None\r\nVerification: Source code, application architecture and DevOps." ]
+    "type" : "SAST",
+    "id" : "1441",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:195",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1442",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:195",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1443",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:195",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1445",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:277",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1444",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:277",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1446",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:277",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1447",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:347",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1448",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:347",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1449",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:347",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1450",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:408",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1451",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:408",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1452",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:408",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1453",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:533",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1454",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:533",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1455",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:533",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1456",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:603",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1458",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:603",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1457",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:603",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1459",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:667",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1460",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:667",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
+  }, {
+    "type" : "SAST",
+    "id" : "1461",
+    "cweid" : "201",
+    "title" : "Insertion of Sensitive Information Into Sent Data",
+    "severity" : "Low",
+    "location" : "fusionavepointintegrationservice.asmx.cs:667",
+    "userComments" : [ "\rTechnique : M1 :  Establish and maintain control over all of your inputs\r\nSpecifics : Internal Avepoint integration calls that hit our own endpoints. We have control over all data in and out of this integration service.\r\nRemaining Risk : none\r\nVerification : code reviewed", "Proposal rejected because more information is required.\n The Veracode identified that the application is sending sensitive data. Please describe what data is being sent in the line of code Veracode has identified the issue. If  data is intentionally sent, confirm whether it is sensitive data and, if so, include  encryption of the data in transit (e.g.., using TLS1.2/HTTPS) \n", "\rTechnique : M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics : These are flagged in  our avepoint integration service in which we communicate errors and request information between our API, Azure, and our Avepoint Service. These calls are made using Https post requests that go through our own internal Azure workflows to trigger/receive information from avepoint. The data being sent is not sensitive information and just contains non PII/non sensitive site/request information.\r\nRemaining Risk : None\r\nVerification : Reviewed out stored endpoints/azure workflows to confirm they are being sent over https connection. Request data reviewed to confirm no sensitive information is being sent" ]
   } ],
-  "scaEcosystems" : "[npm, nuget]",
-  "packagingAnomalies" : [ "Ecosystem nuget detected in SCA but no corresponding architecture (CIL32) was scanned in SAST. Check module selection." ],
- "unselectedModules" : [ "JS files within veracode.zip" ],
-  "selectedModules" : [ "PwC.PaymentApp.Api.dll", "JS files within Code quality scan 0.1.0-ci.797_20260430.1.zip", "PwC.PaymentApp.AzureFunctions.dll", "PwC.PaymentApp.Providers.Ponto.dll", "PwC.PaymentApp.Integrations.PwCIdentity.dll", "PwC.PaymentApp.Infrastructure.dll", "PwC.PaymentApp.Helpers.dll", "PwC.PaymentApp.Integrations.Aura.dll", "PwC.PaymentApp.Domain.dll", "PwC.PaymentApp.Providers.Common.dll", "PwC.PaymentApp.Application.dll" ],
+  "findingsWithCommentsSCA" : [ {
+    "type" : "SCA",
+    "id" : "CVE-2025-69873",
+    "cweid" : "CWE-1333",
+    "title" : "CVE-2025-69873",
+    "severity" : "Low",
+    "location" : "ajv",
+    "userComments" : [ "\rTechnique: GP3 : Use a broad mix of methods to comprehensively find and prevent weaknesses\r\nSpecifics: This is a subdepency package and is not directly implemented in our code. I have applied overrides in our package.json to subvert other dependencies from using vulnerable version as well\r\nRemaining Risk: Low/minimal\r\nVerification: Applied version overrides in package.json for the project. Code reviewed", "\rTechnique: M5 :  Use industry-accepted security features instead of inventing your own\r\nSpecifics: These components/packages are 3rd party components used by other packages in our solution. As an additional layer of security, I have utilized NPMs \"Overrides\" section in our package.json to force a non vulnerable version of the packages when possible.\r\nRemaining Risk: Minimal to none\r\nVerification: Code reviewed and safety plan implemented for our next production release" ]
+  } ],
+  "unselectedModules" : [ "FusionCommonLib.dll" ],
+  "selectedModules" : [ "FrontEndService.dll", "FusionBackgroundService.dll", "FusionWebService.dll", "CSOMBackendService.dll", "JS files within OutlookAddin.zip", "JS files within SPFx.zip" ],
   "architectures" : [ "JAVASCRIPT", "CIL32" ],
   "buildInfo" : null
 }
