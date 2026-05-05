@@ -297,11 +297,11 @@ export default function App() {
       if (data && data.overview) {
         console.log("Merging Overview...");
         let languages = mockOverview.scanLanguages ? [...mockOverview.scanLanguages] : [];
-        if (data.scaEcosystems) {
-          if (Array.isArray(data.scaEcosystems)) {
-            languages = data.scaEcosystems;
-          } else if (typeof data.scaEcosystems === 'string') {
-            languages = data.scaEcosystems.replace(/[\[\]]/g, '').split(',').map((s: string) => s.trim()).filter(Boolean);
+        if (data.architectures) {
+          if (Array.isArray(data.architectures)) {
+            languages = data.architectures;
+          } else if (typeof data.architectures === 'string') {
+            languages = data.architectures.replace(/[\[\]]/g, '').split(',').map((s: string) => s.trim()).filter(Boolean);
           }
         }
 
@@ -317,6 +317,8 @@ export default function App() {
         const mergedOverview = {
           ...mockOverview,
           ...data.overview,
+          architectures: data.architectures || [],
+          scaEcosystems: data.scaEcosystems || '',
           packagingAnomalies,
           unselectedModules,
           scanLanguages: languages && languages.length > 0 ? languages : mockOverview.scanLanguages
@@ -702,9 +704,33 @@ export default function App() {
                     </div>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-slate-800/50">
-                    <span className="text-[8px] text-slate-500 uppercase font-black">PACKAGING</span>
-                    <span className={`text-[9px] font-black uppercase ${((activeOverview as any).packagingAnomalies || []).length === 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                      {((activeOverview as any).packagingAnomalies || []).length === 0 ? 'Normal' : 'Detected'}
+                    <span className="text-[8px] text-slate-500 uppercase font-black">SCA MISSING</span>
+                    <span className={`text-[9px] font-black uppercase ${
+                      (() => {
+                        const archs = (activeOverview as any).architectures || [];
+                        const ecoObj = (activeOverview as any).scaEcosystems || '';
+                        let ecos: string[] = [];
+                        if (typeof ecoObj === 'string') {
+                          ecos = ecoObj.replace(/[\[\]]/g, '').split(',').map((s: string) => s.trim()).filter(Boolean);
+                        } else if (Array.isArray(ecoObj)) {
+                          ecos = ecoObj;
+                        }
+                        const missing = archs.filter((a: string) => !ecos.some((e: string) => e.toLowerCase() === a.toLowerCase()));
+                        return missing.length === 0 ? 'text-emerald-500' : 'text-red-500';
+                      })()
+                    }`}>
+                      {(() => {
+                        const archs = (activeOverview as any).architectures || [];
+                        const ecoObj = (activeOverview as any).scaEcosystems || '';
+                        let ecos: string[] = [];
+                        if (typeof ecoObj === 'string') {
+                          ecos = ecoObj.replace(/[\[\]]/g, '').split(',').map((s: string) => s.trim()).filter(Boolean);
+                        } else if (Array.isArray(ecoObj)) {
+                          ecos = ecoObj;
+                        }
+                        const missing = archs.filter((a: string) => !ecos.some((e: string) => e.toLowerCase() === a.toLowerCase()));
+                        return missing.length === 0 ? 'NORMAL' : missing.join(', ');
+                      })()}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-1">

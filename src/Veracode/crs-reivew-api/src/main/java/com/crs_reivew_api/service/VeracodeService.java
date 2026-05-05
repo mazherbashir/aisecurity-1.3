@@ -431,7 +431,7 @@ public class VeracodeService {
                                     dto.selectedModules.add(fileNameAttr.getNodeValue());
                                 }
                                 if (archAttr != null) {
-                                    archSet.add(archAttr.getNodeValue());
+                                    archSet.add(mapToPrettyName(archAttr.getNodeValue()));
                                 }
                             }
                         }
@@ -676,7 +676,7 @@ public class VeracodeService {
                 boolean ignore = veracodeConfig.getIgnoreEcosystems().stream()
                     .anyMatch(ecoName -> ecoName.equalsIgnoreCase(eco));
                 if (!ignore) {
-                    ecosystems.add(eco);
+                    ecosystems.add(mapToPrettyName(eco));
                 }
             }
 
@@ -729,44 +729,75 @@ public class VeracodeService {
         var mappings = veracodeConfig.getArchitectureMappings();
         if (mappings == null || mappings.isEmpty()) return;
 
+        // Normalize architectures to uppercase for easier lookup
+        java.util.Set<String> upperArches = architectures.stream()
+            .map(String::toUpperCase)
+            .collect(java.util.stream.Collectors.toSet());
+
         // 1. Architecture detected in SAST but Ecosystem missing in SCA
         for (String arch : architectures) {
-            String expectedEco = mappings.get(arch);
-            if (expectedEco != null && !ecosystems.contains(expectedEco)) {
-                // Special case for JAVASCRIPT/bower
-                if (arch.equals("JAVASCRIPT") && ecosystems.contains("bower")) continue;
-                // Special case for JAVA/gradle
-                if ((arch.equals("JAVA") || arch.equals("JVM")) && ecosystems.contains("gradle")) continue;
-                
-                dto.packagingAnomalies.add("Architecture " + arch + " detected in SAST but no corresponding SCA ecosystem (" + expectedEco + ") found. Packaging may be incomplete.");
+            String archUpper = arch.toUpperCase();
+            String rawExpected = mappings.get(archUpper);
+            
+            if (rawExpected == null) {
+                rawExpected = mappings.entrySet().stream()
+                    .filter(e -> e.getKey().equalsIgnoreCase(arch))
+                    .map(java.util.Map.Entry::getValue)
+                    .findFirst()
+                    .orElse(null);
+            }
+
+            if (rawExpected != null) {
+                // Support comma-separated ecosystems (e.g., PYTHON=pip,pypi)
+                String[] expectedEcos = rawExpected.split(",");
+                boolean foundAny = false;
+                for (String eco : expectedEcos) {
+                    String trimmedEco = eco.trim();
+                    if (ecosystems.contains(trimmedEco)) {
+                        foundAny = true;
+                        break;
+                    }
+                }
+
+                if (!foundAny) {
+                    // Special cases
+                    if (archUpper.equals("JAVASCRIPT") && ecosystems.contains("bower")) continue;
+                    if ((archUpper.equals("JAVA") || archUpper.equals("JVM")) && ecosystems.contains("gradle")) continue;
+                    
+                    dto.packagingAnomalies.add("Architecture " + arch + " detected in SAST but no corresponding SCA ecosystem (" + rawExpected + ") found. Packaging may be incomplete.");
+                }
             }
         }
 
         // 2. Ecosystem detected in SCA but Architecture missing in SAST scan
-        // Filter ecosystems to only those we have mappings for
         for (String eco : ecosystems) {
-            // Find if any architecture mapping to this ecosystem was scanned
             boolean archFound = false;
             boolean hasMappingForEco = false;
 
             for (java.util.Map.Entry<String, String> entry : mappings.entrySet()) {
-                if (entry.getValue().equalsIgnoreCase(eco)) {
+                String rawVal = entry.getValue();
+                if (rawVal == null) continue;
+                
+                // Check if this eco is in the mapped list (case-insensitive)
+                boolean ecoInList = java.util.Arrays.stream(rawVal.split(","))
+                    .anyMatch(v -> v.trim().equalsIgnoreCase(eco));
+
+                if (ecoInList) {
                     hasMappingForEco = true;
-                    if (architectures.contains(entry.getKey())) {
+                    if (upperArches.contains(entry.getKey().toUpperCase())) {
                         archFound = true;
                         break;
                     }
                 }
             }
 
-            // Handle special cases not in simple map (like bower mapping to JAVASCRIPT)
-            if (!archFound && eco.equalsIgnoreCase("bower") && architectures.contains("JAVASCRIPT")) archFound = true;
-            if (!archFound && eco.equalsIgnoreCase("gradle") && (architectures.contains("JAVA") || architectures.contains("JVM"))) archFound = true;
+            // Special cases
+            if (!archFound && eco.equalsIgnoreCase("bower") && upperArches.contains("JAVASCRIPT")) archFound = true;
+            if (!archFound && eco.equalsIgnoreCase("gradle") && (upperArches.contains("JAVA") || upperArches.contains("JVM"))) archFound = true;
 
             if (hasMappingForEco && !archFound) {
-                // Find potential expected architectures for the error message
                 String expectedArches = mappings.entrySet().stream()
-                    .filter(e -> e.getValue().equalsIgnoreCase(eco))
+                    .filter(e -> e.getValue() != null && java.util.Arrays.stream(e.getValue().split(",")).anyMatch(v -> v.trim().equalsIgnoreCase(eco)))
                     .map(java.util.Map.Entry::getKey)
                     .collect(java.util.stream.Collectors.joining(" or "));
                 
@@ -794,5 +825,22 @@ public class VeracodeService {
             breakdown.put(getSeverityName(sev), b);
         }
         return breakdown;
+    }
+
+    private String mapToPrettyName(String technicalName) {
+        var mappings = veracodeConfig.getArchitectureMappings();
+        if (mappings == null || mappings.isEmpty()) return technicalName;
+        
+        return mappings.entrySet().stream()
+            .filter(e -> {
+                if (e.getKey().equalsIgnoreCase(technicalName)) return true;
+                String val = e.getValue();
+                if (val == null) return false;
+                return java.util.Arrays.stream(val.split(","))
+                    .anyMatch(v -> v.trim().equalsIgnoreCase(technicalName));
+            })
+            .map(java.util.Map.Entry::getKey)
+            .findFirst()
+            .orElse(technicalName);
     }
 }

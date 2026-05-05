@@ -9,13 +9,13 @@ public class VeracodeReportDTO {
     public SeveritySummaryDTO sastSummary = new SeveritySummaryDTO();
     public ScaSummaryDTO scaSummary = new ScaSummaryDTO();
     public List<ScaDetailDTO> scaDetails = new ArrayList<>();
-    public String scaEcosystems;
-    public List<String> packagingAnomalies = new ArrayList<>();
     public List<FindingDTO> findingsWithCommentsSAST = new ArrayList<>();
     public List<FindingDTO> findingsWithCommentsSCA = new ArrayList<>();
     public List<String> unselectedModules = new ArrayList<>();
     public List<String> selectedModules = new ArrayList<>();
     public List<String> architectures = new ArrayList<>();
+    public String scaEcosystems;
+    public List<String> packagingAnomalies = new ArrayList<>();
     public BuildInfo buildInfo;
 
     public static class ScanOverviewDTO {
