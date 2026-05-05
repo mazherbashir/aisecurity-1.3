@@ -315,7 +315,27 @@ public class VeracodeService {
         }
 
         // Mapping is now handled by generateDetailedBreakdown
+        saveJsonToLog("final_report", effectiveBuildId, dto);
         return dto;
+    }
+
+    private void saveJsonToLog(String prefix, String id, Object dto) {
+        if (!veracodeConfig.isDebug()) return;
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
+            String json = mapper.writeValueAsString(dto);
+            
+            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+            java.nio.file.Path logDir = java.nio.file.Paths.get("logs", "veracode");
+            java.nio.file.Files.createDirectories(logDir);
+            
+            String fileName = String.format("%s_%s_%s.json", prefix, id, timestamp);
+            java.nio.file.Files.writeString(logDir.resolve(fileName), json);
+            debugLog("DEBUG: Saved report log to: " + logDir.resolve(fileName));
+        } catch (Exception e) {
+            System.err.println("Warning: Could not save JSON log: " + e.getMessage());
+        }
     }
 
     private String formatBreakdown(Map<Integer, Integer> map) {
@@ -532,10 +552,10 @@ public class VeracodeService {
             dto.findingsWithCommentsSAST.addAll(findings);
             
             // Format Breakdown String
-            var sb = new StringBuilder();
             severityMap.forEach((sev, cweMap) -> {
-                int sevTotal = cweMap.values().stream().mapToInt(java.util.List::size).sum();
-                sb.append(getSeverityName(sev)).append(": ").append(sevTotal).append("\n");
+                String sevName = getSeverityName(sev);
+                var sevBreakdown = new VeracodeReportDTO.SeverityBreakdownDTO();
+                sevBreakdown.total = cweMap.values().stream().mapToInt(java.util.List::size).sum();
                 
                 cweMap.forEach((cwe, list) -> {
                     // Find oldest date
@@ -543,15 +563,19 @@ public class VeracodeService {
                         .map(e -> e.getAttribute("date_first_occurrence"))
                         .min(String::compareTo)
                         .orElse("");
-                    sb.append(" ").append(cwe).append(": x ").append(list.size())
-                      .append(" : date_first_occurrence=\"").append(oldestDate).append("\"\n");
+                    
+                    var finding = new VeracodeReportDTO.CweFindingDTO();
+                    finding.cwe = cwe;
+                    finding.count = list.size();
+                    finding.date_first_occurrence = oldestDate;
+                    sevBreakdown.findings.add(finding);
                 });
+                dto.sastSummary.breakdown.put(sevName, sevBreakdown);
             });
-            dto.sastSummary.breakdown = sb.toString().trim();
             
             // Map SCA separately as it has its own section in Detailed Report
-            updateScaSummaryFromDoc(doc, dto);
-            populateScaDetailSection(doc, dto);
+            updateScaSummaryFromReport(report, dto);
+            populateScaDetailSectionFromReport(report, dto);
             
         } catch (Exception e) {
             System.err.println("Error generating detailed breakdown: " + e.getMessage());
@@ -559,56 +583,56 @@ public class VeracodeService {
         }
     }
 
-    private void updateScaSummaryFromDoc(org.w3c.dom.Document doc, VeracodeReportDTO dto) {
-        var comps = doc.getElementsByTagNameNS("*", "component");
+    private void updateScaSummaryFromReport(VeracodeReport report, VeracodeReportDTO dto) {
+        if (report == null || report.getSca() == null || report.getSca().getVulnerableComponents() == null) {
+            return;
+        }
+
+        var scaTotals = new java.util.HashMap<Integer, Integer>();
+        for (int i = 0; i <= 5; i++) scaTotals.put(i, 0);
+
         int vulnerabilitiesSca = 0;
         int totalVulnerablePackages = 0;
-        var scaTotals = new java.util.HashMap<Integer, Integer>();
-        for(int i=0; i<=5; i++) scaTotals.put(i, 0);
+        var comps = report.getSca().getVulnerableComponents().getComponents();
+        if (comps == null) return;
 
-        for (int i = 0; i < comps.getLength(); i++) {
-            var comp = (org.w3c.dom.Element) comps.item(i);
-            var vulns = comp.getElementsByTagNameNS("*", "vulnerability");
+        for (var comp : comps) {
             boolean hasVulnerability = false;
+            if (comp.getVulnerabilityList() == null || comp.getVulnerabilityList().getVulnerabilities() == null) continue;
 
-            for (int j = 0; j < vulns.getLength(); j++) {
-                var vuln = (org.w3c.dom.Element) vulns.item(j);
-                
-                if ("accepted".equalsIgnoreCase(vuln.getAttribute("mitigation_status"))) continue;
-                
-                int sev = Integer.parseInt(vuln.getAttribute("severity"));
+            for (var vuln : comp.getVulnerabilityList().getVulnerabilities()) {
+                int sev = (vuln.getSeverity() != null) ? vuln.getSeverity() : 0;
                 scaTotals.put(sev, scaTotals.get(sev) + 1);
                 vulnerabilitiesSca++;
                 hasVulnerability = true;
 
-                // Mitigation checks for SCA
-                String isMitigated = vuln.getAttribute("mitigation");
-                if ("true".equalsIgnoreCase(isMitigated)) continue;
+                // Mitigation checks for SCA using JAXB
+                String isMitigatedStr = vuln.getMitigation();
+                if ("true".equalsIgnoreCase(isMitigatedStr)) continue;
 
-                var mitNodes = vuln.getElementsByTagNameNS("*", "mitigation");
                 boolean hasApprove = false;
                 boolean hasProposedAction = false;
                 var scaComments = new java.util.ArrayList<String>();
 
-                for (int k = 0; k < mitNodes.getLength(); k++) {
-                    var mitElem = (org.w3c.dom.Element) mitNodes.item(k);
-                    String action = mitElem.getAttribute("action");
-
-                    if ("Approve Mitigation".equalsIgnoreCase(action)) {
-                        hasApprove = true;
-                        break; // If approved, we don't report it
-                    }
-
-                    if ("Mitigate by Design".equalsIgnoreCase(action) || 
-                        "Mitigate By Environment".equalsIgnoreCase(action) || 
-                        "Potential False Positive".equalsIgnoreCase(action)) {
-                        hasProposedAction = true;
-                        String comment = mitElem.getAttribute("description");
-                        if (comment == null || comment.isEmpty()) {
-                            comment = mitElem.getAttribute("comment");
+                if (vuln.getMitigationList() != null && vuln.getMitigationList().getMitigations() != null) {
+                    for (var mit : vuln.getMitigationList().getMitigations()) {
+                        String action = mit.getAction();
+                        if ("Approve Mitigation".equalsIgnoreCase(action)) {
+                            hasApprove = true;
+                            break;
                         }
-                        if (comment != null && !comment.isEmpty()) {
-                            scaComments.add(comment);
+
+                        if ("Mitigate by Design".equalsIgnoreCase(action) || 
+                            "Mitigate By Environment".equalsIgnoreCase(action) || 
+                            "Potential False Positive".equalsIgnoreCase(action)) {
+                            hasProposedAction = true;
+                            String comment = mit.getDescription();
+                            if (comment == null || comment.isEmpty()) {
+                                comment = mit.getComment();
+                            }
+                            if (comment != null && !comment.isEmpty()) {
+                                scaComments.add(comment);
+                            }
                         }
                     }
                 }
@@ -616,11 +640,11 @@ public class VeracodeService {
                 if (hasProposedAction && !hasApprove) {
                     var fDto = new VeracodeReportDTO.FindingDTO();
                     fDto.type = "SCA";
-                    fDto.id = vuln.getAttribute("cve_id");
-                    fDto.cweid = vuln.getAttribute("cwe_id");
-                    fDto.title = vuln.getAttribute("cve_id");
+                    fDto.id = vuln.getCveId();
+                    fDto.cweid = vuln.getCweId();
+                    fDto.title = vuln.getCveId();
                     fDto.severity = getSeverityName(sev);
-                    fDto.location = comp.getAttribute("library");
+                    fDto.location = comp.getLibrary();
                     fDto.userComments = scaComments;
                     dto.findingsWithCommentsSCA.add(fDto);
                 }
@@ -630,18 +654,23 @@ public class VeracodeService {
             }
         }
         dto.scaSummary.vulnerabilities = vulnerabilitiesSca;
-        dto.scaSummary.totalPackages = comps.getLength();
+        dto.scaSummary.totalPackages = comps.size(); // Approximation if total_components isn't in JAXB yet
         dto.scaSummary.totalVulnerablePackages = totalVulnerablePackages;
-        dto.scaSummary.breakdown = formatScaBreakdown(scaTotals);
+        dto.scaSummary.breakdown.putAll(formatScaBreakdown(scaTotals));
     }
 
-    private void populateScaDetailSection(org.w3c.dom.Document doc, VeracodeReportDTO dto) {
-        var comps = doc.getElementsByTagNameNS("*", "component");
+    private void populateScaDetailSectionFromReport(VeracodeReport report, VeracodeReportDTO dto) {
+        if (report == null || report.getSca() == null || report.getSca().getVulnerableComponents() == null) {
+            return;
+        }
+
         var ecosystems = new java.util.HashSet<String>();
-        for (int i = 0; i < comps.getLength(); i++) {
-            var comp = (org.w3c.dom.Element) comps.item(i);
-            String library = comp.getAttribute("library");
-            String libId = comp.getAttribute("library_id");
+        var comps = report.getSca().getVulnerableComponents().getComponents();
+        if (comps == null) return;
+
+        for (var comp : comps) {
+            String library = comp.getLibrary();
+            String libId = comp.getLibraryId();
             if (libId != null && libId.contains(":")) {
                 String eco = libId.split(":")[0];
                 boolean ignore = veracodeConfig.getIgnoreEcosystems().stream()
@@ -650,12 +679,12 @@ public class VeracodeService {
                     ecosystems.add(eco);
                 }
             }
-            var vulns = comp.getElementsByTagNameNS("*", "vulnerability");
+
+            if (comp.getVulnerabilityList() == null || comp.getVulnerabilityList().getVulnerabilities() == null) continue;
             
-            var componentVulns = new java.util.ArrayList<org.w3c.dom.Element>();
-            for (int j = 0; j < vulns.getLength(); j++) {
-                var vuln = (org.w3c.dom.Element) vulns.item(j);
-                if (!"accepted".equalsIgnoreCase(vuln.getAttribute("mitigation_status"))) {
+            var componentVulns = new java.util.ArrayList<ScaVulnerability>();
+            for (var vuln : comp.getVulnerabilityList().getVulnerabilities()) {
+                if (!"accepted".equalsIgnoreCase(vuln.getMitigationStatus())) {
                     componentVulns.add(vuln);
                 }
             }
@@ -663,30 +692,31 @@ public class VeracodeService {
             if (!componentVulns.isEmpty()) {
                 var detail = new VeracodeReportDTO.ScaDetailDTO();
                 detail.packageName = library;
+                detail.version = comp.getVersion();
                 
                 detail.firstFoundDate = componentVulns.stream()
-                    .map(v -> v.getAttribute("first_found_date"))
+                    .map(v -> v.getFirstFoundDate())
                     .filter(d -> d != null && !d.isEmpty())
                     .min(String::compareTo)
                     .orElse("");
                 
                 detail.cveList = componentVulns.stream()
-                    .map(v -> v.getAttribute("cve_id"))
+                    .map(v -> v.getCveId())
                     .distinct()
                     .collect(java.util.stream.Collectors.joining(","));
                 
                 var counts = new java.util.TreeMap<String, Integer>(java.util.Collections.reverseOrder());
                 for (var v : componentVulns) {
-                    String sDesc = v.getAttribute("severity_desc");
+                    String sDesc = v.getSeverityDesc();
                     if (sDesc == null || sDesc.isEmpty()) {
-                        sDesc = getSeverityName(Integer.parseInt(v.getAttribute("severity")));
+                        sDesc = getSeverityName((v.getSeverity() != null) ? v.getSeverity() : 0);
                     }
-                    sDesc = sDesc.replace(" ", "");
                     counts.put(sDesc, counts.getOrDefault(sDesc, 0) + 1);
                 }
-                detail.severityCounts = counts.entrySet().stream()
-                    .map(e -> e.getKey() + ": " + e.getValue())
-                    .collect(java.util.stream.Collectors.joining(" "));
+                
+                var severityList = new java.util.ArrayList<String>();
+                counts.forEach((sev, count) -> severityList.add(sev + ": " + count));
+                detail.severityCounts = String.join(", ", severityList);
                 
                 dto.scaDetails.add(detail);
             }
@@ -696,56 +726,51 @@ public class VeracodeService {
     }
 
     private void verifyPackaging(java.util.Set<String> architectures, java.util.Set<String> ecosystems, VeracodeReportDTO dto) {
-        var map = new java.util.HashMap<String, String>();
-        map.put("CIL32", "nuget");
-        map.put("MSIL", "nuget");
-        map.put("JAVASCRIPT", "npm");
-        map.put("PYTHON", "pip");
-        map.put("JAVA", "maven");
-        map.put("PHP", "composer");
-        map.put("RUBY", "rubygems");
-        map.put("GO", "go");
-        map.put("GOLANG", "go");
+        var mappings = veracodeConfig.getArchitectureMappings();
+        if (mappings == null || mappings.isEmpty()) return;
 
         // 1. Architecture detected in SAST but Ecosystem missing in SCA
         for (String arch : architectures) {
-            String expected = map.get(arch);
-            if (expected != null && !ecosystems.contains(expected)) {
+            String expectedEco = mappings.get(arch);
+            if (expectedEco != null && !ecosystems.contains(expectedEco)) {
+                // Special case for JAVASCRIPT/bower
                 if (arch.equals("JAVASCRIPT") && ecosystems.contains("bower")) continue;
-                if (arch.equals("JAVA") && ecosystems.contains("gradle")) continue;
+                // Special case for JAVA/gradle
+                if ((arch.equals("JAVA") || arch.equals("JVM")) && ecosystems.contains("gradle")) continue;
                 
-                dto.packagingAnomalies.add("Architecture " + arch + " detected in SAST but no corresponding SCA ecosystem (" + expected + ") found. Packaging may be incomplete.");
+                dto.packagingAnomalies.add("Architecture " + arch + " detected in SAST but no corresponding SCA ecosystem (" + expectedEco + ") found. Packaging may be incomplete.");
             }
         }
 
-        // 2. Ecosystem detected in SCA but Architecture missing in SAST scan (Selected Modules)
-        var reverseMap = new java.util.HashMap<String, String>();
-        reverseMap.put("nuget", "CIL32");
-        reverseMap.put("npm", "JAVASCRIPT");
-        reverseMap.put("bower", "JAVASCRIPT");
-        reverseMap.put("pip", "PYTHON");
-        reverseMap.put("maven", "JAVA");
-        reverseMap.put("gradle", "JAVA");
-        reverseMap.put("composer", "PHP");
-        reverseMap.put("rubygems", "RUBY");
-        reverseMap.put("go", "GOLANG");
-
+        // 2. Ecosystem detected in SCA but Architecture missing in SAST scan
+        // Filter ecosystems to only those we have mappings for
         for (String eco : ecosystems) {
-            String expectedArch = reverseMap.get(eco);
-            if (expectedArch != null) {
-                boolean archFound = false;
-                for (String a : architectures) {
-                    if (a.equals(expectedArch) || 
-                        (expectedArch.equals("CIL32") && a.equals("MSIL")) ||
-                        (expectedArch.equals("GOLANG") && a.equals("GO")) ||
-                        (expectedArch.equals("GO") && a.equals("GOLANG"))) {
+            // Find if any architecture mapping to this ecosystem was scanned
+            boolean archFound = false;
+            boolean hasMappingForEco = false;
+
+            for (java.util.Map.Entry<String, String> entry : mappings.entrySet()) {
+                if (entry.getValue().equalsIgnoreCase(eco)) {
+                    hasMappingForEco = true;
+                    if (architectures.contains(entry.getKey())) {
                         archFound = true;
                         break;
                     }
                 }
-                if (!archFound) {
-                    dto.packagingAnomalies.add("Ecosystem " + eco + " detected in SCA but no corresponding architecture (" + expectedArch + ") was scanned in SAST. Check module selection.");
-                }
+            }
+
+            // Handle special cases not in simple map (like bower mapping to JAVASCRIPT)
+            if (!archFound && eco.equalsIgnoreCase("bower") && architectures.contains("JAVASCRIPT")) archFound = true;
+            if (!archFound && eco.equalsIgnoreCase("gradle") && (architectures.contains("JAVA") || architectures.contains("JVM"))) archFound = true;
+
+            if (hasMappingForEco && !archFound) {
+                // Find potential expected architectures for the error message
+                String expectedArches = mappings.entrySet().stream()
+                    .filter(e -> e.getValue().equalsIgnoreCase(eco))
+                    .map(java.util.Map.Entry::getKey)
+                    .collect(java.util.stream.Collectors.joining(" or "));
+                
+                dto.packagingAnomalies.add("Ecosystem " + eco + " detected in SCA but no corresponding architecture (" + expectedArches + ") was scanned in SAST. Check module selection.");
             }
         }
     }
@@ -761,9 +786,13 @@ public class VeracodeService {
         };
     }
 
-    private String formatScaBreakdown(java.util.Map<Integer, Integer> map) {
-        return String.format("Very High: %d, High: %d, Medium: %d, Low: %d, Very Low: %d, Info: %d",
-            map.getOrDefault(5, 0), map.getOrDefault(4, 0), map.getOrDefault(3, 0),
-            map.getOrDefault(2, 0), map.getOrDefault(1, 0), map.getOrDefault(0, 0));
+    private java.util.Map<String, VeracodeReportDTO.SeverityBreakdownDTO> formatScaBreakdown(java.util.Map<Integer, Integer> map) {
+        var breakdown = new java.util.LinkedHashMap<String, VeracodeReportDTO.SeverityBreakdownDTO>();
+        for (int sev = 5; sev >= 2; sev--) {
+            var b = new VeracodeReportDTO.SeverityBreakdownDTO();
+            b.total = map.getOrDefault(sev, 0);
+            breakdown.put(getSeverityName(sev), b);
+        }
+        return breakdown;
     }
 }

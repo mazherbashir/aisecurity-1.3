@@ -142,60 +142,22 @@ function aggregateFindings(findings: Finding[], type: 'SAST' | 'SCA'): Aggregate
   return Object.values(groups);
 };
 
-function parseSastBreakdown(str: string) {
-  const breakdown = { "Very High": 0, "High": 0, "Medium": 0, "Low": 0, "Information": 0 };
-  if (!str) return breakdown;
-  try {
-    const lines = str.split('\n');
-    lines.forEach(line => {
-      const parts = line.split(':');
-      if (parts.length >= 2) {
-        const key = parts[0].trim();
-        const firstValuePart = parts[1].trim().split(' ')[0]; // Handle "1\n" or "1 "
-        const value = parseInt(firstValuePart);
-        if (!isNaN(value)) {
-          if (key === 'Very High') breakdown["Very High"] = value;
-          else if (key === 'High') breakdown["High"] = value;
-          else if (key === 'Medium') breakdown["Medium"] = value;
-          else if (key === 'Low') breakdown["Low"] = value;
-          else if (key === 'Information' || key === 'Info') breakdown["Information"] = value;
-        }
-      }
-    });
-    return breakdown;
-  } catch (e) {
-    console.error("Parse SAST Breakdown Error:", e);
-    return breakdown;
-  }
-};
+function adaptBreakdown(breakdownObj: any): { "Very High": number, "High": number, "Medium": number, "Low": number, "Information": number } {
+  const result = { "Very High": 0, "High": 0, "Medium": 0, "Low": 0, "Information": 0 };
+  
+  if (!breakdownObj || typeof breakdownObj !== 'object') return result;
 
-function parseScaBreakdown(str: string) {
-  const breakdown = { "Very High": 0, "High": 0, "Medium": 0, "Low": 0, "Information": 0 };
-  if (!str) return breakdown;
-  try {
-    const parts = str.split(',');
-    parts.forEach(part => {
-      const kv = part.split(':');
-      if (kv.length === 2) {
-        const key = kv[0].trim();
-        const value = parseInt(kv[1].trim());
-        if (!isNaN(value)) {
-          if (key === 'Very High' || key === 'VeryHigh') breakdown["Very High"] = value;
-          else if (key === 'High') breakdown["High"] = value;
-          else if (key === 'Medium') breakdown["Medium"] = value;
-          else if (key === 'Low' || key === 'Very Low') {
-            // Add Low and Very Low to Low for simple dashboard
-            breakdown["Low"] += value;
-          }
-          else if (key === 'Info' || key === 'Information') breakdown["Information"] = value;
-        }
-      }
-    });
-    return breakdown;
-  } catch (e) {
-    console.error("Parse SCA Breakdown Error:", e);
-    return breakdown;
-  }
+  Object.entries(breakdownObj).forEach(([sev, data]: [string, any]) => {
+    let normalizedSev = sev;
+    if (sev === 'VeryHigh') normalizedSev = 'Very High';
+    if (sev === 'Information' || sev === 'Info') normalizedSev = 'Information';
+    
+    if (normalizedSev in result) {
+      result[normalizedSev as keyof typeof result] = data.total || 0;
+    }
+  });
+
+  return result;
 };
 
 export default function App() {
@@ -229,7 +191,7 @@ export default function App() {
     if (resultsLoaded && backendSastSummary) {
       baseSummary = {
         vulnerabilities: typeof backendSastSummary.vulnerabilities === 'number' ? backendSastSummary.vulnerabilities : parseInt(backendSastSummary.vulnerabilities) || 0,
-        breakdown: parseSastBreakdown(backendSastSummary.breakdown)
+        breakdown: adaptBreakdown(backendSastSummary.breakdown)
       };
     } else if (IS_PRODUCTION) {
       // Strictly no mock data in production
@@ -261,7 +223,7 @@ export default function App() {
     if (resultsLoaded && backendScaSummary) {
       baseSummary = {
         vulnerabilities: typeof backendScaSummary.vulnerabilities === 'number' ? backendScaSummary.vulnerabilities : parseInt(backendScaSummary.vulnerabilities) || 0,
-        breakdown: parseScaBreakdown(backendScaSummary.breakdown),
+        breakdown: adaptBreakdown(backendScaSummary.breakdown),
         totalPackages: backendScaSummary.totalPackages || 0,
         totalVulnerablePackages: backendScaSummary.totalVulnerablePackages || 0
       };
@@ -667,20 +629,22 @@ export default function App() {
                        <span className="text-white text-[9px]">{sastSummary.vulnerabilities}</span>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                       {Object.entries(sastSummary.breakdown).map(([sev, count]) => (
-                         <div key={sev} className={`flex-1 min-w-[48px] p-1.5 rounded-lg border border-slate-800/50 flex flex-col items-center justify-center text-center ${(count as number) > 0 ? 'bg-slate-800/20' : 'opacity-10'}`}>
-                           <span className="text-[5.5px] text-slate-500 uppercase font-black tracking-tighter mb-0.5 select-none">{sev}</span>
-                           <span className={`text-[10px] font-mono font-black ${
-                             (count as number) > 0 ? (
-                               sev === 'Very High' ? 'text-purple-400' :
-                               sev === 'High' ? 'text-red-400' :
-                               sev === 'Medium' ? 'text-orange-400' :
-                               sev === 'Low' ? 'text-blue-400' :
-                               'text-slate-300'
-                             ) : 'text-slate-600'
-                           }`}>{count as number}</span>
-                         </div>
-                       ))}
+                       {['High', 'Medium', 'Low', 'Information'].map((sev) => {
+                         const count = (sastSummary.breakdown as any)[sev] || 0;
+                         return (
+                           <div key={sev} className="flex-1 min-w-[48px] p-1.5 rounded-lg border border-slate-800/50 flex flex-col items-center justify-center text-center bg-slate-800/10">
+                             <span className="text-[5.5px] text-slate-500 uppercase font-black tracking-tighter mb-0.5 select-none">{sev}</span>
+                             <span className={`text-[10px] font-mono font-black ${
+                               (count as number) > 0 ? (
+                                 sev === 'High' ? 'text-red-400' :
+                                 sev === 'Medium' ? 'text-orange-400' :
+                                 sev === 'Low' ? 'text-blue-400' :
+                                 'text-slate-300'
+                               ) : 'text-slate-600'
+                             }`}>{count as number}</span>
+                           </div>
+                         );
+                       })}
                     </div>
                   </div>
 
@@ -691,20 +655,23 @@ export default function App() {
                        <span className="text-white text-[9px]">{scaSummary.vulnerabilities}</span>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                       {Object.entries(scaSummary.breakdown).map(([sev, count]) => (
-                         <div key={sev} className={`flex-1 min-w-[48px] p-1.5 rounded-lg border border-slate-800/50 flex flex-col items-center justify-center text-center ${(count as number) > 0 ? 'bg-slate-800/20' : 'opacity-10'}`}>
-                           <span className="text-[5.5px] text-slate-500 uppercase font-black tracking-tighter mb-0.5 select-none">{sev}</span>
-                           <span className={`text-[10px] font-mono font-black ${
-                             (count as number) > 0 ? (
-                               sev === 'Very High' ? 'text-purple-400' :
-                               sev === 'High' ? 'text-red-400' :
-                               sev === 'Medium' ? 'text-orange-400' :
-                               sev === 'Low' ? 'text-blue-400' :
-                               'text-slate-300'
-                             ) : 'text-slate-600'
-                           }`}>{count as number}</span>
-                         </div>
-                       ))}
+                       {['Very High', 'High', 'Medium', 'Low'].map((sev) => {
+                         const count = (scaSummary.breakdown as any)[sev] || 0;
+                         return (
+                           <div key={sev} className="flex-1 min-w-[48px] p-1.5 rounded-lg border border-slate-800/50 flex flex-col items-center justify-center text-center bg-slate-800/10">
+                             <span className="text-[5.5px] text-slate-500 uppercase font-black tracking-tighter mb-0.5 select-none">{sev}</span>
+                             <span className={`text-[10px] font-mono font-black ${
+                               (count as number) > 0 ? (
+                                 sev === 'Very High' ? 'text-purple-400' :
+                                 sev === 'High' ? 'text-red-400' :
+                                 sev === 'Medium' ? 'text-orange-400' :
+                                 sev === 'Low' ? 'text-blue-400' :
+                                 'text-slate-300'
+                               ) : 'text-slate-600'
+                             }`}>{count as number}</span>
+                           </div>
+                         );
+                       })}
                     </div>
                     <div className="flex items-center justify-between text-[8px] text-slate-500 font-bold px-1 uppercase tracking-widest pt-0.5">
                        <span>TOTAL PACKAGES: {scaSummary.totalPackages}</span>

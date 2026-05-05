@@ -4,6 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @Configuration
 @ConfigurationProperties(prefix = "veracode.api")
@@ -14,6 +16,7 @@ public class VeracodeConfig {
     private List<String> ignoreModules = new ArrayList<>();
     private List<String> includeModules = new ArrayList<>();
     private List<String> ignoreEcosystems = new ArrayList<>();
+    private Map<String, String> architectureMappings = new HashMap<>();
     private Key key = new Key();
 
     public String getUrl() {
@@ -62,6 +65,14 @@ public class VeracodeConfig {
 
     public void setIgnoreEcosystems(List<String> ignoreEcosystems) {
         this.ignoreEcosystems = ignoreEcosystems;
+    }
+
+    public Map<String, String> getArchitectureMappings() {
+        return architectureMappings;
+    }
+
+    public void setArchitectureMappings(Map<String, String> architectureMappings) {
+        this.architectureMappings = architectureMappings;
     }
 
     public static class Key {

@@ -34,7 +34,18 @@ public class VeracodeReportDTO {
 
     public static class SeveritySummaryDTO {
         public int vulnerabilities;
-        public String breakdown; // e.g. "Very High: 5, High: 2..."
+        public java.util.Map<String, SeverityBreakdownDTO> breakdown = new java.util.LinkedHashMap<>();
+    }
+
+    public static class SeverityBreakdownDTO {
+        public int total;
+        public List<CweFindingDTO> findings = new ArrayList<>();
+    }
+
+    public static class CweFindingDTO {
+        public String cwe;
+        public int count;
+        public String date_first_occurrence;
     }
 
     public static class ScaSummaryDTO extends SeveritySummaryDTO {
@@ -54,6 +65,7 @@ public class VeracodeReportDTO {
 
     public static class ScaDetailDTO {
         public String packageName;
+        public String version;
         public String firstFoundDate;
         public String severityCounts; // e.g., "VeryHigh: 1 Medium: 2"
         public String cveList; // e.g., "CVE-2026-4800,CVE-2026-2950"
