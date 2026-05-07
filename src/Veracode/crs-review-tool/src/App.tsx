@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Shield, 
   Search, 
@@ -20,14 +20,18 @@ import {
   Code2,
   AlertCircle,
   Settings,
-  X
+  X,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { SastFinding, ScaFinding, AggregatedGroup, ToolName, AIProvider, Finding } from './types';
 import { mockSastFindings, mockScaFindings, mockOverview, mockSastSummary, mockScaSummary, dryRunJson } from './mockData';
+import { sampleReportData } from './data';
 import { getAIResponseForComment } from './services/aiService';
 import { GroupRow } from './components/GroupRow';
 import { CWE_BASE_URL } from './constants';
+import { StaticContent } from './staticContent';
 
 // --- Error Boundary and Debug Logger Support ---
 interface ErrorBoundaryProps {
@@ -35,13 +39,20 @@ interface ErrorBoundaryProps {
   onError?: (error: Error, info: React.ErrorInfo) => void;
 }
 
-class ErrorBoundary extends React.Component<any, any> {
-  constructor(props: any) {
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false, error: null };
+  props!: ErrorBoundaryProps;
+
+  constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
@@ -160,17 +171,227 @@ function adaptBreakdown(breakdownObj: any): { "Very High": number, "High": numbe
   return result;
 };
 
+
+function ReviewTabContent({ overview, backendSastSummary, backendScaSummary, scaDetails = [], sastSummary }: { overview: any, backendSastSummary: any, backendScaSummary: any, scaDetails: any[], sastSummary: any }) {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const formattedHeader = React.useMemo(() => {
+    let header = StaticContent.main_header;
+    header = header.replace(/\{\$accountId\}/g, overview.accountId || '---');
+    header = header.replace(/\{\$appId\}/g, overview.appId || '---');
+    header = header.replace(/\{\$buildId\}/g, overview.buildId || '---');
+    header = header.replace(/\{\$analysisId\}/g, overview.analysisId || '---');
+    header = header.replace(/\{\$static_analysis_unit_id\}/g, overview.static_analysis_unit_id || '---');
+    header = header.replace(/\{\$sandbox_id\}/g, overview.sandbox_id || '---');
+    header = header.replace(/\{\$scanName\}/g, overview.scanName || '---');
+    header = header.replace(/\{\$profile_name\}/g, overview.applicationName || '---');
+
+    let rows = "";
+    if (backendSastSummary && backendSastSummary.breakdown) {
+      Object.entries(backendSastSummary.breakdown).forEach(([severity, data]: [string, any]) => {
+         data.findings?.forEach((finding: any) => {
+            const cweId = finding.cwe.match(/\d+/);
+            const remediationDate = (finding.remediation_due_date || '').split(' ')[0] || 'N/A';
+            rows += `<tr>
+                <td><span class="crs-rounded minwidth ${severity.toLowerCase()}">${severity}</span></td>
+                <td><a target="_blank" href="https://cwe.mitre.org/data/definitions/${cweId ? cweId[0] : ''}.html">${finding.cwe}</a></td>
+                <td><span class="crs-rounded sev bg-gold">None</span></td>
+                <td>${finding.count}</td>
+                <td>${remediationDate}</td>
+            </tr>`;
+         });
+      });
+    }
+
+    const sastSection = (sastSummary && sastSummary.vulnerabilities > 0) 
+      ? (StaticContent.sastHeader + rows + StaticContent.sastFooter) 
+      : "";
+
+    let missingScaMessages = "";
+    if (overview.architectures && Array.isArray(overview.architectures)) {
+        let scaEcosystemsArray: string[] = [];
+        if (Array.isArray(overview.scaEcosystems)) {
+            scaEcosystemsArray = overview.scaEcosystems.map((s: string) => String(s).trim().toUpperCase());
+        } else if (typeof overview.scaEcosystems === 'string') {
+            scaEcosystemsArray = overview.scaEcosystems.replace(/[\[\]]/g, '').split(',').map((s: string) => s.trim().toUpperCase());
+        }
+        
+        overview.architectures.forEach((arch: string) => {
+            if (!scaEcosystemsArray.includes(arch.toUpperCase())) {
+                missingScaMessages += StaticContent.missingScaMsg(arch);
+            }
+        });
+    }
+
+    let scaSection = "";
+    if (backendScaSummary && backendScaSummary.vulnerabilities > 0) {
+      const breakdown = backendScaSummary.breakdown || {};
+      const severities = [
+        { name: 'Very High', count: breakdown['Very High']?.total || 0, class: 'veryhigh' },
+        { name: 'High', count: breakdown['High']?.total || 0, class: 'high' },
+        { name: 'Medium', count: breakdown['Medium']?.total || 0, class: 'medium' },
+        { name: 'Low', count: breakdown['Low']?.total || 0, class: 'low' },
+      ];
+      const activeSeverities = severities.filter(s => s.count > 0);
+      const vulnerablePackages = backendScaSummary.totalVulnerablePackages || 0;
+      const totalPackages = backendScaSummary.totalPackages || 0;
+
+      let vulnerabilitySentencePart = '';
+      if (activeSeverities.length > 0) {
+        const descriptions = activeSeverities.map(s => `${s.count} <span class="crs-rounded ${s.class}">${s.name}</span>`);
+        if (descriptions.length > 1) {
+          vulnerabilitySentencePart = descriptions.slice(0, -1).join(', ') + ' and ' + descriptions.slice(-1);
+        } else {
+          vulnerabilitySentencePart = descriptions[0];
+        }
+      } else {
+        vulnerabilitySentencePart = '0';
+      }
+
+      const listItems = activeSeverities.map(s => 
+        `        <li><span class="crs-rounded minwidth ${s.class}">${s.name}</span>: ${s.count}</li>`
+      ).join('\n');
+
+      const scaEcosystems = (overview.scaEcosystems || '').toUpperCase();
+      const hasJS = scaEcosystems.includes('JAVASCRIPT');
+      const hasJava = scaEcosystems.includes('JAVA');
+
+      let hasRequest = false;
+      Object.values(breakdown).forEach((data: any) => {
+        data.findings?.forEach((finding: any) => {
+            if(finding.packageName && finding.packageName.toLowerCase() === 'request') {
+                hasRequest = true;
+            }
+        });
+      });
+
+      const nodeMsgUsed = hasJS ? ` ${StaticContent.nodeMsg}` : '';
+      const requestMsgUsed = hasRequest ? StaticContent.requestMsg : '';
+      const javaMsgUsed = hasJava ? ` ${StaticContent.javaMsg}` : '';
+
+      const remediation_guidance = `Please be advised, the <a class="crs-rounded bg-gray" target="_blank" href="https://pwceur.sharepoint.com/:b:/r/sites/NetworkInformationSecurityPolicyIsp/Shared%20Documents/Standards/PwC%20NIS%20Application%20Readiness%20Standard.pdf">Application Readiness Standard</a> requires that secure code findings identified during the Software Composition Analysis of third-party components must resolved via upgrade, removal, mitigation, or replacement.<br/><br/>
+Code Review Services recommends upgrading the third-party component with a vulnerability-free version when possible.${nodeMsgUsed} If no vulnerability-free version exists, then the following actions can be taken:
+<ol>
+    <li>Remove the component if it is not necessary or being used.</li>
+    <li>Analyze to determine if the reported vulnerability applies to the application.<ul>
+        <li>If the application <b>is not</b> affected, <a target="_blank" href="https://docs.veracode.com/r/Address_Veracode_SCA_Vulnerabilities">a mitigation proposal can be created</a>.</li>
+        <li>If the application <b>is</b> affected, there may be a defensive mechanism that can be implemented to mitigate the security risk.${javaMsgUsed}</li></ul></li>
+    <li>Replace the vulnerable component with a different component.</li>
+    <li>Actively look for a new patched version of the component and upgrade as soon as a fixed version is available.${requestMsgUsed}</li>
+</ol>
+<br/>`;
+
+      // SCA Details Table Rows
+      const scaTableRows = scaDetails.map((detail: any) => {
+        const severityParts = (detail.severityCounts || '').split(',').map((s: string) => s.trim());
+        const severityHtml = severityParts.map((part: string) => {
+            if (!part) return '';
+            const [sev, count] = part.split(': ');
+            const sevClass = sev.toLowerCase().replace(' ', '');
+            return `<span class="crs-rounded minwidth ${sevClass}">${sev}</span>: ${count}`;
+        }).join('<br/>');
+
+        const cveLinks = (detail.cveList || '').split(',').map((cve: string) => 
+            `<a target="_blank" href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=${cve.trim()}">${cve.trim()}</a>`
+        ).join('</div><div>');
+
+        return `
+        <tr>
+            <td>${detail.packageName}</td>
+            <td>${detail.version}</td>
+            <td>${severityHtml}</td>
+            <td>${detail.remediation_due_date || 'N/A'}</td>
+            <td><div class="top_row"><div>${cveLinks}</div></div></td>
+            <td><span class="crs-rounded minwidth bg-gold">None</span></td>
+        </tr>`;
+      }).join('');
+
+      scaSection = `
+<h3 class="heading bg-red">Third-party Components</h3><br/>
+A review of the third-party components in the Software Composition Analysis was performed. There are ${vulnerabilitySentencePart} severity vulnerabilities that affect ${vulnerablePackages} third-party components.<br/>
+<h4>Third-Party Component Summary</h4>
+<ul>
+    <li>Components: ${totalPackages}</li>
+    <li>Vulnerable Components: ${vulnerablePackages}<ul>
+${listItems}
+    </ul></li>
+</ul>
+<br/>
+${remediation_guidance}
+${StaticContent.scaDetailHeader}
+${scaTableRows}
+</table>
+`;
+    }
+
+    let moduleSelectionSection = "";
+    if (overview.unselectedModules && Array.isArray(overview.unselectedModules) && overview.unselectedModules.length > 0) {
+        moduleSelectionSection = StaticContent.moduleSelectionMsg(overview, overview.selectedModules || [], overview.unselectedModules);
+    }
+
+    return StaticContent.header_style + header + sastSection + scaSection + missingScaMessages + moduleSelectionSection + StaticContent.footerMsg;
+  }, [overview, backendSastSummary, backendScaSummary, sastSummary]);
+
+  const [rawHtml, setRawHtml] = useState(formattedHeader);
+
+  useEffect(() => {
+    setRawHtml(formattedHeader);
+  }, [formattedHeader]);
+
+  return (
+    <div className={`p-4 ${isMaximized ? "fixed inset-0 z-50 bg-slate-950" : "flex-1 min-h-0 min-w-0"} flex flex-col gap-4`}>
+      <div className="flex justify-between items-center">
+        <h2 className="text-sm font-black uppercase text-slate-400">Review Comments Editor</h2>
+        <div className="flex items-center gap-4">
+            <button 
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="text-slate-500 hover:text-white transition-all"
+                title={isMaximized ? "Minimize" : "Maximize"}
+            >
+                {isMaximized ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
+            </button>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <span className="text-[10px] font-bold uppercase text-slate-500">Edit Raw HTML</span>
+              <input 
+                type="checkbox" 
+                checked={isEditMode} 
+                onChange={() => setIsEditMode(!isEditMode)} 
+                className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0"
+              />
+            </label>
+        </div>
+      </div>
+      
+      {isEditMode ? (
+        <textarea 
+          className="w-full flex-1 p-4 bg-slate-950 text-slate-200 font-mono text-[11px] rounded-lg border border-slate-800 resize-none"
+          value={rawHtml}
+          onChange={(e) => setRawHtml(e.target.value)}
+        />
+      ) : (
+        <div 
+          className="w-full flex-1 p-4 bg-white text-black rounded-lg overflow-auto"
+          dangerouslySetInnerHTML={{ __html: rawHtml }}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function App() {
-  const [selectedTools, setSelectedTools] = useState<ToolName[]>([]);
+  const [selectedTools, setSelectedTools] = useState<ToolName[]>(['Veracode']);
   const [appProfile, setAppProfile] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resultsLoaded, setResultsLoaded] = useState(false);
-  const [activeTab, setActiveTab] = useState<'SAST' | 'SCA'>('SAST');
+  const [activeTab, setActiveTab] = useState<'SAST' | 'SCA' | 'Review'>('SAST');
   const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
   const [aggregatedData, setAggregatedData] = useState<{ sast: AggregatedGroup[], sca: AggregatedGroup[] }>({ sast: [], sca: [] });
   const [backendSastSummary, setBackendSastSummary] = useState<any>(null);
   const [backendScaSummary, setBackendScaSummary] = useState<any>(null);
+  const [scaDetails, setScaDetails] = useState<any[]>([]);
   const [backendError, setBackendError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<string | null>(null);
+  const [suggestedApps, setSuggestedApps] = useState<string[]>([]);
   const [lastRawResponse, setLastRawResponse] = useState<any>(null);
   const [debugPastedJson, setDebugPastedJson] = useState('');
   const [showDebug, setShowDebug] = useState(false);
@@ -179,6 +400,8 @@ export default function App() {
   const [aiProvider, setAiProvider] = useState<AIProvider>('gemini');
   const [sastSystemPrompt, setSastSystemPrompt] = useState<string>('');
   const [scaSystemPrompt, setScaSystemPrompt] = useState<string>('');
+  const [initialSastPrompt, setInitialSastPrompt] = useState<string>('');
+  const [initialScaPrompt, setInitialScaPrompt] = useState<string>('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [detailedGroup, setDetailedGroup] = useState<AggregatedGroup | null>(null);
 
@@ -251,31 +474,46 @@ export default function App() {
   }, [aggregatedData.sca, resultsLoaded, backendScaSummary]);
 
   useEffect(() => {
-    fetchPrompts();
+    // processImportedData(sampleReportData); // Removed as requested
   }, []);
 
   const fetchPrompts = async () => {
     try {
-      const res = await fetch('/api/prompts');
-      const data = await res.json();
-      setSastSystemPrompt(data.sast);
-      setScaSystemPrompt(data.sca);
+        const res = await fetch('http://localhost:8081/api/config/prompts');
+        const data = await res.json();
+        setSastSystemPrompt(data.sastPrompt);
+        setScaSystemPrompt(data.scaPrompt);
+        setInitialSastPrompt(data.sastPrompt);
+        setInitialScaPrompt(data.scaPrompt);
     } catch (err) {
-      console.error('Failed to fetch prompts', err);
+        console.error('Failed to fetch prompts', err);
     }
   };
 
   const savePrompts = async () => {
     try {
-      await fetch('/api/prompts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sast: sastSystemPrompt, sca: scaSystemPrompt }),
-      });
-      setIsSettingsOpen(false);
+        const res = await fetch('http://localhost:8081/api/config/prompts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sastPrompt: sastSystemPrompt, scaPrompt: scaSystemPrompt })
+        });
+        if (res.ok) {
+            setInitialSastPrompt(sastSystemPrompt);
+            setInitialScaPrompt(scaSystemPrompt);
+            setIsSettingsOpen(false);
+        } else {
+            console.error('Failed to save prompts');
+        }
     } catch (err) {
-      console.error('Failed to save prompts', err);
+        console.error('Failed to save prompts', err);
     }
+  };
+
+  const toggleSettings = async () => {
+    if (!isSettingsOpen) {
+        await fetchPrompts();
+    }
+    setIsSettingsOpen(!isSettingsOpen);
   };
 
   const toggleTool = (tool: ToolName) => {
@@ -321,6 +559,7 @@ export default function App() {
           scaEcosystems: data.scaEcosystems || '',
           packagingAnomalies,
           unselectedModules,
+          selectedModules: data.selectedModules || [],
           scanLanguages: languages && languages.length > 0 ? languages : mockOverview.scanLanguages
         };
         
@@ -330,6 +569,7 @@ export default function App() {
 
       if (data && data.sastSummary) setBackendSastSummary(data.sastSummary);
       if (data && data.scaSummary) setBackendScaSummary(data.scaSummary);
+      if (data && data.scaDetails) setScaDetails(data.scaDetails);
 
       console.log("Processing Findings...");
       // Handle both formats (standard scan and dry run format)
@@ -354,6 +594,16 @@ export default function App() {
       
       console.log("Setting Final States.");
       setAggregatedData({ sast: sastGroups, sca: scaGroups });
+      
+      // Auto-switch to appropriate tab based on findings
+      if (sastGroups.length > 0) {
+        setActiveTab('SAST');
+      } else if (scaGroups.length > 0) {
+        setActiveTab('SCA');
+      } else {
+        setActiveTab('Review');
+      }
+
       setResultsLoaded(true);
       setBackendError(null);
       console.log("processImportedData Complete.");
@@ -371,22 +621,61 @@ export default function App() {
 
     setIsSubmitting(true);
     setBackendError(null);
+    setErrorType(null);
+    setSuggestedApps([]);
     const IS_PRODUCTION = import.meta.env.PROD || import.meta.env.VITE_ENVIRONMENT === 'production';
 
+    let handled = false;
     try {
-      const response = await fetch(`http://localhost:8081/getfinalreport?application-name=${encodeURIComponent(appProfile)}`);
+      const response = await fetch(`/api/getfinalreport?application-name=${encodeURIComponent(appProfile)}`);
       
       if (!response.ok) {
-        throw new Error(`Connection Error: Server returned ${response.status} ${response.statusText}`);
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (jsonErr) {
+          // If body is not JSON, check status
+          const msg = response.status >= 500 
+            ? `Server Error (${response.status}): The backend encountered an unrecoverable issue.`
+            : `Connection Error: Server returned ${response.status} ${response.statusText}`;
+          
+          setErrorType('SYSTEM_ERROR');
+          setBackendError(msg);
+          handled = true;
+          return;
+        }
+
+        if (errorData) {
+          const type = errorData.type || 'SYSTEM_ERROR';
+          const msg = errorData.message || errorData.msg || errorData.error || (type === 'SYSTEM_ERROR' ? 'Veracode API is currently unavailable. Please try again later.' : 'An unexpected error occurred');
+          
+          setErrorType(type);
+          if (type === 'INVALID_APP') {
+            setSuggestedApps(errorData.suggestions || []);
+          }
+          
+          setBackendError(msg);
+          setResultsLoaded(false);
+          handled = true;
+          return; // Stop here, states are set
+        } else {
+          setErrorType('SYSTEM_ERROR');
+          setBackendError(`Connection Error: Server returned ${response.status}`);
+          handled = true;
+          return;
+        }
       }
 
       const data = await response.json();
       processImportedData(data);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+    } catch (err: any) {
+      if (handled) return;
+
+      const message = err.message || String(err);
       console.error('Fetch Error:', message);
       
       const IS_PRODUCTION = import.meta.env.PROD || import.meta.env.VITE_ENVIRONMENT === 'production';
+      
       if (IS_PRODUCTION) {
         setBackendError(message);
         setResultsLoaded(false);
@@ -399,6 +688,16 @@ export default function App() {
         setBackendScaSummary(null);
         setOverview(mockOverview);
         setAggregatedData({ sast: sastGroups, sca: scaGroups });
+        
+        // Auto-switch to appropriate tab based on findings
+        if (sastGroups.length > 0) {
+          setActiveTab('SAST');
+        } else if (scaGroups.length > 0) {
+          setActiveTab('SCA');
+        } else {
+          setActiveTab('Review');
+        }
+
         setResultsLoaded(true);
       }
     } finally {
@@ -407,9 +706,8 @@ export default function App() {
   };
 
   const handlePullAIResponse = async (group: AggregatedGroup) => {
-    const activePrompt = group.type === 'SAST' ? sastSystemPrompt : scaSystemPrompt;
-    const combinedPrompt = `${activePrompt}\n\nDescription: ${group.description}\nMitigation: ${group.comments}`;
-    const response = await getAIResponseForComment(combinedPrompt, aiProvider);
+    // Call API with engine name, user comments (group.comments), and finding type (SCA/SAST)
+    const response = await getAIResponseForComment(group.comments, group.type, aiProvider);
     updateGroupAIComment(group.groupId, response);
   };
 
@@ -481,12 +779,12 @@ export default function App() {
 
   return (
     <ErrorBoundary onError={(err) => setBackendError(`Render Crash: ${err.message}`)}>
-      <div className="min-h-screen bg-slate-950 text-slate-200 font-sans p-6 selection:bg-blue-500/30">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-5 h-[calc(100vh-3rem)]">
+      <div className="h-screen overflow-hidden bg-slate-950 text-slate-200 font-sans p-6 selection:bg-blue-500/30">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-12 grid-rows-[auto_minmax(0,1fr)] gap-5 h-full">
         
         {/* TOP BAR: Controls */}
-        <div className="col-span-12 bento-card p-4 flex items-center justify-between bg-slate-900/50 backdrop-blur-xl">
-          <div className="flex gap-8 items-center">
+        <div className="col-span-12 bento-card p-4 flex items-center justify-start gap-8 bg-slate-900/50 backdrop-blur-xl flex-shrink-0">
+          <div className="flex gap-8 items-center flex-1">
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 p-2 rounded-lg text-white">
                 <Shield size={24} />
@@ -553,7 +851,7 @@ export default function App() {
 
           <div className="flex items-center gap-4">
              <button 
-                onClick={() => setIsSettingsOpen(true)}
+                onClick={toggleSettings}
                 className="p-2.5 hover:bg-slate-800 rounded-xl text-slate-500 hover:text-white transition-all ring-1 ring-slate-800 hover:shadow-lg"
                 title="System Configuration"
               >
@@ -583,18 +881,50 @@ export default function App() {
                 <XCircle className="text-red-500" size={40} />
               </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-black tracking-tight text-white uppercase">Backend Service Failure</h2>
+                <h2 className="text-2xl font-black tracking-tight text-white uppercase leading-tight">
+                  {(errorType || 'Backend Service Failure').replace(/_/g, ' ')}
+                </h2>
                 <div className="p-4 bg-black/40 rounded-xl border border-red-500/10 font-mono text-xs text-red-400 leading-relaxed text-left overflow-auto max-h-32">
                   {backendError}
                 </div>
               </div>
+
+              {suggestedApps.length > 0 && (
+                <div className="space-y-4 p-6 bg-blue-500/5 rounded-2xl border border-blue-500/10">
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em]">Suggested Profiles</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {suggestedApps.map(app => (
+                      <button
+                        key={app}
+                        onClick={() => {
+                          setAppProfile(app);
+                          setBackendError(null);
+                          setErrorType(null);
+                          setSuggestedApps([]);
+                        }}
+                        className="px-4 py-2 bg-blue-600/10 hover:bg-blue-600/30 border border-blue-500/20 rounded-xl text-xs font-medium text-blue-200 transition-all active:scale-95 hover:border-blue-500/50"
+                      >
+                        {app}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <p className="text-slate-400 text-sm leading-relaxed">
-                The application is running in <span className="text-red-400 font-bold uppercase">Production Mode</span>. 
-                Mock data fallbacks are disabled to prevent data leakage or incorrect reporting. 
-                Please ensure the reporting service at <code className="text-blue-400">localhost:8081</code> is active and accessible.
+                {errorType === 'INVALID_APP' 
+                  ? "The specified application profile could not be found. Please select from the suggestions above or check the profile name."
+                  : errorType === 'SYSTEM_ERROR'
+                  ? "The backend service or Veracode API encountered a critical issue. Please check the error message above for details."
+                  : <>The application is running in <span className="text-red-400 font-bold uppercase">Production Mode</span>. Mock data fallbacks are disabled to prevent data leakage.</>
+                }
               </p>
               <button 
-                onClick={() => setBackendError(null)}
+                onClick={() => {
+                  setBackendError(null);
+                  setErrorType(null);
+                  setSuggestedApps([]);
+                }}
                 className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-black rounded-xl transition-all active:scale-95 shadow-xl shadow-red-900/20 text-xs tracking-widest uppercase"
               >
                 Clear Error
@@ -614,8 +944,8 @@ export default function App() {
         ) : (
           <>
             {/* SIDEBAR: Stats */}
-            <div className="col-span-3 flex flex-col gap-2 overflow-y-auto pr-1 pb-4">
-              <div className="bento-card p-3 bg-slate-900/40">
+            <div className="col-span-3 flex flex-col gap-2 overflow-y-auto min-h-0 min-w-0 pr-1 pb-4">
+              <div className="bento-card p-3 bg-slate-900/40 shrink-0">
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black">VULNERABILITIES</h3>
                   <div className="text-right">
@@ -683,12 +1013,12 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bento-card bg-slate-900/40 p-3 flex flex-col">
+              <div className="bento-card bg-slate-900/40 p-3 flex flex-col shrink-0">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black mb-2">Scan Analysis</h3>
                 <div className="space-y-1">
-                  <div className="flex justify-between items-center py-1 border-b border-slate-800/50">
-                    <span className="text-[8px] text-slate-500 uppercase font-black">LANGUAGES</span>
-                    <div className="flex gap-1">
+                  <div className="flex justify-between items-center py-1 border-b border-slate-800/50 gap-2 flex-wrap">
+                    <span className="text-[8px] text-slate-500 uppercase font-black shrink-0">MODULE SELECTED</span>
+                    <div className="flex gap-1 flex-wrap justify-end">
                        {((activeOverview as any).scanLanguages || []).map((lang: string) => (
                          <div key={lang} className="flex items-center gap-1 px-1 py-0.5 rounded bg-slate-800/50 border border-slate-700/50">
                            <div className={`w-1 h-1 rounded-full ${
@@ -703,9 +1033,9 @@ export default function App() {
                        ))}
                     </div>
                   </div>
-                  <div className="flex justify-between items-center py-1 border-b border-slate-800/50">
-                    <span className="text-[8px] text-slate-500 uppercase font-black">SCA MISSING</span>
-                    <span className={`text-[9px] font-black uppercase ${
+                  <div className="flex justify-between items-center py-1 border-b border-slate-800/50 gap-2 flex-wrap">
+                    <span className="text-[8px] text-slate-500 uppercase font-black shrink-0">SCA MISSING</span>
+                    <span className={`text-[9px] font-black uppercase text-right break-words min-w-0 ${
                       (() => {
                         const archs = (activeOverview as any).architectures || [];
                         const ecoObj = (activeOverview as any).scaEcosystems || '';
@@ -716,7 +1046,7 @@ export default function App() {
                           ecos = ecoObj;
                         }
                         const missing = archs.filter((a: string) => !ecos.some((e: string) => e.toLowerCase() === a.toLowerCase()));
-                        return missing.length === 0 ? 'text-emerald-500' : 'text-red-500';
+                        return missing.length === 0 ? 'text-emerald-500' : 'text-red-400';
                       })()
                     }`}>
                       {(() => {
@@ -733,8 +1063,8 @@ export default function App() {
                       })()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center py-1">
-                    <span className="text-[8px] text-slate-500 uppercase font-black">MODULE SELECTION</span>
+                  <div className="flex justify-between items-center py-1 gap-2 flex-wrap">
+                    <span className="text-[8px] text-slate-500 uppercase font-black shrink-0">MODULE SELECTION</span>
                     <span className={`text-[9px] font-black uppercase ${((activeOverview as any).unselectedModules || []).length === 0 ? 'text-emerald-500' : 'text-red-400'}`}>
                       {((activeOverview as any).unselectedModules || []).length === 0 ? 'Complete' : 'Partial'}
                     </span>
@@ -742,12 +1072,12 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bento-card p-3 bg-slate-900 border-slate-800/50 shadow-xl flex flex-col">
+              <div className="bento-card p-3 bg-slate-900 border-slate-800/50 shadow-xl flex flex-col shrink-0">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-black mb-2">Batch Actions</h3>
                 <div className="space-y-1.5">
-                  <div className="p-2 rounded bg-slate-950 border border-slate-800/50 flex items-center justify-between">
-                    <span className="text-[8px] text-slate-500 uppercase font-black">Selected</span>
-                    <span className="text-white font-mono font-black text-xs">{selectedGroups.size}</span>
+                  <div className="p-2 rounded bg-slate-950 border border-slate-800/50 flex flex-wrap items-center justify-between gap-x-2">
+                    <span className="text-[8px] text-slate-500 uppercase font-black break-words min-w-0">Selected</span>
+                    <span className="text-white font-mono font-black text-xs shrink-0">{selectedGroups.size}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
@@ -770,12 +1100,12 @@ export default function App() {
             </div>
 
             {/* MAIN CONTENT: Findings Table */}
-            <div className="col-span-9 bento-card flex flex-col bg-slate-900 border-slate-800">
+            <div className="col-span-9 bento-card flex flex-col bg-slate-900 border-slate-800 overflow-hidden min-h-0 min-w-0">
               {/* Metadata Panel */}
               <div className="p-5 border-b border-slate-800 bg-slate-950/40 flex flex-wrap items-start">
-                <div className="flex flex-col mr-28">
+                <div className="flex flex-col mr-16">
                   <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Profile</span>
-                  <p className="text-[11px] font-bold text-white truncate max-w-[180px]" title={activeOverview.applicationName}>{activeOverview.applicationName}</p>
+                  <p className="text-[11px] font-bold text-white truncate max-w-[260px]" title={activeOverview.applicationName}>{activeOverview.applicationName}</p>
                 </div>
                 <div className="flex flex-col mr-16">
                   <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Scan Name</span>
@@ -800,18 +1130,18 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-10">
-                {(['SAST', 'SCA'] as const).map(tab => (
+              <div className="flex w-full justify-start border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-10">
+                {(['SAST', 'SCA', 'Review'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all relative ${
+                    className={`grow-0 basis-1/3 px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all relative flex justify-center items-center ${
                       activeTab === tab 
                         ? 'text-blue-400 bg-blue-500/5' 
                         : 'text-slate-500 hover:text-slate-300'
                     }`}
                   >
-                    {tab} Findings
+                    {tab === 'Review' ? 'Review Comments' : `${tab} Findings`}
                     {activeTab === tab && (
                       <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-blue-500 shadow-[0_-4px_12px_rgba(59,130,246,0.5)]" />
                     )}
@@ -819,52 +1149,58 @@ export default function App() {
                 ))}
               </div>
 
-              <div className="flex-1 overflow-auto custom-scrollbar">
-                <table className="w-full text-left border-collapse">
-                  <thead className="bg-slate-950/40 text-[10px] text-slate-500 font-black uppercase tracking-wider sticky top-0 z-20 backdrop-blur-sm">
-                    <tr>
-                      <th className="p-4 w-12 text-center">
-                        <input 
-                          type="checkbox" 
-                          className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0"
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              const ids = currentGroups.map(g => g.groupId);
-                              setSelectedGroups(new Set(ids));
-                            } else {
-                              setSelectedGroups(new Set());
-                            }
-                          }}
-                          checked={currentGroups.length > 0 && selectedGroups.size === currentGroups.length}
-                        />
-                      </th>
-                      <th className="p-4 w-20">Qty</th>
-                      <th className="p-4 w-40">Identifier</th>
-                      <th className="p-4">Context & AI assessment</th>
-                      <th className="p-4 w-24">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/50">
-                    <AnimatePresence initial={false}>
-                      {currentGroups.map((group) => (
-                        <GroupRow 
-                          key={group.groupId}
-                          group={group}
-                          isSelected={selectedGroups.has(group.groupId)}
-                          onSelect={() => toggleGroupSelection(group.groupId)}
-                          onPullAI={() => handlePullAIResponse(group)}
-                          onUpdateAIComment={(val) => updateGroupAIComment(group.groupId, val)}
-                          onViewFull={() => setDetailedGroup(group)}
-                        />
-                      ))}
-                    </AnimatePresence>
-                  </tbody>
-                </table>
-                {currentGroups.length === 0 && (
-                  <div className="py-24 text-center">
-                    <Database size={40} className="mx-auto text-slate-800 mb-4" />
-                    <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">No active findings in {activeTab}</p>
-                  </div>
+              <div className="flex-1 overflow-auto flex flex-col min-h-0 min-w-0">
+                {activeTab === 'Review' ? (
+                  <ReviewTabContent overview={activeOverview} backendSastSummary={backendSastSummary} backendScaSummary={backendScaSummary} scaDetails={scaDetails} sastSummary={sastSummary} />
+                ) : (
+                  <>
+                    <table className="w-full text-left border-collapse">
+                      <thead className="bg-slate-950/40 text-[10px] text-slate-500 font-black uppercase tracking-wider sticky top-0 z-20 backdrop-blur-sm">
+                        <tr>
+                          <th className="p-4 w-12 text-center">
+                            <input 
+                              type="checkbox" 
+                              className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0"
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  const ids = currentGroups.map(g => g.groupId);
+                                  setSelectedGroups(new Set(ids));
+                                } else {
+                                  setSelectedGroups(new Set());
+                                }
+                              }}
+                              checked={currentGroups.length > 0 && selectedGroups.size === currentGroups.length}
+                            />
+                          </th>
+                          <th className="p-4 w-20">Qty</th>
+                          <th className="p-4 w-40">Identifier</th>
+                          <th className="p-4">Context & AI assessment</th>
+                          <th className="p-4 w-24">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/50">
+                        <AnimatePresence initial={false}>
+                          {currentGroups.map((group) => (
+                            <GroupRow 
+                              key={group.groupId}
+                              group={group}
+                              isSelected={selectedGroups.has(group.groupId)}
+                              onSelect={() => toggleGroupSelection(group.groupId)}
+                              onPullAI={() => handlePullAIResponse(group)}
+                              onUpdateAIComment={(val) => updateGroupAIComment(group.groupId, val)}
+                              onViewFull={() => setDetailedGroup(group)}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </tbody>
+                    </table>
+                    {currentGroups.length === 0 && (
+                      <div className="py-24 text-center">
+                        <Database size={40} className="mx-auto text-slate-800 mb-4" />
+                        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">No active findings in {activeTab}</p>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -962,7 +1298,8 @@ export default function App() {
                 </button>
                 <button 
                   onClick={savePrompts}
-                  className="px-8 py-2 bg-white text-black text-sm font-black rounded-xl hover:bg-slate-200 transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                  disabled={sastSystemPrompt === initialSastPrompt && scaSystemPrompt === initialScaPrompt}
+                  className="px-8 py-2 bg-white text-black text-sm font-black rounded-xl hover:bg-slate-200 transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.1)] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   SAVE CONFIGURATION
                 </button>

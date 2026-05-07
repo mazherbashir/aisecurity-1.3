@@ -20,6 +20,7 @@ public class VeracodeReport {
     @XmlAttribute(name = "policy_compliance_status") private String policyComplianceStatus;
     @XmlAttribute(name = "account_id") private String accountId;
     @XmlAttribute(name = "analysis_id") private String analysisId;
+    @XmlAttribute(name = "sandbox_id") private String sandboxId;
 
     public String getAppName() { return appName; }
     public String getAppId() { return appId; }
@@ -30,6 +31,7 @@ public class VeracodeReport {
     public String getPolicyComplianceStatus() { return policyComplianceStatus; }
     public String getAccountId() { return accountId; }
     public String getAnalysisId() { return analysisId; }
+    public String getSandboxId() { return sandboxId; }
     public StaticAnalysis getStaticAnalysis() { return staticAnalysis; }
     public List<Severity> getSeverities() { return severities; }
     public SoftwareCompositionAnalysis getSca() { return sca; }

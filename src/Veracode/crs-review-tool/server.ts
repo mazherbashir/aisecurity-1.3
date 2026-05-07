@@ -14,12 +14,66 @@ async function startServer() {
   app.use(express.json());
 
   // Prompts Config Routes
-  const promptsPath = path.join(process.cwd(), 'src', 'config', 'prompts.json');
+  let devMemPrompts = { sast: "", sca: "" };
+
+  app.get("/api/config/prompts", async (req, res) => {
+    if (process.env.NODE_ENV !== 'production') {
+       try {
+         res.json({ sastPrompt: devMemPrompts.sast, scaPrompt: devMemPrompts.sca });
+       } catch (error) {
+         console.error('Error reading local prompts:', error);
+         res.status(500).json({ error: 'Failed to read local prompts' });
+       }
+       return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8081/api/config/prompts');
+      if (!response.ok) {
+        throw new Error(`Service at localhost:8081 returned ${response.status}: ${response.statusText}`);
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching prompts:', error);
+      res.status(500).json({ error: 'Failed to fetch prompts from reporting service.' });
+    }
+  });
+
+  app.post("/api/config/prompts", async (req, res) => {
+    if (process.env.NODE_ENV !== 'production') {
+      try {
+        const { sastPrompt, scaPrompt } = req.body;
+        devMemPrompts = { sast: sastPrompt, sca: scaPrompt };
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error writing local prompts:', error);
+        res.status(500).json({ error: 'Failed to save local prompts' });
+      }
+      return;
+    }
+
+    try {
+      const { sastPrompt, scaPrompt } = req.body;
+      const response = await fetch('http://localhost:8081/api/config/prompts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sastPrompt, scaPrompt })
+      });
+      if (!response.ok) {
+        throw new Error(`Service at localhost:8081 returned ${response.status}: ${response.statusText}`);
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error saving prompts:', error);
+      res.status(500).json({ error: 'Failed to save prompts to reporting service.' });
+    }
+  });
 
   app.get("/api/prompts", async (req, res) => {
     try {
-      const data = await fs.readFile(promptsPath, 'utf-8');
-      res.json(JSON.parse(data));
+      res.json(devMemPrompts);
     } catch (error) {
       console.error('Error reading prompts:', error);
       res.status(500).json({ error: 'Failed to read prompts' });
@@ -29,7 +83,7 @@ async function startServer() {
   app.post("/api/prompts", async (req, res) => {
     try {
       const { sast, sca } = req.body;
-      await fs.writeFile(promptsPath, JSON.stringify({ sast, sca }, null, 2));
+      devMemPrompts = { sast, sca };
       res.json({ success: true });
     } catch (error) {
       console.error('Error writing prompts:', error);
@@ -93,6 +147,41 @@ async function startServer() {
       console.error('Error fetching AI response:', error);
       const errorMessage = error instanceof Error ? error.message : String(error);
       res.status(500).json({ error: errorMessage });
+    }
+  });
+
+  app.get("/api/getfinalreport", async (req, res) => {
+    const appProfile = req.query['application-name'] as string;
+    if (!appProfile) {
+      return res.status(400).json({ error: "application-name is required" });
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8081/getfinalreport?application-name=${encodeURIComponent(appProfile)}`);
+      
+      if (!response.ok) {
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          errorData = { 
+            status: "error",
+            type: "SYSTEM_ERROR",
+            error: `Endpoint at localhost:8081 returned ${response.status}: ${response.statusText}` 
+          };
+        }
+        return res.status(response.status).json(errorData);
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching final report:', error);
+      res.status(500).json({ 
+        status: "error",
+        type: "SYSTEM_ERROR",
+        message: 'Failed to fetch final report from reporting service.' 
+      });
     }
   });
 

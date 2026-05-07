@@ -18,6 +18,8 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.crs_reivew_api.util.VeracodeException;
+
 @Service
 public class VeracodeService {
 
@@ -25,25 +27,123 @@ public class VeracodeService {
     private VeracodeConfig veracodeConfig;
 
     public String getAppId(String appName) {
+        if (appName != null) appName = appName.trim();
+        try {
+            Map<String, String> appMap = getApplicationsMap();
+            
+            if (appMap.containsKey(appName)) {
+                return appMap.get(appName);
+            }
+            
+            // Fuzzy match if not found
+            List<String> suggestions = findBestMatches(appName, appMap.keySet());
+            throw new VeracodeException("Application '" + appName + "' not found.", "INVALID_APP", suggestions);
+            
+        } catch (VeracodeException ve) {
+            throw ve;
+        } catch (Exception e) {
+            throw new VeracodeException("Failed to get App ID: " + e.getMessage(), "SYSTEM_ERROR");
+        }
+    }
+
+    private Map<String, String> getApplicationsMap() throws Exception {
+        java.nio.file.Path cachePath = java.nio.file.Paths.get("veracode", "history", "applications.json");
+        boolean shouldRefresh = true;
+
+        if (java.nio.file.Files.exists(cachePath)) {
+            long lastModified = java.nio.file.Files.getLastModifiedTime(cachePath).toMillis();
+            long thirtyDaysMillis = 30L * 24 * 60 * 60 * 1000;
+            if (System.currentTimeMillis() - lastModified < thirtyDaysMillis) {
+                shouldRefresh = false;
+            }
+        }
+
+        if (!shouldRefresh) {
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                return mapper.readValue(cachePath.toFile(), new com.fasterxml.jackson.core.type.TypeReference<Map<String, String>>() {});
+            } catch (Exception e) {
+                debugLog("DEBUG: Error reading application cache, refreshing: " + e.getMessage());
+            }
+        }
+
+        // Fetch from API
         try {
             UploadAPIWrapper uploadWrapper = new UploadAPIWrapper();
             setupCredentials(uploadWrapper);
             String xml = uploadWrapper.getAppList();
+            
+            if (xml == null || xml.contains("<error>")) {
+                throw new VeracodeException("Veracode API returned an error: " + xml, "SYSTEM_ERROR");
+            }
+            
             saveXmlToLog("app_list", "all", xml);
+
+            Map<String, String> appMap = new HashMap<>();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(xml)));
             var nodes = doc.getElementsByTagName("app");
             for (int i = 0; i < nodes.getLength(); i++) {
                 var node = nodes.item(i);
-                if (node.getAttributes().getNamedItem("app_name").getNodeValue().equals(appName)) {
-                    return node.getAttributes().getNamedItem("app_id").getNodeValue();
-                }
+                String name = node.getAttributes().getNamedItem("app_name").getNodeValue();
+                String id = node.getAttributes().getNamedItem("app_id").getNodeValue();
+                appMap.put(name, id);
             }
-            throw new RuntimeException("App not found: " + appName);
+
+            // Save to cache
+            java.nio.file.Files.createDirectories(cachePath.getParent());
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
+            mapper.writeValue(cachePath.toFile(), appMap);
+            
+            return appMap;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get App ID", e);
+            if (e instanceof VeracodeException) throw e;
+            throw new VeracodeException("Veracode API is currently unavailable: " + e.getMessage(), "SYSTEM_ERROR");
         }
+    }
+
+    private List<String> findBestMatches(String input, Set<String> names) {
+        String lowerInput = input.toLowerCase();
+        
+        return names.stream()
+            .map(name -> {
+                int score = calculateSimilarityScore(lowerInput, name.toLowerCase());
+                return new AbstractMap.SimpleEntry<>(name, score);
+            })
+            .filter(entry -> entry.getValue() > 0)
+            .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+            .limit(5)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
+    }
+
+    private int calculateSimilarityScore(String input, String target) {
+        if (input.equals(target)) return 1000;
+        
+        // Priority 1: One starts with the other
+        if (target.startsWith(input) || input.startsWith(target)) {
+            return 800 + Math.min(input.length(), target.length());
+        }
+        
+        // Priority 2: One contains the other
+        if (target.contains(input) || input.contains(target)) {
+            return 600 + Math.min(input.length(), target.length());
+        }
+        
+        // Priority 3: Shared prefix length
+        int commonPrefix = 0;
+        for (int i = 0; i < Math.min(input.length(), target.length()); i++) {
+            if (input.charAt(i) == target.charAt(i)) commonPrefix++;
+            else break;
+        }
+        
+        if (commonPrefix >= 5) {
+            return 400 + commonPrefix;
+        }
+        
+        return 0;
     }
 
     public String getLatestBuildId(String appId) {
@@ -85,15 +185,15 @@ public class VeracodeService {
     }
 
     private void saveXmlToLog(String prefix, String id, String xml) {
-        if (!veracodeConfig.isDebug()) return;
+        if (!veracodeConfig.isSaveXmlLogs()) return;
         try {
             String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            java.nio.file.Path logDir = java.nio.file.Paths.get("logs", "veracode");
+            java.nio.file.Path logDir = java.nio.file.Paths.get("veracode", "logs");
             java.nio.file.Files.createDirectories(logDir);
             
             String fileName = String.format("%s_%s_%s.xml", prefix, id, timestamp);
             java.nio.file.Files.writeString(logDir.resolve(fileName), xml);
-            debugLog("DEBUG: Saved report log to: " + logDir.resolve(fileName));
+            debugLog("DEBUG: Saved XML log to: " + logDir.resolve(fileName));
         } catch (Exception e) {
             System.err.println("Warning: Could not save XML log: " + e.getMessage());
         }
@@ -147,6 +247,8 @@ public class VeracodeService {
     }
 
     public VeracodeReportDTO getFinalReport(String applicationName, String appId, String buildId, boolean includeBuildInfo) {
+        if (applicationName != null) applicationName = applicationName.trim();
+        
         String effectiveAppId = (appId != null && !appId.isEmpty()) ? appId : getAppId(applicationName);
         String effectiveBuildId = (buildId != null && !buildId.isEmpty()) ? buildId : getLatestBuildId(effectiveAppId);
         
@@ -164,10 +266,13 @@ public class VeracodeService {
         dto.overview.generationDate = report.getGenerationDate();
         dto.overview.policyName = report.getPolicyName();
         dto.overview.policyComplianceStatus = report.getPolicyComplianceStatus();
+        dto.overview.sandboxId = report.getSandboxId();
+        dto.overview.tier = calculateTier(report.getPolicyName());
 
         if (report.getStaticAnalysis() != null) {
             dto.overview.sastScore = report.getStaticAnalysis().getScore();
             dto.overview.sastRating = report.getStaticAnalysis().getRating();
+            dto.overview.staticAnalysisUnitId = report.getStaticAnalysis().getStaticAnalysisUnitId();
         }
 
         // Conditionally Fetch Build Info
@@ -315,26 +420,57 @@ public class VeracodeService {
         }
 
         // Mapping is now handled by generateDetailedBreakdown
-        saveJsonToLog("final_report", effectiveBuildId, dto);
+        saveJsonToLog(dto.overview.applicationName, dto);
         return dto;
     }
 
-    private void saveJsonToLog(String prefix, String id, Object dto) {
-        if (!veracodeConfig.isDebug()) return;
+    private void saveJsonToLog(String appName, Object dto) {
+        if (!veracodeConfig.isSaveJsonHistory()) return;
         try {
+            String sanitizedAppName = appName != null ? appName.replaceAll("[^a-zA-Z0-9]", "_") : "Unknown";
+            
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
             String json = mapper.writeValueAsString(dto);
             
-            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            java.nio.file.Path logDir = java.nio.file.Paths.get("logs", "veracode");
-            java.nio.file.Files.createDirectories(logDir);
+            java.nio.file.Path historyDir = java.nio.file.Paths.get("veracode", "history");
+            java.nio.file.Files.createDirectories(historyDir);
             
-            String fileName = String.format("%s_%s_%s.json", prefix, id, timestamp);
-            java.nio.file.Files.writeString(logDir.resolve(fileName), json);
-            debugLog("DEBUG: Saved report log to: " + logDir.resolve(fileName));
+            String fileName;
+            java.nio.file.Path baseFile = historyDir.resolve(sanitizedAppName + ".json");
+            if (!java.nio.file.Files.exists(baseFile)) {
+                fileName = sanitizedAppName + ".json";
+            } else {
+                int runningNumber = getNextRunningNumber(historyDir, sanitizedAppName);
+                fileName = String.format("%s_%02d.json", sanitizedAppName, runningNumber);
+            }
+            
+            java.nio.file.Path targetFile = historyDir.resolve(fileName);
+            java.nio.file.Files.writeString(targetFile, json);
+            debugLog("DEBUG: Saved JSON history to: " + targetFile);
         } catch (Exception e) {
-            System.err.println("Warning: Could not save JSON log: " + e.getMessage());
+            System.err.println("Warning: Could not save JSON history: " + e.getMessage());
+        }
+    }
+
+    private int getNextRunningNumber(java.nio.file.Path dir, String sanitizedAppName) {
+        try {
+            if (!java.nio.file.Files.exists(dir)) return 1;
+            try (java.util.stream.Stream<java.nio.file.Path> stream = java.nio.file.Files.list(dir)) {
+                return stream
+                    .map(p -> p.getFileName().toString())
+                    .filter(name -> name.startsWith(sanitizedAppName + "_") && name.endsWith(".json"))
+                    .map(name -> {
+                        try {
+                            String numPart = name.substring(sanitizedAppName.length() + 1, name.lastIndexOf("."));
+                            return Integer.parseInt(numPart);
+                        } catch (Exception e) { return 0; }
+                    })
+                    .max(Integer::compare)
+                    .orElse(0) + 1;
+            }
+        } catch (Exception e) {
+            return 1;
         }
     }
 
@@ -543,6 +679,7 @@ public class VeracodeService {
                         fDto.severity = getSeverityName(sev);
                         fDto.location = flaw.getAttribute("sourcefile") + ":" + flaw.getAttribute("line");
                         fDto.userComments = comments;
+                        fDto.remediation_due_date = calculateDueDate(flaw.getAttribute("date_first_occurrence"), dto.overview.tier, fDto.severity);
                         findings.add(fDto);
                     }
                 }
@@ -568,6 +705,7 @@ public class VeracodeService {
                     finding.cwe = cwe;
                     finding.count = list.size();
                     finding.date_first_occurrence = oldestDate;
+                    finding.remediation_due_date = calculateDueDate(oldestDate, dto.overview.tier, getSeverityName(sev));
                     sevBreakdown.findings.add(finding);
                 });
                 dto.sastSummary.breakdown.put(sevName, sevBreakdown);
@@ -646,6 +784,7 @@ public class VeracodeService {
                     fDto.severity = getSeverityName(sev);
                     fDto.location = comp.getLibrary();
                     fDto.userComments = scaComments;
+                    fDto.remediation_due_date = calculateDueDate(vuln.getFirstFoundDate(), dto.overview.tier, fDto.severity);
                     dto.findingsWithCommentsSCA.add(fDto);
                 }
             }
@@ -706,13 +845,18 @@ public class VeracodeService {
                     .collect(java.util.stream.Collectors.joining(","));
                 
                 var counts = new java.util.TreeMap<String, Integer>(java.util.Collections.reverseOrder());
+                int maxSev = 0;
                 for (var v : componentVulns) {
+                    int sValue = (v.getSeverity() != null) ? v.getSeverity() : 0;
+                    if (sValue > maxSev) maxSev = sValue;
+                    
                     String sDesc = v.getSeverityDesc();
                     if (sDesc == null || sDesc.isEmpty()) {
-                        sDesc = getSeverityName((v.getSeverity() != null) ? v.getSeverity() : 0);
+                        sDesc = getSeverityName(sValue);
                     }
                     counts.put(sDesc, counts.getOrDefault(sDesc, 0) + 1);
                 }
+                detail.remediation_due_date = calculateDueDate(detail.firstFoundDate, dto.overview.tier, getSeverityName(maxSev));
                 
                 var severityList = new java.util.ArrayList<String>();
                 counts.forEach((sev, count) -> severityList.add(sev + ": " + count));
@@ -729,40 +873,32 @@ public class VeracodeService {
         var mappings = veracodeConfig.getArchitectureMappings();
         if (mappings == null || mappings.isEmpty()) return;
 
-        // Normalize architectures to uppercase for easier lookup
-        java.util.Set<String> upperArches = architectures.stream()
-            .map(String::toUpperCase)
-            .collect(java.util.stream.Collectors.toSet());
-
         // 1. Architecture detected in SAST but Ecosystem missing in SCA
         for (String arch : architectures) {
-            String archUpper = arch.toUpperCase();
-            String rawExpected = mappings.get(archUpper);
-            
-            if (rawExpected == null) {
-                rawExpected = mappings.entrySet().stream()
-                    .filter(e -> e.getKey().equalsIgnoreCase(arch))
-                    .map(java.util.Map.Entry::getValue)
-                    .findFirst()
-                    .orElse(null);
-            }
+            // Find mapping for this arch (which is already a pretty name)
+            String rawExpected = mappings.entrySet().stream()
+                .filter(e -> e.getKey().equalsIgnoreCase(arch))
+                .map(java.util.Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
 
             if (rawExpected != null) {
-                // Support comma-separated ecosystems (e.g., PYTHON=pip,pypi)
                 String[] expectedEcos = rawExpected.split(",");
                 boolean foundAny = false;
                 for (String eco : expectedEcos) {
                     String trimmedEco = eco.trim();
-                    if (ecosystems.contains(trimmedEco)) {
+                    // Map the technical expected eco to its pretty name
+                    String prettyEco = mapToPrettyName(trimmedEco);
+                    if (ecosystems.contains(prettyEco)) {
                         foundAny = true;
                         break;
                     }
                 }
 
                 if (!foundAny) {
-                    // Special cases
-                    if (archUpper.equals("JAVASCRIPT") && ecosystems.contains("bower")) continue;
-                    if ((archUpper.equals("JAVA") || archUpper.equals("JVM")) && ecosystems.contains("gradle")) continue;
+                    // Special cases (using pretty names)
+                    if (arch.equalsIgnoreCase("JavaScript") && ecosystems.contains("JavaScript")) continue; // Should be handled by loop but just in case
+                    if (arch.equalsIgnoreCase("Java") && ecosystems.contains("Java")) continue;
                     
                     dto.packagingAnomalies.add("Architecture " + arch + " detected in SAST but no corresponding SCA ecosystem (" + rawExpected + ") found. Packaging may be incomplete.");
                 }
@@ -774,31 +910,35 @@ public class VeracodeService {
             boolean archFound = false;
             boolean hasMappingForEco = false;
 
+            // Find if any mapping includes this eco
             for (java.util.Map.Entry<String, String> entry : mappings.entrySet()) {
+                String prettyArch = entry.getKey();
                 String rawVal = entry.getValue();
                 if (rawVal == null) continue;
                 
-                // Check if this eco is in the mapped list (case-insensitive)
                 boolean ecoInList = java.util.Arrays.stream(rawVal.split(","))
-                    .anyMatch(v -> v.trim().equalsIgnoreCase(eco));
+                    .anyMatch(v -> {
+                        String technical = v.trim();
+                        return technical.equalsIgnoreCase(eco) || mapToPrettyName(technical).equalsIgnoreCase(eco);
+                    });
 
                 if (ecoInList) {
                     hasMappingForEco = true;
-                    if (upperArches.contains(entry.getKey().toUpperCase())) {
+                    if (architectures.contains(prettyArch)) {
                         archFound = true;
                         break;
                     }
                 }
             }
 
-            // Special cases
-            if (!archFound && eco.equalsIgnoreCase("bower") && upperArches.contains("JAVASCRIPT")) archFound = true;
-            if (!archFound && eco.equalsIgnoreCase("gradle") && (upperArches.contains("JAVA") || upperArches.contains("JVM"))) archFound = true;
-
             if (hasMappingForEco && !archFound) {
                 String expectedArches = mappings.entrySet().stream()
-                    .filter(e -> e.getValue() != null && java.util.Arrays.stream(e.getValue().split(",")).anyMatch(v -> v.trim().equalsIgnoreCase(eco)))
+                    .filter(e -> e.getValue() != null && java.util.Arrays.stream(e.getValue().split(",")).anyMatch(v -> {
+                        String t = v.trim();
+                        return t.equalsIgnoreCase(eco) || mapToPrettyName(t).equalsIgnoreCase(eco);
+                    }))
                     .map(java.util.Map.Entry::getKey)
+                    .distinct()
                     .collect(java.util.stream.Collectors.joining(" or "));
                 
                 dto.packagingAnomalies.add("Ecosystem " + eco + " detected in SCA but no corresponding architecture (" + expectedArches + ") was scanned in SAST. Check module selection.");
@@ -825,6 +965,56 @@ public class VeracodeService {
             breakdown.put(getSeverityName(sev), b);
         }
         return breakdown;
+    }
+
+    private String calculateTier(String policyName) {
+        if (policyName == null || !policyName.startsWith("PwC")) return "N/A";
+        
+        // Remove 6 characters as requested
+        if (policyName.length() <= 6) return "N/A";
+        String trimmed = policyName.substring(6);
+        if (!trimmed.contains("_")) return "N/A";
+        
+        String[] parts = trimmed.split("_", 2);
+        // Remove leading digits (e.g., "3HighlyConfidential" -> "HighlyConfidential")
+        String dataClassification = parts[0].replaceAll("^\\d+", "");
+        // Only take the first part of the exposure (e.g., "External_something" -> "External")
+        String tierExposure = parts[1].split("_")[0];
+        
+        var tierMappings = veracodeConfig.getTierMappings();
+        if (tierMappings.containsKey(tierExposure)) {
+            return tierMappings.get(tierExposure).getOrDefault(dataClassification, "N/A");
+        }
+        
+        return "N/A";
+    }
+
+    private String calculateDueDate(String dateStr, String tier, String severity) {
+        if (dateStr == null || dateStr.isEmpty() || tier == null || "N/A".equals(tier)) return null;
+        
+        var gracePeriods = veracodeConfig.getGracePeriods();
+        if (!gracePeriods.containsKey(tier)) return null;
+        
+        // Normalize severity name (e.g., "Very High" -> "VeryHigh") to match config keys
+        String normalizedSeverity = severity != null ? severity.replace(" ", "") : "";
+        Integer days = gracePeriods.get(tier).get(normalizedSeverity);
+        if (days == null) return null;
+        
+        try {
+            java.time.LocalDateTime ldt;
+            if (dateStr.length() > 10) {
+                // SCA format "2026-03-24 18:11:44 UTC"
+                String cleanDate = dateStr.replace(" UTC", "");
+                ldt = java.time.LocalDateTime.parse(cleanDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            } else {
+                // SAST format "2026-03-24"
+                ldt = java.time.LocalDate.parse(dateStr, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+            }
+            
+            return ldt.plusDays(days).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private String mapToPrettyName(String technicalName) {

@@ -30,6 +30,9 @@ public class VeracodeReportDTO {
         public String policyComplianceStatus;
         public Integer sastScore;
         public String sastRating;
+        public String staticAnalysisUnitId;
+        public String sandboxId;
+        public String tier;
     }
 
     public static class SeveritySummaryDTO {
@@ -46,6 +49,7 @@ public class VeracodeReportDTO {
         public String cwe;
         public int count;
         public String date_first_occurrence;
+        public String remediation_due_date;
     }
 
     public static class ScaSummaryDTO extends SeveritySummaryDTO {
@@ -61,12 +65,14 @@ public class VeracodeReportDTO {
         public String severity; // High, Medium, etc.
         public String location;
         public List<String> userComments;
+        public String remediation_due_date;
     }
 
     public static class ScaDetailDTO {
         public String packageName;
         public String version;
         public String firstFoundDate;
+        public String remediation_due_date;
         public String severityCounts; // e.g., "VeryHigh: 1 Medium: 2"
         public String cveList; // e.g., "CVE-2026-4800,CVE-2026-2950"
     }
