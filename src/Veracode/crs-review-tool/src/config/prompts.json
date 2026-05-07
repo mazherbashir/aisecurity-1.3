@@ -1,4 +1,0 @@
-{
-  "sast": "Expertly analyze the following security mitigation customer comment and provide a concise, professional assessment or recommendation for a security auditor.",
-  "sca": "Expertly analyze the following software composition analysis (SCA) finding. Provide a recommendation for the security auditor regarding the identified dependency risk."
-}
