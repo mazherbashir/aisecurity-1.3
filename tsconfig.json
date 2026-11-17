@@ -32,6 +32,7 @@
     "node_modules",
     "scripts/custom-changes",
     "src/app/**/*",
+    "src/Veracode/**/*",
     "src/workers/**/*",
     "test/app/**/*",
     "test/code-scan-action/**/*",
