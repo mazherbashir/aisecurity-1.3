@@ -80,6 +80,8 @@ export interface Config {
   language?: string | string[]; // Global language configuration
   // Provider used for generating adversarial inputs (redteam provider)
   provider?: string | CoreProviderOptions;
+  tests?: TestCase[];
+  loadedFileName?: string;
 }
 
 export interface ProviderOptions {

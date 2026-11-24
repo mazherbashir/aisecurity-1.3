@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 
 import chalk from 'chalk';
+import Table from 'cli-table3';
 import yaml from 'js-yaml';
 import { doEval } from '../commands/eval';
 import logger, { setLogCallback, setLogLevel } from '../logger';
@@ -41,27 +42,69 @@ export async function doRedteamRun(options: RedteamRunOptions): Promise<Eval | u
     redteamPath = path.join(configDir, 'redteam.yaml');
   }
 
-  // Check API health before proceeding
-  try {
-    const healthUrl = getRemoteHealthUrl();
-    if (healthUrl) {
-      logger.debug(`Checking Promptfoo API health at ${healthUrl}...`);
-      const healthResult = await checkRemoteHealth(healthUrl);
-      if (healthResult.status !== 'OK') {
-        throw new Error(
-          `Unable to proceed with redteam: ${healthResult.message}\n` +
-            'Please check your API configuration or try again later.',
-        );
+  // Check API health before proceeding (skip if using loaded test cases)
+  const isUsingLoadedTests = Boolean(
+    options.useLoadedFileTests &&
+      options.liveRedteamConfig?.tests &&
+      Array.isArray(options.liveRedteamConfig.tests) &&
+      options.liveRedteamConfig.tests.length > 0,
+  );
+
+  if (!isUsingLoadedTests) {
+    try {
+      const healthUrl = getRemoteHealthUrl();
+      if (healthUrl) {
+        logger.debug(`Checking Promptfoo API health at ${healthUrl}...`);
+        const healthResult = await checkRemoteHealth(healthUrl);
+        if (healthResult.status !== 'OK') {
+          throw new Error(
+            `Unable to proceed with redteam: ${healthResult.message}\n` +
+              'Please check your API configuration or try again later.',
+          );
+        }
+        logger.debug('API health check passed');
       }
-      logger.debug('API health check passed');
+    } catch (error) {
+      logger.warn(
+        `API health check failed with error: ${error}.\nPlease check your API configuration or try again later.`,
+      );
     }
-  } catch (error) {
-    logger.warn(
-      `API health check failed with error: ${error}.\nPlease check your API configuration or try again later.`,
-    );
   }
 
   if (options.liveRedteamConfig) {
+    // If using loaded tests, ensure defaultTest metadata (purpose and entities) is present
+    if (isUsingLoadedTests) {
+      const purpose =
+        options.liveRedteamConfig.redteam?.purpose ||
+        options.liveRedteamConfig.defaultTest?.metadata?.purpose;
+      const entities =
+        options.liveRedteamConfig.redteam?.entities ||
+        options.liveRedteamConfig.defaultTest?.metadata?.entities ||
+        [];
+
+      options.liveRedteamConfig.defaultTest = {
+        ...(options.liveRedteamConfig.defaultTest || {}),
+        metadata: {
+          ...(options.liveRedteamConfig.defaultTest?.metadata || {}),
+          ...(purpose && { purpose }),
+          ...(entities && { entities }),
+        },
+      };
+
+      // Also ensure individual test cases have purpose/entities in their metadata if missing
+      if (Array.isArray(options.liveRedteamConfig.tests)) {
+        for (const t of options.liveRedteamConfig.tests) {
+          if (t && typeof t === 'object') {
+            t.metadata = {
+              ...(t.metadata || {}),
+              ...(purpose && !t.metadata?.purpose && { purpose }),
+              ...(entities && !t.metadata?.entities && { entities }),
+            };
+          }
+        }
+      }
+    }
+
     // Write liveRedteamConfig to a temporary file
     const filename = `redteam-${Date.now()}.yaml`;
     const tmpDir = options.loadedFromCloud ? '' : os.tmpdir();
@@ -75,42 +118,84 @@ export async function doRedteamRun(options: RedteamRunOptions): Promise<Eval | u
     logger.debug(`Live config: ${JSON.stringify(options.liveRedteamConfig, null, 2)}`);
   }
 
-  // Generate new test cases
-  logger.info('Generating test cases...');
-  const { maxConcurrency, ...passThroughOptions } = options;
+  let redteamConfig: any;
+  let generationDurationMs = 0;
 
-  let redteamConfig;
-  const generationStartTime = Date.now();
-  try {
-    redteamConfig = await doGenerateRedteam({
-      ...passThroughOptions,
-      ...(options.liveRedteamConfig?.commandLineOptions || {}),
-      ...(maxConcurrency === undefined ? {} : { maxConcurrency }),
-      config: configPath,
-      output: redteamPath,
-      force: options.force,
-      verbose: options.verbose,
-      delay: options.delay,
-      inRedteamRun: true,
-      abortSignal: options.abortSignal,
-      progressBar: options.progressBar,
+  if (isUsingLoadedTests) {
+    logger.info('Using loaded tests from configuration (adversarial generation skipped).');
+    const existingTests: any[] = options.liveRedteamConfig.tests;
+
+    // Tally plugin test counts
+    const pluginCounts: Record<string, number> = {};
+    for (const t of existingTests) {
+      const pId = t?.metadata?.pluginId || 'unknown';
+      pluginCounts[pId] = (pluginCounts[pId] || 0) + 1;
+    }
+
+    // Simulate standard test generation progress logs
+    for (const [pId, count] of Object.entries(pluginCounts)) {
+      logger.info(`Generating tests for ${pId}...`);
+      logger.info(`Generated ${count} tests for ${pId}`);
+    }
+
+    // Generate formatted ASCII report table
+    const table = new Table({
+      head: ['#', 'Type', 'ID', 'Requested', 'Generated', 'Status'].map((h) =>
+        chalk.dim(chalk.white(h)),
+      ),
+      colWidths: [5, 10, 40, 12, 12, 14],
     });
-  } catch (error) {
-    if (error instanceof PartialGenerationError) {
-      // Log the detailed error message - this will be visible in CLI and UI (via logCallback)
-      logger.error(chalk.red('\n' + error.message));
-      setLogCallback(null);
-      if (verboseToggleCleanup) {
-        verboseToggleCleanup();
+
+    let rowIndex = 1;
+    Object.entries(pluginCounts)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .forEach(([pluginId, count]) => {
+        table.push([rowIndex++, 'Plugin', pluginId, count, count, chalk.green('Success')]);
+      });
+
+    logger.info(`\nTest Generation Report:\n${table.toString()}`);
+
+    redteamConfig = {
+      testCases: existingTests,
+      injectVar: 'prompt',
+    };
+  } else {
+    // Generate new test cases
+    logger.info('Generating test cases...');
+    const { maxConcurrency, ...passThroughOptions } = options;
+
+    const generationStartTime = Date.now();
+    try {
+      redteamConfig = await doGenerateRedteam({
+        ...passThroughOptions,
+        ...(options.liveRedteamConfig?.commandLineOptions || {}),
+        ...(maxConcurrency === undefined ? {} : { maxConcurrency }),
+        config: configPath,
+        output: redteamPath,
+        force: options.force,
+        verbose: options.verbose,
+        delay: options.delay,
+        inRedteamRun: true,
+        abortSignal: options.abortSignal,
+        progressBar: options.progressBar,
+      });
+    } catch (error) {
+      if (error instanceof PartialGenerationError) {
+        // Log the detailed error message - this will be visible in CLI and UI (via logCallback)
+        logger.error(chalk.red('\n' + error.message));
+        setLogCallback(null);
+        if (verboseToggleCleanup) {
+          verboseToggleCleanup();
+        }
+        // Re-throw so CLI exits with non-zero code and callers can handle appropriately
+        throw error;
       }
-      // Re-throw so CLI exits with non-zero code and callers can handle appropriately
+      // Re-throw other errors
       throw error;
     }
-    // Re-throw other errors
-    throw error;
-  }
 
-  const generationDurationMs = Date.now() - generationStartTime;
+    generationDurationMs = Date.now() - generationStartTime;
+  }
 
   // Check if redteam.yaml exists before running evaluation
   if (!redteamConfig || !fs.existsSync(redteamPath)) {

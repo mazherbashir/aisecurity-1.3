@@ -21,6 +21,7 @@ import { Input } from '@app/components/ui/input';
 import { Label } from '@app/components/ui/label';
 import { Separator } from '@app/components/ui/separator';
 import { Spinner } from '@app/components/ui/spinner';
+import { Switch } from '@app/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@app/components/ui/tooltip';
 import { EVAL_ROUTES, REDTEAM_ROUTES } from '@app/constants/routes';
 import { useApiHealth } from '@app/hooks/useApiHealth';
@@ -39,7 +40,8 @@ import {
   makeDefaultPolicyName,
 } from '@promptfoo/redteam/plugins/policy/utils';
 import { getUnifiedConfig } from '@promptfoo/redteam/sharedFrontend';
-import { BarChart2, ChevronDown, Eye, Info, Play, Save, Search, Sliders, X } from 'lucide-react';
+import { BarChart2, ChevronDown, Eye, FileUp, Info, Play, Save, Search, Sliders, Upload, X } from 'lucide-react';
+import yaml from 'js-yaml';
 import { Link } from 'react-router-dom';
 import { useRedTeamConfig } from '../hooks/useRedTeamConfig';
 import { generateOrderedYaml } from '../utils/yamlHelpers';
@@ -103,6 +105,8 @@ export default function Review({
   const [isPurposeExpanded, setIsPurposeExpanded] = useState(false);
   const [isTestInstructionsExpanded, setIsTestInstructionsExpanded] = useState(false);
   const [isRunOptionsExpanded, setIsRunOptionsExpanded] = useState(true);
+  const [useLoadedFileTests, setUseLoadedFileTests] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-expand advanced config if there are existing test variables
   const hasTestVariables =
@@ -351,11 +355,18 @@ export default function Review({
   }, [config.strategies]);
 
   const isRunNowDisabled = useMemo(() => {
+    if (useLoadedFileTests && config.tests && config.tests.length > 0) {
+      return isRunning;
+    }
     return isRunning || ['blocked', 'disabled', 'unknown'].includes(apiHealthStatus);
-  }, [isRunning, apiHealthStatus]);
+  }, [isRunning, apiHealthStatus, useLoadedFileTests, config.tests]);
 
   const runNowTooltipMessage = useMemo((): string | undefined => {
     if (isRunning) {
+      return undefined;
+    }
+
+    if (useLoadedFileTests && config.tests && config.tests.length > 0) {
       return undefined;
     }
 
@@ -369,7 +380,7 @@ export default function Review({
       default:
         return undefined;
     }
-  }, [isRunning, apiHealthStatus]);
+  }, [isRunning, apiHealthStatus, useLoadedFileTests, config.tests]);
 
   const checkForRunningJob = async (): Promise<JobStatusResponse> => {
     try {
@@ -448,6 +459,46 @@ export default function Review({
     [clearJob, recordEvent, showToast, signalEvalCompleted],
   );
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    try {
+      const text = await file.text();
+      // biome-ignore lint/suspicious/noExplicitAny: parsing yaml config
+      const parsed = yaml.load(text) as any;
+      if (!parsed || typeof parsed !== 'object') {
+        throw new Error('Invalid YAML format');
+      }
+
+      if (parsed.tests && Array.isArray(parsed.tests)) {
+        updateConfig('tests', parsed.tests);
+        updateConfig('loadedFileName', file.name);
+        if (parsed.defaultTest) {
+          updateConfig('defaultTest', {
+            ...config.defaultTest,
+            ...parsed.defaultTest,
+            metadata: {
+              ...(config.defaultTest?.metadata || {}),
+              ...(parsed.defaultTest?.metadata || {}),
+            },
+          });
+        }
+        if (parsed.redteam?.purpose && !config.purpose) {
+          updateConfig('purpose', parsed.redteam.purpose);
+        }
+        setUseLoadedFileTests(true);
+        showToast(`Loaded ${parsed.tests.length} tests from ${file.name}`, 'success');
+      } else {
+        showToast('No tests array found in the uploaded YAML file.', 'warning');
+      }
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to parse YAML file', 'error');
+    }
+    event.target.value = '';
+  };
+
   const handleRunWithSettings = async () => {
     // Check email verification first
     const emailResult = await checkEmailStatus();
@@ -524,6 +575,7 @@ export default function Review({
           verbose: config.target.config.verbose,
           maxConcurrency,
           delay: config.target.config.delay,
+          useLoadedFileTests: Boolean(useLoadedFileTests && config.tests && config.tests.length > 0),
         }),
       });
 
@@ -1116,7 +1168,58 @@ export default function Review({
               Run the red team evaluation right here. Simpler but less powerful than the CLI, good
               for tests and small scans:
             </p>
-            {apiHealthStatus !== 'connected' && !isCheckingApiHealth && (
+
+            {/* Test File Upload & Use Loaded File Tests Toggle */}
+            <div className="mb-6 rounded-lg border p-4 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="use-loaded-file-toggle" className="text-sm font-semibold cursor-pointer">
+                      Use loaded test file (skip adversarial generation)
+                    </Label>
+                    {config.tests && config.tests.length > 0 && (
+                      <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                        {config.tests.length} tests loaded
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {config.loadedFileName
+                      ? `Using tests from ${config.loadedFileName}. Test generation is skipped and existing tests are evaluated directly.`
+                      : config.tests && config.tests.length > 0
+                        ? `Using ${config.tests.length} tests from loaded configuration. Evaluation runs without regenerating prompts.`
+                        : 'Upload a generated redteam YAML file to run tests directly without contacting AI generation service.'}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    accept=".yaml,.yml"
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="gap-1.5 text-xs"
+                  >
+                    <Upload className="size-3.5" />
+                    {config.tests && config.tests.length > 0 ? 'Replace Test File' : 'Upload Test File'}
+                  </Button>
+                  <Switch
+                    id="use-loaded-file-toggle"
+                    checked={Boolean(useLoadedFileTests && config.tests && config.tests.length > 0)}
+                    disabled={!config.tests || config.tests.length === 0}
+                    onCheckedChange={(checked) => setUseLoadedFileTests(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {apiHealthStatus !== 'connected' && !isCheckingApiHealth && !(useLoadedFileTests && config.tests && config.tests.length > 0) && (
               <Alert variant="warning" className="mb-4">
                 <AlertContent>
                   <AlertDescription>

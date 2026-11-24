@@ -47,6 +47,7 @@ export const RedteamRunRequestSchema = z.object({
   verbose: z.boolean().optional(),
   delay: z.coerce.number().min(0).optional(),
   maxConcurrency: z.coerce.number().int().min(1).optional(),
+  useLoadedFileTests: z.boolean().optional(),
 });
 
 export type RedteamRunRequest = z.infer<typeof RedteamRunRequestSchema>;

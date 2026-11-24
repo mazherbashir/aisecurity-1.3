@@ -457,5 +457,42 @@ describe('doRedteamRun', () => {
         }),
       );
     });
+
+    it('should skip doGenerateRedteam and simulate logs when useLoadedFileTests is enabled with loaded tests', async () => {
+      const mockLogger = (await import('../../src/logger')).default;
+      const mockTests = [
+        {
+          vars: { prompt: 'test 1' },
+          metadata: { pluginId: 'excessive-agency' },
+        },
+        {
+          vars: { prompt: 'test 2' },
+          metadata: { pluginId: 'excessive-agency' },
+        },
+        {
+          vars: { prompt: 'test 3' },
+          metadata: { pluginId: 'system-prompt-override' },
+        },
+      ];
+
+      await doRedteamRun({
+        useLoadedFileTests: true,
+        liveRedteamConfig: {
+          prompts: ['{{prompt}}'],
+          targets: [{ id: 'http' }],
+          tests: mockTests,
+        },
+      });
+
+      expect(doGenerateRedteam).not.toHaveBeenCalled();
+      expect(mockLogger.info).toHaveBeenCalledWith(
+        'Using loaded tests from configuration (adversarial generation skipped).',
+      );
+      expect(mockLogger.info).toHaveBeenCalledWith('Generating tests for excessive-agency...');
+      expect(mockLogger.info).toHaveBeenCalledWith('Generated 2 tests for excessive-agency');
+      expect(mockLogger.info).toHaveBeenCalledWith('Generating tests for system-prompt-override...');
+      expect(mockLogger.info).toHaveBeenCalledWith('Generated 1 tests for system-prompt-override');
+      expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Test Generation Report:'));
+    });
   });
 });

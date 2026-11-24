@@ -371,6 +371,15 @@ export default function RedTeamSetupPage() {
         testGenerationInstructions: yamlConfig.redteam?.testGenerationInstructions || '',
         language: yamlConfig.redteam?.language,
         extensions: yamlConfig.extensions,
+        defaultTest: yamlConfig.defaultTest || {
+          options: { transformVars: '{ ...vars, sessionId: context.uuid }' },
+          metadata: {
+            purpose: yamlConfig.redteam?.purpose,
+            entities: yamlConfig.redteam?.entities,
+          },
+        },
+        tests: Array.isArray(yamlConfig.tests) ? yamlConfig.tests : undefined,
+        loadedFileName: file.name,
       };
 
       setFullConfig(mappedConfig);

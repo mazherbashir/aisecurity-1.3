@@ -53,6 +53,11 @@ export function getUnifiedConfig(
       transformVars: '{ ...vars, sessionId: context.uuid }',
     },
     vars: config.defaultTest?.vars as Record<string, Vars>,
+    metadata: {
+      ...((config.defaultTest as any)?.metadata || {}),
+      ...(config.purpose && { purpose: config.purpose }),
+      ...(config.entities && { entities: config.entities }),
+    },
   };
 
   return {
@@ -61,6 +66,7 @@ export function getUnifiedConfig(
     prompts: config.prompts,
     extensions: config.extensions,
     defaultTest,
+    ...(config.tests && config.tests.length > 0 && { tests: config.tests as any }),
     redteam: {
       purpose: config.purpose,
       numTests: config.numTests,

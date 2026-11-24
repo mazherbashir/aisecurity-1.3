@@ -259,6 +259,7 @@ export interface RedteamRunOptions {
   progressBar?: boolean;
   description?: string;
   strict?: boolean;
+  useLoadedFileTests?: boolean;
 
   // Used by webui
   liveRedteamConfig?: any;
@@ -288,6 +289,8 @@ export interface SavedRedteamConfig {
   maxConcurrency?: number;
   language?: string | string[];
   provider?: string | ProviderOptions;
+  tests?: any[];
+  loadedFileName?: string;
   applicationDefinition: {
     purpose?: string;
     features?: string;

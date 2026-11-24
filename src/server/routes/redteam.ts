@@ -240,7 +240,7 @@ redteamRouter.post('/run', async (req: Request, res: Response): Promise<void> =>
     }
   }
 
-  const { config, force, verbose, delay, maxConcurrency } = bodyResult.data;
+  const { config, force, verbose, delay, maxConcurrency, useLoadedFileTests } = bodyResult.data;
   const id = crypto.randomUUID();
   currentJobId = id;
   currentAbortController = new AbortController();
@@ -265,6 +265,7 @@ redteamRouter.post('/run', async (req: Request, res: Response): Promise<void> =>
     verbose,
     delay: delay ?? 0,
     maxConcurrency: maxConcurrency ?? 1,
+    useLoadedFileTests,
     logCallback: (message: string) => {
       if (currentJobId === id) {
         const job = evalJobs.get(id);
