@@ -281,11 +281,27 @@ export function getGraderById(id: string): RedteamGraderBase | undefined {
     return undefined;
   }
 
-  // First try to get the exact grader
-  const grader = id in GRADERS ? GRADERS[id as keyof typeof GRADERS] : undefined;
+  if (id === REDTEAM_MEMORY_POISONING_PLUGIN_ID) {
+    return GRADERS[REDTEAM_MEMORY_POISONING_PLUGIN_ID];
+  }
 
-  // If not found but the ID starts with 'aisecurity:redteam:harmful', use the general harmful grader
-  if (!grader && id.startsWith('aisecurity:redteam:harmful')) {
+  // Normalize promptfoo:redteam: prefix to aisecurity:redteam:
+  const normalizedId = id.replace(/^promptfoo:redteam:/, 'aisecurity:redteam:');
+
+  // First try to get the exact grader
+  const grader =
+    normalizedId in GRADERS
+      ? GRADERS[normalizedId as keyof typeof GRADERS]
+      : id in GRADERS
+        ? GRADERS[id as keyof typeof GRADERS]
+        : undefined;
+
+  // If not found but the ID starts with harmful, use the general harmful grader
+  if (
+    !grader &&
+    (normalizedId.startsWith('aisecurity:redteam:harmful') ||
+      id.startsWith('promptfoo:redteam:harmful'))
+  ) {
     return GRADERS['aisecurity:redteam:harmful'];
   }
 
